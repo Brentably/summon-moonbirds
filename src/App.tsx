@@ -2,8 +2,6 @@ import {useEffect, useState} from 'react';
 import { ethers } from "ethers";
 import './App.css';
 import WalletConnect from "@walletconnect/client";
-import QRCodeModal from "@walletconnect/qrcode-modal";
-import { parseUri } from '@walletconnect/utils'
 
 
 
@@ -38,12 +36,12 @@ function App() {
   }
 })
 
-
-
-
-connector.killSession()
-
 console.log(connector)
+
+
+
+// connector.killSession()
+
 
   if (!connector.connected) {
     console.log('bop')
