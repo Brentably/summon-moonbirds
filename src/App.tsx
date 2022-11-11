@@ -2,8 +2,6 @@ import {useEffect, useState} from 'react';
 import { ethers } from "ethers";
 import './App.css';
 import WalletConnect from "@walletconnect/client";
-import { IClientMeta, IWalletConnectSession } from '@walletconnect/types'
-import useWalletConnect from './hooks/useWalletConnect'
 import QRCodeModal from "@walletconnect/qrcode-modal";
 import { parseUri } from '@walletconnect/utils'
 
@@ -11,6 +9,7 @@ import { parseUri } from '@walletconnect/utils'
 
 
 function App() {
+  const [lendSelected, setLendSelected] = useState<boolean>(true)
 
   const [provider, setProvider] = useState<any>(null)
   const [signer, setSigner] = useState<any>(null)
@@ -18,14 +17,19 @@ function App() {
   // const [uri, setUri] = useState<any>("")
   // const [connector, setConnector] = useState<WalletConnect | undefined>()
 
-  const uri = 'wc:04fc808c-2986-4cb0-993b-dd787694ccb0@1?bridge=https%3A%2F%2Fg.bridge.walletconnect.org&key=f33265b24c47fe6b371382c4f6ee8da0466570e4e1c11b609eaeaa1bef42576e'
+  const uri = 'wc:85956887-bb5e-4aa8-b8d6-02fc75f8a1ae@1?bridge=https%3A%2F%2Fsafe-walletconnect.safe.global%2F&key=9b9d8d98cf5655a44f0faee76c344dd8579ca1cf591cd9454728f2bde73b9151'
 
 
 
   
-
-const connector = new WalletConnect({
+  
+  const onPageLoad = async () => {
+  
+  console.log("init new connector")
+ const connector = await new WalletConnect({
   uri: uri,
+  // bridge: "https://bridge.walletconnect.org"
+  // ,
   clientMeta: {
     description: "WalletConnect Developer App",
     url: "https://walletconnect.org",
@@ -34,12 +38,25 @@ const connector = new WalletConnect({
   }
 })
 
+
+
+
+connector.killSession()
+
+console.log(connector)
+
   if (!connector.connected) {
+    console.log('bop')
     // create new session
-    connector.createSession();
+    const createSession = async () => {
+    await connector.createSession();
+    }
+createSession()
   }
 
+
   connector.on("connect", ()=> console.log('connect'))
+
   connector.on("session_request", (error, payload) => {
     console.log('anything random')
     if (error) {
@@ -53,6 +70,8 @@ const connector = new WalletConnect({
         '0xB7A453Ee4a8850cc8A738021245c5e08B8CaB378'
       ],
       chainId: 5   }) 
+
+      
     // Handle Session Request
   
     /* payload:
@@ -102,6 +121,7 @@ const connector = new WalletConnect({
   });
 
   connector.on("disconnect", (error, payload) => {
+    console.log("DISCONNENCTEJNELKJ")
     if (error) {
       throw error;
     }
@@ -112,7 +132,8 @@ const connector = new WalletConnect({
 
     console.log(connector)
 
-
+}
+onPageLoad()
 
   const connect = async () => {
     const provider = new ethers.providers.Web3Provider(window.ethereum, "any")
@@ -132,7 +153,7 @@ const connector = new WalletConnect({
 
     const funcTwo = () => {
       console.log("func two")
-      console.dir(connector)
+      // console.dir(connector)
       
     }
 
@@ -143,13 +164,13 @@ const connector = new WalletConnect({
 
   return (
     <div className="App">
-      <button onClick={connect}>{signer ? "connected" : "connect wallet"}</button>
-      {/* <input type="text" value={uri} onChange={(e:any) => setUri(e.target.value)}/> */}
-      <button onClick={funcOne}>funcOne</button>
-      <button onClick={funcTwo}>funcTwo</button>
-      <button onClick={funcThree}>funcThree</button>
-      {/* <button onClick={wcConnect}>WC connect</button> */}
-      <h1>hefhoiodlk</h1>
+      <div className="summonHeader">
+      <span className="summonHeaderText">summon </span>
+      <button onClick={connect} className={signer ? "connect connected" : "connect notConnected"}> </button>
+      </div>
+      
+      <div className="tabsContainer">
+<span className={lendSelected ? "tabs selected" : "tabs"} onClick={()=> setLendSelected(true)}>lend</span> <span className={lendSelected ? "tabs" : "tabs selected"} onClick={()=> setLendSelected(false)}>borrow</span></div>
     </div>
   );
 }

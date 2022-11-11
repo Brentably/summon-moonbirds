@@ -2,6 +2,69 @@
   text-align: center;
 }
 
+body {
+  background: #EDEEF5;
+}
+
+.summonHeader {
+  margin-top: 27px;
+}
+
+.summonHeaderText {
+  font-family: 'SF Pro Rounded';
+font-style: normal;
+font-weight: 400;
+font-size: 64px;
+line-height: 76px;
+letter-spacing: 0.02em;
+
+color: #181C40;
+}
+
+.tabs {
+  font-family: 'SF Pro Rounded';
+font-style: normal;
+font-weight: 400;
+font-size: 32px;
+line-height: 38px;
+display: flex;
+align-items: center;
+text-align: center;
+letter-spacing: 0.02em;
+color: #464966;
+margin-top: 55px;
+}
+
+.selected {
+  border-bottom: 2px solid #181C40;
+  color: #181C40;
+
+}
+
+.tabsContainer{
+  display:flex;
+  flex-direction: row;
+  justify-content: space-around;
+
+}
+
+
+button.connect {
+  min-width: 30px;
+  min-height: 30px;
+  border-radius: 100%;
+  position: absolute;
+  margin-left:20px;
+  top: 55px
+}
+
+button.notConnected {
+  background: red
+}
+button.connected {
+  background: green
+}
+
 .App-logo {
   height: 40vmin;
   pointer-events: none;
