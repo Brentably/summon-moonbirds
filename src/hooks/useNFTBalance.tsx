@@ -1,7 +1,7 @@
 import {useEffect, useState} from "react"
 
-
-async function useNFTBalance(walletAddress: String) {
+// needs a wallet address and a function to update state
+async function useNFTBalance(walletAddress: String, setNFTBalance: Function) {
   const COVALENT_API_KEY="ckey_2b4e40855724423b83d84b656a6"
   const [data, setData] = useState<Array<any> | null>(null)
 
@@ -36,6 +36,7 @@ async function useNFTBalance(walletAddress: String) {
 
 useEffect(()=> {getData()}, [walletAddress])
 
+setNFTBalance(await data)
 return data
 
 }
