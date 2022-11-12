@@ -1,19 +1,22 @@
-import useCovalent from "../hooks/useCovalent"
+import {useState} from 'react'
+import useNFTBalance from "../hooks/useNFTBalance"
 
 type INFTList = {
-  walletAddress?: String
+  walletAddress: String
 }
 
 function NFTlist(props : INFTList) {
+  const [NFTBalance, setNFTBalance] = useState<any>(null)
   const {walletAddress} = props
 
-  console.log(useCovalent({walletAddress}))
+  const balance = useNFTBalance(walletAddress)
 
-
+  
 
   return (
     <div>
     {walletAddress}
+    {NFTBalance && `${NFTBalance}`}
     </div>
   )
 }
