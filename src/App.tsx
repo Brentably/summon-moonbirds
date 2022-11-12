@@ -7,21 +7,20 @@ import SafeServiceClient from '@gnosis.pm/safe-service-client'
 import Safe, { SafeFactory } from '@gnosis.pm/safe-core-sdk'
 import { ContractNetworksConfig } from '@gnosis.pm/safe-core-sdk'
 import { SafeTransactionDataPartial } from '@gnosis.pm/safe-core-sdk-types'
-
-
+import NFTlist from './components/NFTlist'
 
 
 function App() {
   const [lendSelected, setLendSelected] = useState<boolean>(true)
   const [safeAddress, setSafeAddress] = useState<any>("0x897C500f2196bD04b3f89B22727746c70Dc6b231")
   const [provider, setProvider] = useState<any>(null)
-  const [signer, setSigner] = useState<any>(null)
-  const [payload, setPayload] = useState<any>(null)
+  const [signer, setSigner] = useState<ethers.providers.JsonRpcSigner | null>(null)
+  const [walletAddress, setWalletAddress] = useState<String>("") // wallet address of connected wallet
   const [uri, setUri] = useState<any>("")
-// TESTING
+// TESTING SAFE STUFF
   const [safeOwner, setSafeOwner] = useState<any>(null)
   const [ethAdapter, setEthAdapter] = useState<any>(null)
-  const txServiceUrl = 'https://safe-transaction.goerli.gnosis.io/' //hardcoded goerli
+  const txServiceUrl = 'https://safe-transaction.goerli.gnosis.io/' // hardcoded goerli
   const [safeService, setSafeService] = useState<any>(null)
   // const id = await ethAdapter.getChainId()
   const id = 5
@@ -36,7 +35,7 @@ function App() {
       safeProxyFactoryAddress: '0xA96503b5a9E6071FBCE5e1AdDf64295d78a43f24'
     }
   }
-
+// TESTING SAFE STUFF ^^
 
   const rejectWithMessage = (connector: WalletConnect, id: number | undefined, message: string) => {
     connector.rejectRequest({ id, error: { message } })
@@ -45,7 +44,7 @@ function App() {
 
   
   
-const onPageLoad = async () => {
+const onUriChange = async () => {
   if(!uri) return
   if(!uri.startsWith("wc:")) return
   
@@ -115,7 +114,7 @@ const onPageLoad = async () => {
     if(payload.method == "personal_sign") {
   const message = payload.params[0]
   const wallet = payload.params[1]
-  const signedMessage = await signer.signMessage(ethers.utils.toUtf8String(message))
+  const signedMessage = await signer?.signMessage(ethers.utils.toUtf8String(message))
 
   console.log(`message is ${message}`)
   console.log(`wallet is ${wallet}`)
@@ -155,18 +154,18 @@ const onPageLoad = async () => {
 
 console.log(connector)
 
-} //end onPageLoad 
+} //end onUriChange
 
-useEffect(() => {onPageLoad()}, [uri])
+useEffect(() => {onUriChange()}, [uri])
 
   const connect = async () => {
     const provider = new ethers.providers.Web3Provider(window.ethereum, "any")
-    console.log(provider)
+    // console.log(provider)
     await provider.send("eth_requestAccounts", []);
     const signer = provider.getSigner()
     setProvider(provider)
     setSigner(signer)
-
+    setWalletAddress(await signer.getAddress())
     //testing
     const safeOwner = provider.getSigner(0)
     setSafeOwner(safeOwner)
@@ -182,12 +181,11 @@ useEffect(() => {onPageLoad()}, [uri])
     const safeFactory = await SafeFactory.create({ ethAdapter, contractNetworks })
     const safeSdk = await Safe.create({ ethAdapter, safeAddress, contractNetworks })
 
-    console.dir(safeSdk)
-    console.dir()
-    const nonce = await safeSdk.getNonce()
-    console.log(await nonce)
+    // console.dir(safeSdk)
+    // const nonce = await safeSdk.getNonce()
+    // console.log(await nonce)
 
-
+   const executeTransaction = async () => {
     const safeTransactionData: SafeTransactionDataPartial = {
       to: "0x1c7e51D7481fb83249C4e60d87ed4C937A23cD37",
       data: "0x",
@@ -200,26 +198,34 @@ useEffect(() => {onPageLoad()}, [uri])
       // refundReceiver, // Optional
       // nonce // Optional
     }
-    console.log("1")
-    const safeTransaction = await safeSdk.createTransaction({ safeTransactionData })
-    console.log("2")
-    console.log(safeTransaction)
-    const safeTxHash = await safeSdk.getTransactionHash(safeTransaction)
-    console.log("3")
-    console.log(safeTxHash)
-    const senderSignature = await safeSdk.signTransactionHash(safeTxHash)
-    console.log("4")
-    console.log(senderSignature)
 
-    const proposed = await safeService.proposeTransaction({
-      safeAddress,
-      safeTransactionData: safeTransaction.data,
-      safeTxHash,
-      senderAddress: "0x1c7e51D7481fb83249C4e60d87ed4C937A23cD37",
-      senderSignature: senderSignature.data
-    })
-    console.log(await proposed)
+    // needed this part
+    // console.log("1")
+    // const safeTransaction = await safeSdk.createTransaction({ safeTransactionData })
+    // console.log("2")
+    // console.log(safeTransaction)
+    // const safeTxHash = await safeSdk.getTransactionHash(safeTransaction)
+    // console.log("3")
+    // console.log(safeTxHash)
 
+    // didn't need this part
+    // const approveTxResponse = await safeSdk.approveTransactionHash(safeTxHash)
+    // console.log("4")
+    // console.log(approveTxResponse)
+    // await approveTxResponse.transactionResponse?.wait()
+    // console.log("5")
+    // console.log(approveTxResponse)
+
+    // need this part to successfully exec transaction
+    // const executeTxResponse = await safeSdk.executeTransaction(safeTransaction)
+    // console.log("6")
+    // console.log(executeTxResponse)
+    // await executeTxResponse.transactionResponse?.wait()
+    // console.log("7")
+    // console.log(executeTxResponse)
+
+  }
+  // executeTransaction()
 
   }
 
@@ -244,6 +250,8 @@ useEffect(() => {onPageLoad()}, [uri])
       
       <div className="tabsContainer">
 <span className={lendSelected ? "tabs selected" : "tabs"} onClick={()=> setLendSelected(true)}>lend</span> <span className={lendSelected ? "tabs" : "tabs selected"} onClick={()=> setLendSelected(false)}>borrow</span></div>
+
+<NFTlist walletAddress={walletAddress} />
     </div>
   );
 }
