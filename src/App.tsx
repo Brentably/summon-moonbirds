@@ -12,16 +12,21 @@ function App() {
   const [provider, setProvider] = useState<any>(null)
   const [signer, setSigner] = useState<any>(null)
   const [payload, setPayload] = useState<any>(null)
-  // const [uri, setUri] = useState<any>("")
+  const [uri, setUri] = useState<any>("")
   // const [connector, setConnector] = useState<WalletConnect | undefined>()
 
-  const uri = 'wc:85956887-bb5e-4aa8-b8d6-02fc75f8a1ae@1?bridge=https%3A%2F%2Fsafe-walletconnect.safe.global%2F&key=9b9d8d98cf5655a44f0faee76c344dd8579ca1cf591cd9454728f2bde73b9151'
 
 
+  const rejectWithMessage = (connector: WalletConnect, id: number | undefined, message: string) => {
+    connector.rejectRequest({ id, error: { message } })
+  }
+  
 
   
   
-  const onPageLoad = async () => {
+const onPageLoad = async () => {
+  if(!uri) return
+  if(!uri.startsWith("wc:")) return
   
   console.log("init new connector")
  const connector = await new WalletConnect({
@@ -34,13 +39,10 @@ function App() {
     icons: ["https://walletconnect.org/walletconnect-logo.png"],
     name: "WalletConnect",
   }
-})
+  })
 
-console.log(connector)
+  console.log(connector)
 
-
-
-// connector.killSession()
 
 
   if (!connector.connected) {
@@ -49,7 +51,7 @@ console.log(connector)
     const createSession = async () => {
     await connector.createSession();
     }
-createSession()
+    createSession()
   }
 
 
@@ -65,33 +67,14 @@ createSession()
 
     connector.approveSession({
       accounts: [                 // required
-        '0xB7A453Ee4a8850cc8A738021245c5e08B8CaB378'
+        '0x897C500f2196bD04b3f89B22727746c70Dc6b231'
       ],
       chainId: 5   }) 
 
-      
-    // Handle Session Request
-  
-    /* payload:
-    {
-      id: 1,
-      jsonrpc: '2.0'.
-      method: 'session_request',
-      params: [{
-        peerId: '15d8b6a3-15bd-493e-9358-111e3a4e6ee4',
-        peerMeta: {
-          name: "WalletConnect Example",
-          description: "Try out WalletConnect v1.0",
-          icons: ["https://example.walletconnect.org/favicon.ico"],
-          url: "https://example.walletconnect.org"
-        }
-      }]
-    }
-    */
   });
 
 
-  connector.on("call_request", (error, payload) => {
+  connector.on("call_request", async (error, payload) => {
     if (error) {
       throw error;
     }
@@ -99,10 +82,30 @@ createSession()
     console.log("call req")
     console.log(payload)
 
+    console.log(payload.id)
+    if(payload.method != "personal_sign") {
     connector.approveRequest({
-      id: 1,
-      result: "0x41791102999c339c844880b23950704cc43aa840f3739e365323cda4dfa89e7a"
+      id: payload.id,
+      result: `payload ${payload.id} approved`
     });
+  }
+  
+    if(payload.method == "personal_sign") {
+  const message = payload.params[0]
+  const wallet = payload.params[1]
+  const signedMessage = await signer.signMessage(ethers.utils.toUtf8String(message))
+
+  console.log(`message is ${message}`)
+  console.log(`wallet is ${wallet}`)
+  console.log(`signed message is ` + await signedMessage)
+    
+  connector.approveRequest({
+    id: payload.id,
+    result: signedMessage
+  })
+
+
+  }
     // Handle Call Request
   
     /* payload:
@@ -128,10 +131,11 @@ createSession()
 });
 
 
-    console.log(connector)
+console.log(connector)
 
-}
-onPageLoad()
+} //end onPageLoad 
+
+useEffect(() => {onPageLoad()}, [uri])
 
   const connect = async () => {
     const provider = new ethers.providers.Web3Provider(window.ethereum, "any")
@@ -140,25 +144,14 @@ onPageLoad()
     const signer = provider.getSigner()
     setProvider(provider)
     setSigner(signer)
+    }
 
+
+  //  const testSafe =  new ethers.Contract("0xa0f43C52211DEf09Be4cdEAB5cC0a19E0baBe88a" , abi , signerOrProvider )
+  const testFunc = async () => {
+    console.log("testing function")
     
-    }
-
-    const funcOne = () => {
-      console.log("func One")
-
-    }
-
-    const funcTwo = () => {
-      console.log("func two")
-      // console.dir(connector)
-      
-    }
-
-    const funcThree = () => {
-      console.log("func three")
-      
-    }
+  }
 
   return (
     <div className="App">
@@ -166,6 +159,12 @@ onPageLoad()
       <span className="summonHeaderText">summon </span>
       <button onClick={connect} className={signer ? "connect connected" : "connect notConnected"}> </button>
       </div>
+      {/* remove in future */}
+      <input type="text" value={`${uri}`} onChange={(e) => setUri(e.target.value)} />
+<br /><br />
+      <button onClick={testFunc}>TESTING BUTTTION</button>
+      {/* remove in future */}
+
       
       <div className="tabsContainer">
 <span className={lendSelected ? "tabs selected" : "tabs"} onClick={()=> setLendSelected(true)}>lend</span> <span className={lendSelected ? "tabs" : "tabs selected"} onClick={()=> setLendSelected(false)}>borrow</span></div>
