@@ -8,7 +8,7 @@ import WalletConnect from "@walletconnect/client";
 
 function App() {
   const [lendSelected, setLendSelected] = useState<boolean>(true)
-
+  const [safeAddress, setSafeAddress] = useState<any>("0x897C500f2196bD04b3f89B22727746c70Dc6b231")
   const [provider, setProvider] = useState<any>(null)
   const [signer, setSigner] = useState<any>(null)
   const [payload, setPayload] = useState<any>(null)
@@ -67,7 +67,8 @@ const onPageLoad = async () => {
 
     connector.approveSession({
       accounts: [                 // required
-        '0x897C500f2196bD04b3f89B22727746c70Dc6b231'
+        safeAddress
+      //  '0xa0f43C52211DEf09Be4cdEAB5cC0a19E0baBe88a'
       ],
       chainId: 5   }) 
 
