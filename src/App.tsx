@@ -251,7 +251,7 @@ useEffect(() => {onUriChange()}, [uri])
       <div className="tabsContainer">
 <span className={lendSelected ? "tabs selected" : "tabs"} onClick={()=> setLendSelected(true)}>lend</span> <span className={lendSelected ? "tabs" : "tabs selected"} onClick={()=> setLendSelected(false)}>borrow</span></div>
 
-{/* <NFTlist walletAddress={walletAddress} /> */}
+<NFTlist walletAddress={walletAddress} />
     </div>
   );
 }
