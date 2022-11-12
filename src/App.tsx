@@ -15,7 +15,7 @@ function App() {
   const [safeAddress, setSafeAddress] = useState<any>("0x897C500f2196bD04b3f89B22727746c70Dc6b231")
   const [provider, setProvider] = useState<any>(null)
   const [signer, setSigner] = useState<ethers.providers.JsonRpcSigner | null>(null)
-  const [walletAddress, setWalletAddress] = useState<String>("") // wallet address of connected wallet
+  const [walletAddress, setWalletAddress] = useState<String>("0x1c7e51D7481fb83249C4e60d87ed4C937A23cD37") // wallet address of connected wallet
   const [uri, setUri] = useState<any>("")
 // TESTING SAFE STUFF
   const [safeOwner, setSafeOwner] = useState<any>(null)
@@ -251,7 +251,7 @@ useEffect(() => {onUriChange()}, [uri])
       <div className="tabsContainer">
 <span className={lendSelected ? "tabs selected" : "tabs"} onClick={()=> setLendSelected(true)}>lend</span> <span className={lendSelected ? "tabs" : "tabs selected"} onClick={()=> setLendSelected(false)}>borrow</span></div>
 
-<NFTlist walletAddress={walletAddress} />
+{/* <NFTlist walletAddress={walletAddress} /> */}
     </div>
   );
 }

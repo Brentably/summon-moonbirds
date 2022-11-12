@@ -3,7 +3,7 @@
 }
 
 body {
-  background: #EDEEF5;
+  background: #edeef5;
 }
 
 .summonHeader {
@@ -12,58 +12,131 @@ body {
 
 .summonHeaderText {
   font-family: 'SF Pro Rounded';
-font-style: normal;
-font-weight: 400;
-font-size: 64px;
-line-height: 76px;
-letter-spacing: 0.02em;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 64px;
+  line-height: 76px;
+  letter-spacing: 0.02em;
 
-color: #181C40;
+  color: #181c40;
 }
 
 .tabs {
   font-family: 'SF Pro Rounded';
-font-style: normal;
-font-weight: 400;
-font-size: 32px;
-line-height: 38px;
-display: flex;
-align-items: center;
-text-align: center;
-letter-spacing: 0.02em;
-color: #464966;
-margin-top: 55px;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 32px;
+  line-height: 38px;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  letter-spacing: 0.02em;
+  color: #464966;
+  margin-top: 55px;
 }
 
 .selected {
-  border-bottom: 2px solid #181C40;
-  color: #181C40;
-
+  border-bottom: 2px solid #181c40;
+  color: #181c40;
 }
 
-.tabsContainer{
-  display:flex;
+.tabsContainer {
+  display: flex;
   flex-direction: row;
   justify-content: space-around;
-
 }
-
 
 button.connect {
   min-width: 30px;
   min-height: 30px;
   border-radius: 100%;
   position: absolute;
-  margin-left:20px;
-  top: 55px
+  margin-left: 20px;
+  top: 55px;
 }
 
 button.notConnected {
-  background: red
+  background: red;
 }
 button.connected {
-  background: green
+  background: green;
 }
+img.NFTcardImage {
+  border-radius: 10px;
+}
+div.NFTcardContainer {
+  display: flex;
+  flex-direction: row;
+  margin-top: 30px;
+  margin-left: 20px;
+  margin-right: 20px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+div.NFTcardLeft {
+  display: flex;
+  flex-direction: row;
+}
+
+div.NFTcardTitles {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  margin-left: 10px;
+}
+
+div.NFTnameText {
+  font-family: 'SF Pro Rounded';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
+  /* identical to box height */
+
+  letter-spacing: 0.02em;
+
+  color: #181c40;
+}
+
+div.collectionTitleText {
+  font-family: 'SF Pro Rounded';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 16px;
+  /* identical to box height */
+  letter-spacing: 0.02em;
+
+  color: #464966;
+
+  margin-top: 14px;
+}
+
+.NFTlistButton {
+  background: #5d69d6;
+  border-radius: 15px;
+
+
+
+  /* font stuff */
+  font-family: 'SF Pro Rounded';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 15px;
+  line-height: 18px; /* identical to box height */
+  letter-spacing: 0.02em;
+  color: #f1f2fb;
+
+  padding: 10px 30px 10px 30px
+}
+
+.backgroundBright {
+  background: #2A3FFE;
+}
+
+/* create react app stuff below */
 
 .App-logo {
   height: 40vmin;
