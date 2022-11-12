@@ -2,6 +2,11 @@ import {useEffect, useState} from 'react';
 import { ethers } from "ethers";
 import './App.css';
 import WalletConnect from "@walletconnect/client";
+import EthersAdapter from '@gnosis.pm/safe-ethers-lib'
+import SafeServiceClient from '@gnosis.pm/safe-service-client'
+import Safe, { SafeFactory } from '@gnosis.pm/safe-core-sdk'
+import { ContractNetworksConfig } from '@gnosis.pm/safe-core-sdk'
+import { SafeTransactionDataPartial } from '@gnosis.pm/safe-core-sdk-types'
 
 
 
@@ -13,8 +18,24 @@ function App() {
   const [signer, setSigner] = useState<any>(null)
   const [payload, setPayload] = useState<any>(null)
   const [uri, setUri] = useState<any>("")
-  // const [connector, setConnector] = useState<WalletConnect | undefined>()
+// TESTING
+  const [safeOwner, setSafeOwner] = useState<any>(null)
+  const [ethAdapter, setEthAdapter] = useState<any>(null)
+  const txServiceUrl = 'https://safe-transaction.goerli.gnosis.io/' //hardcoded goerli
+  const [safeService, setSafeService] = useState<any>(null)
+  // const id = await ethAdapter.getChainId()
+  const id = 5
 
+  // https://github.com/safe-global/safe-core-sdk/blob/main/packages/safe-ethers-lib/contracts/Deps_V1_3_0.sol
+  const contractNetworks: ContractNetworksConfig = {
+    [id]: {
+      multiSendAddress: '0xE215b2C6D42400302810A35Ba6997cb6D43d795D',
+      multiSendCallOnlyAddress: '<MULTI_SEND_CALL_ONLY_ADDRESS>',  //wtf maybe this will work
+      // multiSendCallOnlyAddress: '0xE215b2C6D42400302810A35Ba6997cb6D43d795D',  //wtf maybe this will work
+      safeMasterCopyAddress: '0x4Ac24ADc4611F57cE6Cb5Ba5dCa89B109C24c589',
+      safeProxyFactoryAddress: '0xA96503b5a9E6071FBCE5e1AdDf64295d78a43f24'
+    }
+  }
 
 
   const rejectWithMessage = (connector: WalletConnect, id: number | undefined, message: string) => {
@@ -145,10 +166,64 @@ useEffect(() => {onPageLoad()}, [uri])
     const signer = provider.getSigner()
     setProvider(provider)
     setSigner(signer)
+
+    //testing
+    const safeOwner = provider.getSigner(0)
+    setSafeOwner(safeOwner)
+    const ethAdapter = new EthersAdapter({
+      ethers,
+      signer: safeOwner
+    })
+    setEthAdapter(ethAdapter)
+
+    const safeService = new SafeServiceClient({ txServiceUrl, ethAdapter })
+    setSafeService(safeService)
+    
+    const safeFactory = await SafeFactory.create({ ethAdapter, contractNetworks })
+    const safeSdk = await Safe.create({ ethAdapter, safeAddress, contractNetworks })
+
+    console.dir(safeSdk)
+    console.dir()
+    const nonce = await safeSdk.getNonce()
+    console.log(await nonce)
+
+
+    const safeTransactionData: SafeTransactionDataPartial = {
+      to: "0x1c7e51D7481fb83249C4e60d87ed4C937A23cD37",
+      data: "0x",
+      value: "20000000000000000", //0.02 eth
+      // operation, // Optional
+      // safeTxGas, // Optional
+      // baseGas, // Optional
+      // gasPrice, // Optional
+      // gasToken, // Optional
+      // refundReceiver, // Optional
+      // nonce // Optional
     }
+    console.log("1")
+    const safeTransaction = await safeSdk.createTransaction({ safeTransactionData })
+    console.log("2")
+    console.log(safeTransaction)
+    const safeTxHash = await safeSdk.getTransactionHash(safeTransaction)
+    console.log("3")
+    console.log(safeTxHash)
+    const senderSignature = await safeSdk.signTransactionHash(safeTxHash)
+    console.log("4")
+    console.log(senderSignature)
+
+    const proposed = await safeService.proposeTransaction({
+      safeAddress,
+      safeTransactionData: safeTransaction.data,
+      safeTxHash,
+      senderAddress: "0x1c7e51D7481fb83249C4e60d87ed4C937A23cD37",
+      senderSignature: senderSignature.data
+    })
+    console.log(await proposed)
 
 
-  //  const testSafe =  new ethers.Contract("0xa0f43C52211DEf09Be4cdEAB5cC0a19E0baBe88a" , abi , signerOrProvider )
+  }
+
+  
   const testFunc = async () => {
     console.log("testing function")
     
