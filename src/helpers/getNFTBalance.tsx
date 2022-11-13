@@ -1,12 +1,10 @@
-import {useEffect, useState, useCallback} from "react"
-import getApiKey from "../helpers/getApiKey"
+import getApiKey from "./getApiKey"
 
-// i know what you're thinking... you're right, this does not need to be a hook, and I did not need to do it this way. oh well
 
 // needs a wallet address and a function to update state
-async function useNFTBalance(setNFTBalance: Function, walletAddress: String, chainID: number) {
+async function getNFTBalance(walletAddress: String, chainID: number) {
   const COVALENT_API_KEY = getApiKey()
-  const [data, setData] = useState<Array<any> | null>(null)
+
   
   if(!chainID) return
     console.log("use NFT Balance is running, the chainID is" + chainID)
@@ -20,7 +18,7 @@ async function useNFTBalance(setNFTBalance: Function, walletAddress: String, cha
     // console.log(`query is ${query}`)
 
 
-    if(!data && walletAddress) {
+
 
     console.log(`calling https://api.covalenthq.com/v1/${chainID}/address/${walletAddress}/balances_v2/?${query}&key=${COVALENT_API_KEY}`)
     const resp = await fetch(`https://api.covalenthq.com/v1/${chainID}/address/${walletAddress}/balances_v2/?${query}&key=${COVALENT_API_KEY}`, {
@@ -37,17 +35,17 @@ async function useNFTBalance(setNFTBalance: Function, walletAddress: String, cha
   const items:Array<any> = await data.data.items
   const filteredItems = await items.filter((item:any) => item.type == "nft")
   // filter((item:any) => item.type == "nft")
-  setData(filteredItems)
+
   console.log(filteredItems)
-  setNFTBalance(filteredItems)
-  }
 
 
 
 
 
-// return { updateNFTBalance }
+
+
+return filteredItems
 }
 
 
-export default useNFTBalance
+export default getNFTBalance

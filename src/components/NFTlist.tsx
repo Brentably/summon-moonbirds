@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react'
-import useNFTBalance from "../hooks/useNFTBalance"
+import getNFTBalance from "../helpers/getNFTBalance"
 import NFTcard from './NFTcard'
 
 type INFTList = {
@@ -9,14 +9,21 @@ type INFTList = {
 
 function NFTlist(props : INFTList) {
   const {walletAddress, chainID} = props
-  const [NFTBalance, setNFTBalance] = useState<Array<any>>([])
+  const [NFTBalance, setNFTBalance] = useState<Array<any> | undefined>([])
   
 
 
   //instead of useNFTBalance being a hook that you pass the setNFTBalance function to, turn it into an async helper function called getNFTBalance(walletAddress, chainID)
   //setNFTBalance to getNFTBalance on componentDidMount
-  useNFTBalance(setNFTBalance, walletAddress, chainID) 
+  // useNFTBalance(setNFTBalance, walletAddress, chainID) 
 
+  useEffect(() => {
+    async function updateNFTs() {
+      const NFTBalance:(any[] | undefined) = await getNFTBalance(walletAddress, chainID)
+      setNFTBalance(await NFTBalance)
+    }
+    updateNFTs()
+  }, [walletAddress, chainID])
 
 
     
