@@ -70,9 +70,7 @@ img.NFTcardImage, video.NFTcardImage {
 div.NFTcardContainer {
   display: flex;
   flex-direction: row;
-  margin-top: 30px;
-  margin-left: 20px;
-  margin-right: 20px;
+  margin: 30px 20px 30px 20px;
   justify-content: space-between;
   align-items: center;
 }
@@ -99,6 +97,7 @@ div.NFTnameText {
   /* identical to box height */
 
   letter-spacing: 0.02em;
+  text-align: left;
 
   color: #181c40;
 }

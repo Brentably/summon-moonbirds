@@ -1,4 +1,5 @@
 import NFTlistButton from "./NFTlistButton"
+import defaultNFTicon from '../template/defaultNFTicon.png'
 
 function NFTCard(props:any) {
 //need to destructure NFT image, collection title, specific NFT name from NFT item
@@ -14,6 +15,7 @@ console.log(props.NFTitem.external_data)
 
 const cardTitle = name ? `${name}` : `#${token_id}`
 const isVideo = image && image.endsWith(".mp4")
+// const isVideo = true // testing
 return (
   <div className="NFTcardContainer">
     <div className="NFTcardLeft">
@@ -21,7 +23,7 @@ return (
       <video className="NFTcardImage">
         <source src={image} type="video/mp4" />
     </video> 
-    : <img className="NFTcardImage" src={image}/> }
+    : <img className="NFTcardImage" src={image || defaultNFTicon}/> }
       <div className="NFTcardTitles">
         <div className="NFTnameText">{cardTitle}</div>
         <div className="collectionTitleText">{collectionName}</div>
