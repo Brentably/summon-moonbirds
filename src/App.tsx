@@ -18,7 +18,7 @@ function App() {
   const [safeAddress, setSafeAddress] = useState<string>("") // 0x897C500f2196bD04b3f89B22727746c70Dc6b231
   const [provider, setProvider] = useState<any>(null)
   const [signer, setSigner] = useState<ethers.providers.JsonRpcSigner | null>(null)
-  const [walletAddress, setWalletAddress] = useState<String>("") // wallet address of connected wallet
+  const [walletAddress, setWalletAddress] = useState<string>("") // wallet address of connected wallet
   const [chainID, setChainID] = useState<number>(0)
   const [uri, setUri] = useState<any>("") // wallet connect URI
 
@@ -269,8 +269,19 @@ const connect = async () => {
       <span className={lendSelected ? "tabs" : "tabs selected"} onClick={()=> setLendSelected(false)}>borrow</span></div>
 
     <div className={lendSelected ? "" : "invisible"}>
-      <NFTlist walletAddress={walletAddress} chainID={chainID}/>
+      <NFTlist address={walletAddress} chainID={chainID} isSafe={false} />
     </div>
+    <div className={lendSelected ? "invisible" : ""}>
+      <NFTlist address={safeAddress} chainID={chainID} isSafe={true} />
+    </div>
+
+
+
+
+
+    {/* this is what I want to do, but it's calling the API every time I switch tabs, so I've come up with the solution above :/ */}
+    {/* {lendSelected ? <NFTlist address={walletAddress} chainID={chainID} isSafe={false} /> : <NFTlist address={safeAddress} chainID={chainID} isSafe={true} />} */}
+
     </div>
   );
 }

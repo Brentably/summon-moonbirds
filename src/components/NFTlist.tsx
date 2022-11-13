@@ -3,12 +3,13 @@ import getNFTBalance from "../helpers/getNFTBalance"
 import NFTcard from './NFTcard'
 
 type INFTList = {
-  walletAddress: String
-  chainID: number
+  address: string,
+  chainID: number,
+  isSafe: boolean
 }
 
 function NFTlist(props : INFTList) {
-  const {walletAddress, chainID} = props
+  const {address, chainID, isSafe} = props
   const [NFTBalance, setNFTBalance] = useState<Array<any> | undefined>([])
   
 
@@ -19,18 +20,18 @@ function NFTlist(props : INFTList) {
 
   useEffect(() => {
     async function updateNFTs() {
-      const NFTBalance:(any[] | undefined) = await getNFTBalance(walletAddress, chainID)
+      const NFTBalance:(any[] | undefined) = await getNFTBalance(address, chainID)
       setNFTBalance(await NFTBalance)
     }
     updateNFTs()
-  }, [walletAddress, chainID])
+  }, [address, chainID])
 
 
     
 
 
 
-  if(!walletAddress) return <h1>connect wallet</h1>
+  if(!address) return <h1>connect wallet</h1>
   if(!NFTBalance || NFTBalance.length < 1) return <h1>Loading NFTs</h1>
 
 
