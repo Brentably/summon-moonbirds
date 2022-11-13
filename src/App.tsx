@@ -8,6 +8,8 @@ import Safe, { SafeFactory } from '@gnosis.pm/safe-core-sdk'
 import { ContractNetworksConfig } from '@gnosis.pm/safe-core-sdk'
 import { SafeTransactionDataPartial } from '@gnosis.pm/safe-core-sdk-types'
 import NFTlist from './components/NFTlist'
+import getContractNetworks from './helpers/getContractNetworks';
+import getSummonSafe from './helpers/getSummonSafe';
 
 // const { Provider, Consumer } = createContext({});
 
@@ -31,15 +33,7 @@ function App() {
   const id = 5
 
   // https://github.com/safe-global/safe-core-sdk/blob/main/packages/safe-ethers-lib/contracts/Deps_V1_3_0.sol
-  const contractNetworks: ContractNetworksConfig = {
-    [id]: {
-      multiSendAddress: '0xE215b2C6D42400302810A35Ba6997cb6D43d795D',
-      multiSendCallOnlyAddress: '<MULTI_SEND_CALL_ONLY_ADDRESS>',  //wtf maybe this will work
-      // multiSendCallOnlyAddress: '0xE215b2C6D42400302810A35Ba6997cb6D43d795D',  //wtf maybe this will work
-      safeMasterCopyAddress: '0x4Ac24ADc4611F57cE6Cb5Ba5dCa89B109C24c589',
-      safeProxyFactoryAddress: '0xA96503b5a9E6071FBCE5e1AdDf64295d78a43f24'
-    }
-  }
+  const contractNetworks: ContractNetworksConfig = getContractNetworks()
 // TESTING SAFE STUFF ^^
 
   const rejectWithMessage = (connector: WalletConnect, id: number | undefined, message: string) => {
@@ -163,87 +157,91 @@ console.log(connector)
 
 useEffect(() => {onUriChange()}, [uri])
 
-  const connect = async () => {
-    const provider = new ethers.providers.Web3Provider(window.ethereum, "any")
-    // refreshes things on network changs
-    provider.on("network", (newNetwork, oldNetwork) => {
-      // When a Provider makes its initial connection, it emits a "network"
-      // event with a null oldNetwork along with the newNetwork. So, if the
-      // oldNetwork exists, it represents a changing network
-      if (oldNetwork) {
-          window.location.reload();
-      }
-    })
-    // console.log(provider)
-    await provider.send("eth_requestAccounts", []);
-    const signer = provider.getSigner()
-    setProvider(provider)
-    setSigner(signer)
-    setWalletAddress(await signer.getAddress())
-    setChainID(await signer.getChainId())
-    console.log(await signer.getChainId())
-    // // Testing SAFE STUFF
-    // const safeOwner = provider.getSigner(0)
-    // setSafeOwner(safeOwner)
-    // const ethAdapter = new EthersAdapter({
-    //   ethers,
-    //   signer: safeOwner
-    // })
-    // setEthAdapter(ethAdapter)
-
-    // const safeService = new SafeServiceClient({ txServiceUrl, ethAdapter })
-    // setSafeService(safeService)
-    
-    // const safeFactory = await SafeFactory.create({ ethAdapter, contractNetworks })
-    // const safeSdk = await Safe.create({ ethAdapter, safeAddress, contractNetworks })
-
-    // console.dir(safeSdk)
-    // const nonce = await safeSdk.getNonce()
-    // console.log(await nonce)
-
-   const executeTransaction = async () => {
-    const safeTransactionData: SafeTransactionDataPartial = {
-      to: "0x1c7e51D7481fb83249C4e60d87ed4C937A23cD37",
-      data: "0x",
-      value: "20000000000000000", //0.02 eth
-      // operation, // Optional
-      // safeTxGas, // Optional
-      // baseGas, // Optional
-      // gasPrice, // Optional
-      // gasToken, // Optional
-      // refundReceiver, // Optional
-      // nonce // Optional
+const connect = async () => {
+  const provider = new ethers.providers.Web3Provider(window.ethereum, "any")
+  // refreshes things on network changs
+  provider.on("network", (newNetwork, oldNetwork) => {
+    // When a Provider makes its initial connection, it emits a "network"
+    // event with a null oldNetwork along with the newNetwork. So, if the
+    // oldNetwork exists, it represents a changing network
+    if (oldNetwork) {
+        window.location.reload();
     }
+  })
+  // console.log(provider)
+  await provider.send("eth_requestAccounts", []);
+  const signer = provider.getSigner()
+  setProvider(provider)
+  setSigner(signer)
+  const walletAddress = await signer.getAddress()
+  setWalletAddress(walletAddress)
+  const chainID = await signer.getChainId()
+  setChainID(chainID)
 
-    // needed this part
-    // console.log("1")
-    // const safeTransaction = await safeSdk.createTransaction({ safeTransactionData })
-    // console.log("2")
-    // console.log(safeTransaction)
-    // const safeTxHash = await safeSdk.getTransactionHash(safeTransaction)
-    // console.log("3")
-    // console.log(safeTxHash)
+  const SummonSafe = await getSummonSafe(provider, signer, walletAddress)
 
-    // didn't need this part
-    // const approveTxResponse = await safeSdk.approveTransactionHash(safeTxHash)
-    // console.log("4")
-    // console.log(approveTxResponse)
-    // await approveTxResponse.transactionResponse?.wait()
-    // console.log("5")
-    // console.log(approveTxResponse)
+  // // Testing SAFE STUFF
+  // const safeOwner = provider.getSigner(0)
+  // setSafeOwner(safeOwner)
+  // const ethAdapter = new EthersAdapter({
+  //   ethers,
+  //   signer: safeOwner
+  // })
+  // setEthAdapter(ethAdapter)
 
-    // need this part to successfully exec transaction
-    // const executeTxResponse = await safeSdk.executeTransaction(safeTransaction)
-    // console.log("6")
-    // console.log(executeTxResponse)
-    // await executeTxResponse.transactionResponse?.wait()
-    // console.log("7")
-    // console.log(executeTxResponse)
+  // const safeService = new SafeServiceClient({ txServiceUrl, ethAdapter })
+  // setSafeService(safeService)
+  
+  // const safeFactory = await SafeFactory.create({ ethAdapter, contractNetworks })
+  // const safeSdk = await Safe.create({ ethAdapter, safeAddress, contractNetworks })
 
+  // console.dir(safeSdk)
+  // const nonce = await safeSdk.getNonce()
+  // console.log(await nonce)
+
+  const executeTransaction = async () => {
+  const safeTransactionData: SafeTransactionDataPartial = {
+    to: "0x1c7e51D7481fb83249C4e60d87ed4C937A23cD37",
+    data: "0x",
+    value: "20000000000000000", //0.02 eth
+    // operation, // Optional
+    // safeTxGas, // Optional
+    // baseGas, // Optional
+    // gasPrice, // Optional
+    // gasToken, // Optional
+    // refundReceiver, // Optional
+    // nonce // Optional
   }
-  // executeTransaction()
 
-  }
+  // needed this part
+  // console.log("1")
+  // const safeTransaction = await safeSdk.createTransaction({ safeTransactionData })
+  // console.log("2")
+  // console.log(safeTransaction)
+  // const safeTxHash = await safeSdk.getTransactionHash(safeTransaction)
+  // console.log("3")
+  // console.log(safeTxHash)
+
+  // didn't need this part
+  // const approveTxResponse = await safeSdk.approveTransactionHash(safeTxHash)
+  // console.log("4")
+  // console.log(approveTxResponse)
+  // await approveTxResponse.transactionResponse?.wait()
+  // console.log("5")
+  // console.log(approveTxResponse)
+
+  // need this part to successfully exec transaction
+  // const executeTxResponse = await safeSdk.executeTransaction(safeTransaction)
+  // console.log("6")
+  // console.log(executeTxResponse)
+  // await executeTxResponse.transactionResponse?.wait()
+  // console.log("7")
+  // console.log(executeTxResponse)
+
+}
+// executeTransaction()
+
+}
 
   
   const testFunc = async () => {
@@ -269,8 +267,9 @@ useEffect(() => {onUriChange()}, [uri])
       <span className={lendSelected ? "tabs selected" : "tabs"} onClick={()=> setLendSelected(true)}>lend</span> 
       <span className={lendSelected ? "tabs" : "tabs selected"} onClick={()=> setLendSelected(false)}>borrow</span></div>
 
-      {lendSelected && <NFTlist walletAddress={walletAddress} chainID={chainID}/>}
-
+    <div className={lendSelected ? "" : "invisible"}>
+      <NFTlist walletAddress={walletAddress} chainID={chainID}/>
+    </div>
     </div>
   );
 }
