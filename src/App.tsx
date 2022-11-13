@@ -15,8 +15,12 @@ function App() {
   const [safeAddress, setSafeAddress] = useState<any>("0x897C500f2196bD04b3f89B22727746c70Dc6b231")
   const [provider, setProvider] = useState<any>(null)
   const [signer, setSigner] = useState<ethers.providers.JsonRpcSigner | null>(null)
-  const [walletAddress, setWalletAddress] = useState<String>("0x1c7e51D7481fb83249C4e60d87ed4C937A23cD37") // wallet address of connected wallet
-  const [uri, setUri] = useState<any>("")
+  const [walletAddress, setWalletAddress] = useState<String>("") // wallet address of connected wallet
+  const [chainID, setChainID] = useState<number>(0)
+  const [uri, setUri] = useState<any>("") // wallet connect URI
+
+
+
 // TESTING SAFE STUFF
   const [safeOwner, setSafeOwner] = useState<any>(null)
   const [ethAdapter, setEthAdapter] = useState<any>(null)
@@ -166,20 +170,22 @@ useEffect(() => {onUriChange()}, [uri])
     setProvider(provider)
     setSigner(signer)
     setWalletAddress(await signer.getAddress())
-    //testing
-    const safeOwner = provider.getSigner(0)
-    setSafeOwner(safeOwner)
-    const ethAdapter = new EthersAdapter({
-      ethers,
-      signer: safeOwner
-    })
-    setEthAdapter(ethAdapter)
+    setChainID(await signer.getChainId())
+    console.log(await signer.getChainId())
+    // // Testing SAFE STUFF
+    // const safeOwner = provider.getSigner(0)
+    // setSafeOwner(safeOwner)
+    // const ethAdapter = new EthersAdapter({
+    //   ethers,
+    //   signer: safeOwner
+    // })
+    // setEthAdapter(ethAdapter)
 
-    const safeService = new SafeServiceClient({ txServiceUrl, ethAdapter })
-    setSafeService(safeService)
+    // const safeService = new SafeServiceClient({ txServiceUrl, ethAdapter })
+    // setSafeService(safeService)
     
-    const safeFactory = await SafeFactory.create({ ethAdapter, contractNetworks })
-    const safeSdk = await Safe.create({ ethAdapter, safeAddress, contractNetworks })
+    // const safeFactory = await SafeFactory.create({ ethAdapter, contractNetworks })
+    // const safeSdk = await Safe.create({ ethAdapter, safeAddress, contractNetworks })
 
     // console.dir(safeSdk)
     // const nonce = await safeSdk.getNonce()
@@ -243,15 +249,16 @@ useEffect(() => {onUriChange()}, [uri])
       </div>
       {/* remove in future */}
       <input type="text" value={`${uri}`} onChange={(e) => setUri(e.target.value)} />
-<br /><br />
+      <br /><br />
       <button onClick={testFunc}>TESTING BUTTTION</button>
       {/* remove in future */}
 
       
       <div className="tabsContainer">
-<span className={lendSelected ? "tabs selected" : "tabs"} onClick={()=> setLendSelected(true)}>lend</span> <span className={lendSelected ? "tabs" : "tabs selected"} onClick={()=> setLendSelected(false)}>borrow</span></div>
+      <span className={lendSelected ? "tabs selected" : "tabs"} onClick={()=> setLendSelected(true)}>lend</span> 
+      <span className={lendSelected ? "tabs" : "tabs selected"} onClick={()=> setLendSelected(false)}>borrow</span></div>
 
-<NFTlist walletAddress={walletAddress} />
+      <NFTlist walletAddress={walletAddress} chainID={chainID}/>
     </div>
   );
 }

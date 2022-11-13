@@ -4,18 +4,16 @@ import NFTcard from './NFTcard'
 
 type INFTList = {
   walletAddress: String
+  chainID: number
 }
 
 function NFTlist(props : INFTList) {
-  const {walletAddress} = props
+  const {walletAddress, chainID} = props
   const [NFTBalance, setNFTBalance] = useState<Array<any>>([])
-  // const [cardsArray, setCardsArray] = useState<Array<React.ReactElement>>()
-  // const [loading, setLoading] = useState<Boolean>(false)
   
-  useNFTBalance(walletAddress, setNFTBalance) 
-  // setLoading(true)
+  useNFTBalance(setNFTBalance, walletAddress, chainID) 
 
-  // useEffect(() => {NFTBalance && setLoading(false)}, [NFTBalance])
+  // useEffect(() => {NFTBalance && setLoading(false)}, [props])
   
 
     
@@ -36,30 +34,6 @@ function NFTlist(props : INFTList) {
     {listitems}
     </>
   )
-
-  // for(const collection of NFTBalance) {
-    
-  //   let numCollections = collection.nft_data.length
-  //   console.log(numCollections)
-  //   for (const NFT of collection.nft_data) {
-  //     console.log(collection.indexOf(NFT))
-
-  //     let key = `${collection.index}:${NFT.index}`
-  //     let element:React.ReactElement = React.createElement(NFTcard, [key, NFT, collection])
-  //     cardsArray.push(element)
-  //     console.log(key)
-  //     console.log(element)
-  //   }
-    
-  //   // setCardsArray(cardsArray)
-  // }
-
-  // return (
-  //   <div>
-  //     {cardsArray}
-  //   {/* <NFTcard NFTitem={NFTBalance[1].nft_data[0]} NFTcollection={NFTBalance[1]}/> */}
-  //   </div>
-  // )
 }
 
 export default NFTlist

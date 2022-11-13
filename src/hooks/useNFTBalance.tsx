@@ -1,27 +1,32 @@
-import {useEffect, useState} from "react"
+import {useEffect, useState, useCallback} from "react"
 
 // needs a wallet address and a function to update state
-async function useNFTBalance(walletAddress: String, setNFTBalance: Function) {
+async function useNFTBalance(setNFTBalance: Function, walletAddress: String, chainID: number) {
   const COVALENT_API_KEY="ckey_2b4e40855724423b83d84b656a6"
   const [data, setData] = useState<Array<any> | null>(null)
+  
+  if(!chainID) return
+    console.log("use NFT Balance is running, the chainID is" + chainID)
 
-  const query = new URLSearchParams({
-    "quote-currency": 'USD',
-    format: "JSON",
-    nft: "true",
-    "no-nft-fetch": "false"
-  }).toString()
-  // console.log(`query is ${query}`)
-  const getData = async () => {
-  if(!data && walletAddress) {
+    const query = new URLSearchParams({
+      "quote-currency": 'USD',
+      format: "JSON",
+      nft: "true",
+      "no-nft-fetch": "false"
+    }).toString()
+    // console.log(`query is ${query}`)
+
+
+    if(!data && walletAddress) {
 
     console.log(`fetching`)
-  const resp = await fetch(`https://api.covalenthq.com/v1/5/address/${walletAddress}/balances_v2/?${query}&key=${COVALENT_API_KEY}`, {
+    const resp = await fetch(`https://api.covalenthq.com/v1/${chainID}/address/${walletAddress}/balances_v2/?${query}&key=${COVALENT_API_KEY}`, {
     method: 'GET',
     headers: {
       Accept: "application/json"
     },
-  })
+    })
+
   if (!resp.ok) console.log('ERROR' + resp.status)
   const data = await resp.json()
 
@@ -31,14 +36,14 @@ async function useNFTBalance(walletAddress: String, setNFTBalance: Function) {
   // filter((item:any) => item.type == "nft")
   setData(filteredItems)
   console.log(filteredItems)
+  setNFTBalance(filteredItems)
   }
-}
 
-useEffect(()=> {getData()}, [walletAddress])
 
-setNFTBalance(await data)
-return data
 
+
+
+// return { updateNFTBalance }
 }
 
 
