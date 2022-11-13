@@ -190,6 +190,13 @@ const connect = async () => {
   const SummonSafe = await getSummonSafe(walletAddress, chainID)
   setSafeAddress(SummonSafe)
 
+  setConnection({...connection, 
+  provider: provider,
+  signer: signer,
+  walletAddress: walletAddress,
+  chainID: chainID,
+  safeAddress: SummonSafe})
+
   // // Testing SAFE STUFF
   // const safeOwner = provider.getSigner(0)
   // setSafeOwner(safeOwner)
@@ -260,7 +267,9 @@ const connect = async () => {
   }
 
   useEffect(()=> {connect()}, [])
-
+  
+  
+  useEffect(() => console.log(connection), [connection])
 
   const isSafeFound = safeAddress != "NO_SAFE_FOUND" && safeAddress != "loading"
   return (
