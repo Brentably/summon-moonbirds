@@ -1,8 +1,11 @@
 import {useEffect, useState, useCallback} from "react"
+import getApiKey from "../helpers/getApiKey"
+
+// i know what you're thinking... you're right, this does not need to be a hook, and I did not need to do it this way. oh well
 
 // needs a wallet address and a function to update state
 async function useNFTBalance(setNFTBalance: Function, walletAddress: String, chainID: number) {
-  const COVALENT_API_KEY="ckey_2b4e40855724423b83d84b656a6"
+  const COVALENT_API_KEY = getApiKey()
   const [data, setData] = useState<Array<any> | null>(null)
   
   if(!chainID) return

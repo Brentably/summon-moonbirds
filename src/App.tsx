@@ -15,7 +15,7 @@ import getSummonSafe from './helpers/getSummonSafe';
 
 function App() {
   const [lendSelected, setLendSelected] = useState<boolean>(true)
-  const [safeAddress, setSafeAddress] = useState<any>("0x897C500f2196bD04b3f89B22727746c70Dc6b231")
+  const [safeAddress, setSafeAddress] = useState<string>("") // 0x897C500f2196bD04b3f89B22727746c70Dc6b231
   const [provider, setProvider] = useState<any>(null)
   const [signer, setSigner] = useState<ethers.providers.JsonRpcSigner | null>(null)
   const [walletAddress, setWalletAddress] = useState<String>("") // wallet address of connected wallet
@@ -178,7 +178,8 @@ const connect = async () => {
   const chainID = await signer.getChainId()
   setChainID(chainID)
 
-  const SummonSafe = await getSummonSafe(provider, signer, walletAddress)
+  const SummonSafe = await getSummonSafe(walletAddress, chainID)
+  setSafeAddress(SummonSafe)
 
   // // Testing SAFE STUFF
   // const safeOwner = provider.getSigner(0)
