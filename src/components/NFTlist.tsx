@@ -13,7 +13,7 @@ function NFTlist(props : INFTList) {
   const [NFTBalance, setNFTBalance] = useState<Array<any> | undefined>([])
   
 
-
+  
   //instead of useNFTBalance being a hook that you pass the setNFTBalance function to, turn it into an async helper function called getNFTBalance(walletAddress, chainID)
   //setNFTBalance to getNFTBalance on componentDidMount
   // useNFTBalance(setNFTBalance, walletAddress, chainID) 

@@ -12,14 +12,23 @@ import getContractNetworks from './helpers/getContractNetworks';
 import getSummonSafe from './helpers/getSummonSafe';
 
 // const { Provider, Consumer } = createContext({});
+type IConnection = {
+  Provider: ethers.providers.Provider,
+  Signer: ethers.Signer,
+  walletAddress: string,
+  chainID: number,
+  safeAddress: string
+}
+
 
 function App() {
   const [lendSelected, setLendSelected] = useState<boolean>(true)
-  const [safeAddress, setSafeAddress] = useState<string>("") // 0x897C500f2196bD04b3f89B22727746c70Dc6b231
+  const [safeAddress, setSafeAddress] = useState<string>("loading") // 0x897C500f2196bD04b3f89B22727746c70Dc6b231
   const [provider, setProvider] = useState<any>(null)
   const [signer, setSigner] = useState<ethers.providers.JsonRpcSigner | null>(null)
   const [walletAddress, setWalletAddress] = useState<string>("") // wallet address of connected wallet
   const [chainID, setChainID] = useState<number>(0)
+  const [connection, setConnection] = useState<IConnection | {}>({})
   const [uri, setUri] = useState<any>("") // wallet connect URI
 
 
@@ -251,6 +260,9 @@ const connect = async () => {
   }
 
   useEffect(()=> {connect()}, [])
+
+
+  const isSafeFound = safeAddress != "NO_SAFE_FOUND" && safeAddress != "loading"
   return (
     <div className="App">
       <div className="summonHeader">
@@ -272,7 +284,7 @@ const connect = async () => {
       <NFTlist address={walletAddress} chainID={chainID} isSafe={false} />
     </div>
     <div className={lendSelected ? "invisible" : ""}>
-      <NFTlist address={safeAddress} chainID={chainID} isSafe={true} />
+      {isSafeFound ? <NFTlist address={safeAddress} chainID={chainID} isSafe={true} /> : <h1>NO SAFE FOUND</h1> }
     </div>
 
 

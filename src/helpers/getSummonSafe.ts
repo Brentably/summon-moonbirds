@@ -5,7 +5,7 @@ import getApiKey from './getApiKey'
 //we can do this by searching for safe creation calls to the safeProxyFactoryAddress by the walletAddress
 async function getSummonSafe(walletAddress:String, chainID:number) {
   const COVALENT_API_KEY = getApiKey()
-  console.log("BRRRR getting summon safe (if there is one ;)")
+  console.log("BRRRR getting summon safe")
   const {[5]: {safeProxyFactoryAddress}} = getContractNetworks()
   // 
 
@@ -33,12 +33,16 @@ async function getSummonSafe(walletAddress:String, chainID:number) {
 
 
   if(validTxs.length > 1) console.error("there are multiple safe creation tx's")
+  if(validTxs.length < 1) console.log("this user has not deployed a safe")
 
-  const SummonSafe = validTxs[0].log_events[0].decoded.params[0].value
+  console.log(validTxs)
+  const SummonSafe:string = (validTxs.length > 0) ? validTxs[0].log_events[0].decoded.params[0].value : "NO_SAFE_FOUND";
 
-  console.log(`Safe Detetected! Address: ${SummonSafe}`)
+  console.log(SummonSafe);
 
-  return SummonSafe
+  (validTxs.length > 0) && console.log(`Safe Detetected! Address: ${SummonSafe}`)
+
+  return SummonSafe // returns safe value or "NO_SAFE_FOUND"
 }
 
 export default getSummonSafe
