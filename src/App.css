@@ -72,12 +72,15 @@ div.NFTcardContainer {
   flex-direction: row;
   margin: 30px 20px 30px 20px;
   justify-content: space-between;
-  align-items: center;
+  /* align-items: center; */
 }
 
 div.NFTcardLeft {
   display: flex;
   flex-direction: row;
+
+  overflow: hidden;
+  white-space: nowrap;
 }
 
 div.NFTcardTitles {
@@ -120,7 +123,8 @@ div.collectionTitleText {
 .NFTlistButton {
   background: #5d69d6;
   border-radius: 15px;
-
+  max-width: 110px;
+  min-width: 110px;
 
 
   /* font stuff */
@@ -132,7 +136,11 @@ div.collectionTitleText {
   letter-spacing: 0.02em;
   color: #f1f2fb;
 
-  padding: 10px 30px 10px 30px
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 5px;
+  margin-bottom: 5px;
 }
 
 .backgroundBright {

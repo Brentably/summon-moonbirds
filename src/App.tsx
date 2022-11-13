@@ -1,4 +1,4 @@
-import {useEffect, useState} from 'react';
+import {useEffect, useState, createContext, useContext} from 'react';
 import { ethers } from "ethers";
 import './App.css';
 import WalletConnect from "@walletconnect/client";
@@ -9,6 +9,7 @@ import { ContractNetworksConfig } from '@gnosis.pm/safe-core-sdk'
 import { SafeTransactionDataPartial } from '@gnosis.pm/safe-core-sdk-types'
 import NFTlist from './components/NFTlist'
 
+// const { Provider, Consumer } = createContext({});
 
 function App() {
   const [lendSelected, setLendSelected] = useState<boolean>(true)
@@ -164,6 +165,15 @@ useEffect(() => {onUriChange()}, [uri])
 
   const connect = async () => {
     const provider = new ethers.providers.Web3Provider(window.ethereum, "any")
+    // refreshes things on network changs
+    provider.on("network", (newNetwork, oldNetwork) => {
+      // When a Provider makes its initial connection, it emits a "network"
+      // event with a null oldNetwork along with the newNetwork. So, if the
+      // oldNetwork exists, it represents a changing network
+      if (oldNetwork) {
+          window.location.reload();
+      }
+    })
     // console.log(provider)
     await provider.send("eth_requestAccounts", []);
     const signer = provider.getSigner()
@@ -241,6 +251,7 @@ useEffect(() => {onUriChange()}, [uri])
     
   }
 
+  useEffect(()=> {connect()}, [])
   return (
     <div className="App">
       <div className="summonHeader">
@@ -258,7 +269,8 @@ useEffect(() => {onUriChange()}, [uri])
       <span className={lendSelected ? "tabs selected" : "tabs"} onClick={()=> setLendSelected(true)}>lend</span> 
       <span className={lendSelected ? "tabs" : "tabs selected"} onClick={()=> setLendSelected(false)}>borrow</span></div>
 
-      <NFTlist walletAddress={walletAddress} chainID={chainID}/>
+      {lendSelected && <NFTlist walletAddress={walletAddress} chainID={chainID}/>}
+
     </div>
   );
 }

@@ -19,7 +19,7 @@ async function useNFTBalance(setNFTBalance: Function, walletAddress: String, cha
 
     if(!data && walletAddress) {
 
-    console.log(`fetching`)
+    console.log(`calling https://api.covalenthq.com/v1/${chainID}/address/${walletAddress}/balances_v2/?${query}&key=${COVALENT_API_KEY}`)
     const resp = await fetch(`https://api.covalenthq.com/v1/${chainID}/address/${walletAddress}/balances_v2/?${query}&key=${COVALENT_API_KEY}`, {
     method: 'GET',
     headers: {

@@ -6,7 +6,7 @@ function NFTCard(props:any) {
 // const {NFTitem} = props
 const {external_data: {image, name}, token_id} = props.NFTitem
 const {contract_name: collectionName} = props.NFTcollection
-console.log(props.NFTitem.external_data)
+// console.log(props.NFTitem.external_data)
 // console.log(image)
 // console.log(props.NFTitem)
 // console.log(image_1024)
@@ -29,7 +29,7 @@ return (
         <div className="collectionTitleText">{collectionName}</div>
       </div> 
     </div>
-    <NFTlistButton text="retrieve" bright={false} />
+    <NFTlistButton text="lend" bright={true} />
   </div>
 )
 } 
