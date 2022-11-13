@@ -11,14 +11,16 @@ function NFTlist(props : INFTList) {
   const {walletAddress, chainID} = props
   const [NFTBalance, setNFTBalance] = useState<Array<any>>([])
   
+
+
+  //instead of useNFTBalance being a hook that you pass the setNFTBalance function to, turn it into an async helper function called getNFTBalance(walletAddress, chainID)
+  //setNFTBalance to getNFTBalance on componentDidMount
   useNFTBalance(setNFTBalance, walletAddress, chainID) 
 
-  // useEffect(() => {NFTBalance && setLoading(false)}, [props])
-  
+
 
     
 
-  let cardsArray:Array<React.ReactElement> = []
 
 
   if(!walletAddress) return <h1>connect wallet</h1>
