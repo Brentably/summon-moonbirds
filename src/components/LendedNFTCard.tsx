@@ -4,10 +4,10 @@ import lend from '../walletFunctions/lend'
 import retrieve from '../walletFunctions/retrieve'
 import IConnection from '../types/types'
 
-function NFTCard(props: {store: any, NFTitem:any, NFTcollection:any}) {
+function NFTCard(props: {store:any, NFTitem:any, NFTcollection:any, lended?:boolean}) {
 //need to destructure NFT image, collection title, specific NFT name from NFT item
 // const {NFTitem} = props
-const [{connection}] = props.store
+
 const {external_data: {image, name}, token_id} = props.NFTitem
 const {contract_name: collectionName, contract_address: tokenAddress} = props.NFTcollection
 
@@ -15,14 +15,12 @@ const {contract_name: collectionName, contract_address: tokenAddress} = props.NF
 
 
 // summonAddress: string, tokenAddress: string, tokenId: number, chainID: number
-function handleLend() {
- lend("fdsu", tokenAddress, token_id, connection)
-}
 
 
 
-function handleClick() {
-  lend("toojoji", tokenAddress, token_id, connection)
+// will have to update state in home page
+function startLend() {
+
 }
 
 
@@ -45,7 +43,7 @@ return (
         <div className="collectionTitleText">{collectionName}</div>
       </div> 
     </div>
-     <NFTListButton type="lend" onClick={handleClick} /> 
+     <NFTListButton type={props.lended ? "retrieve" : "lend"} onClick={startLend} /> 
   </div>
 )
 } 

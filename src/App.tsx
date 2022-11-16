@@ -193,10 +193,10 @@ const needsSummon = summonAddress == "NO_SUMMON_FOUND"
       <span className={view == "home/lend" ? "tabs" : "tabs selected"} onClick={()=> setState({...state, view: "home/borrow"})}>borrow</span></div>
 
     <div className={view == "home/lend" ? "" : "invisible"}>
-      {(walletAddress != undefined) ? <><LendedNFTList connection={connection} /><NFTList connection={connection} isSummon={false} /></> : <h1>NO WALLET CONNECTED</h1> }
+      {(walletAddress != undefined) ? <><LendedNFTList store={store} /><NFTList store={store} isSummon={false} /></> : <h1>NO WALLET CONNECTED</h1> }
     </div>
     <div className={view == "home/borrow" ? "" : "invisible"}>
-      {summonAddress && !needsSummon ? <NFTList connection={connection} isSummon={true} /> : <h1>NO SUMMON FOUND</h1> }
+      {summonAddress && !needsSummon ? <NFTList store={store} isSummon={true} /> : <h1>NO SUMMON FOUND</h1> }
       <input type="text" value={`${uri}`} onChange={(e) => setState({...state, uri: e.target.value})} />
     </div>
 

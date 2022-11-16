@@ -6,6 +6,7 @@ import IConnection from '../types/types'
 async function lend(toAddress: string, tokenAddress: string, tokenId: number, connection: IConnection) {
 
 console.log("WOOOOHOO NFT LENDED (not really)")
+console.log(`to: ${toAddress} token: ${tokenAddress} tokenId: ${tokenId}`)
 
 }
 

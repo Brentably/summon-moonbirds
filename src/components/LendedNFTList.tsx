@@ -5,9 +5,9 @@ import IConnection from '../types/types'
 
 
 //NFT list works to render a list of NFT's whether its NFT's in a wallet, or NFT's in a summon wallet
-function LendedNFTList(props: {connection: IConnection}) {
+function LendedNFTList(props: {store:any}) {
   // that means the first thing we need to do is determine which address we're showing NFT's for
-  const {connection} = props
+  const [{connection}] = props.store
   const {chainID} = connection
 
   // const [NFTBalance, setNFTBalance] = useState<Array<any> | undefined>(undefined)
