@@ -1,7 +1,7 @@
 import getApiKey from "./getApiKey"
 
 
-// returns the NFT balance @ an addresss
+// calls the covalent api, returning the NFTs @ an address and their metadata
 async function getNFTBalance(address: string, chainID: number) {
   const COVALENT_API_KEY = getApiKey()
 
