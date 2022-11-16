@@ -1,4 +1,4 @@
-import NFTListButton from './NFTListButton'
+import Button from './Button'
 import defaultNFTicon from '../template/defaultNFTicon.png'
 import lend from '../walletFunctions/lend'
 import retrieve from '../walletFunctions/retrieve'
@@ -43,7 +43,7 @@ return (
         <div className="collectionTitleText">{collectionName}</div>
       </div> 
     </div>
-     <NFTListButton type={props.lended ? "retrieve" : "lend"} onClick={startLend} /> 
+     <Button text={props.lended ? "retrieve" : "lend"} onClick={startLend} bright={!props.lended}/> 
   </div>
 )
 } 

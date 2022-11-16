@@ -1,4 +1,4 @@
-import NFTListButton from './NFTListButton'
+import Button from './Button'
 import defaultNFTicon from '../template/defaultNFTicon.png'
 import lend from '../walletFunctions/lend'
 import retrieve from '../walletFunctions/retrieve'
@@ -12,7 +12,7 @@ const {connection} = state
 const {external_data: {image, name}, token_id} = props.NFTitem
 const {contract_name: collectionName, contract_address: tokenAddress} = props.NFTcollection
 
-const cardTitle = name ? `${name}` : `#${token_id}`
+const NFTTitle = name ? `${name}` : `#${token_id}`
 const isVideo = image && image.endsWith(".mp4")
 
 function handleClick() {
@@ -27,7 +27,7 @@ function handleClick() {
       image: image,
       name: name,
       collectionName: collectionName,
-      cardTitle: cardTitle,
+      NFTTitle: NFTTitle,
       isVideo: isVideo
     }
   }})
@@ -44,11 +44,11 @@ return (
     </video> 
     : <img className="NFTCardImage" src={image || defaultNFTicon}/> }
       <div className="NFTCardTitles">
-        <div className="NFTNameText">{cardTitle}</div>
+        <div className="NFTNameText">{NFTTitle}</div>
         <div className="collectionTitleText">{collectionName}</div>
       </div> 
     </div>
-     <NFTListButton type="lend" onClick={handleClick} /> 
+     <Button text="lend" onClick={handleClick} bright/> 
   </div>
 )
 } 

@@ -7,10 +7,11 @@
 
 body {
   background: #edeef5;
+  padding-top: 20px;
 }
 
 .summonHeader {
-  margin-top: 27px;
+  margin-top: 7px;
 }
 
 .summonHeaderText {
@@ -123,7 +124,7 @@ div.collectionTitleText {
   margin-top: 14px;
 }
 
-.NFTListButton {
+.Button {
   background: #5d69d6;
   border-radius: 15px;
   max-width: 110px;
@@ -149,6 +150,56 @@ div.collectionTitleText {
 .backgroundBright {
   background: #2A3FFE;
 }
+
+
+.LendingPage {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+
+.lendingHeader {
+ display: inline-block;
+}
+
+
+.lendingHeaderTitle {
+font-family: 'SF Pro Rounded';
+font-style: normal;
+font-weight: 400;
+font-size: 40px;
+line-height: 48px;
+/* identical to box height */
+letter-spacing: 0.02em;
+color: #181C40;
+justify-self: center;
+}
+
+span.backButton {
+  position: relative;
+  left: 10px;
+  top: 10px;
+  width: 40px;
+  height: 40px;
+  border-radius: 100%;
+  background-color: #bebebe;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+img.backButton {
+  max-height: 33px
+}
+
+
+
+
+
+
+
+
 
 /* create react app stuff below */
 

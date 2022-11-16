@@ -8,7 +8,7 @@ import IConnection from './types/types'
 import getConnection from './helpers/getConnection';
 import Header from './components/Header';
 import DeploySummon from './components/DeploySummon';
-
+import Lending from './components/Lending'
 
 
 
@@ -31,7 +31,7 @@ function App() {
         image: "",
         name: "",
         collectionName: "",
-        cardTitle: "",
+        NFTTitle: "",
         isVideo: false
       }
     }
@@ -220,6 +220,10 @@ const testFunc = async () => {
       <DeploySummon store={store}/>
     </div>
 
+    <div className={view == "lending" ? "" : "invisible"}>
+
+      <Lending store={store} />
+    </div>
 
 
     {/* this is what I want to do, but it's calling the API every time I switch tabs, so I've come up with the solution above :/ */}
