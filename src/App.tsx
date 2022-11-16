@@ -2,29 +2,20 @@ import {useEffect, useState, createContext, useContext} from 'react';
 import { ethers } from "ethers";
 import './App.css';
 import WalletConnect from "@walletconnect/client";
-import EthersAdapter from '@gnosis.pm/safe-ethers-lib'
-import SafeServiceClient from '@gnosis.pm/safe-service-client'
-import Safe, { SafeFactory } from '@gnosis.pm/safe-core-sdk'
-import { ContractNetworksConfig } from '@gnosis.pm/safe-core-sdk'
-import { SafeTransactionDataPartial } from '@gnosis.pm/safe-core-sdk-types'
 import NFTlist from './components/NFTlist'
 
-import getSummonSafe from './helpers/getSummonSafe';
 import IConnection from './types/types'
+import getSummonAddress from './helpers/getSummonAddress';
 
 
 
 
 function App() {
   const [lendSelected, setLendSelected] = useState<boolean>(true)
-  // const [provider, setProvider] = useState<any>(null)
-  // const [signer, setSigner] = useState<ethers.providers.JsonRpcSigner | null>(null)
-  // const [walletAddress, setWalletAddress] = useState<string>("") // wallet address of connected wallet
-  // const [chainID, setChainID] = useState<number>(0)
-  // const [safeAddress, setSafeAddress] = useState<string>("loading") // 0x897C500f2196bD04b3f89B22727746c70Dc6b231
-  const [connection, setConnection] = useState<IConnection>({provider: undefined, signer: undefined, walletAddress: "", chainID: undefined, safeAddress: ""})
+
+  const [connection, setConnection] = useState<IConnection>({provider: undefined, signer: undefined, walletAddress: "", chainID: undefined, summonAddress: ""})
   //destructure connection
-  const {provider, signer, walletAddress, chainID, safeAddress} = connection
+  const {provider, signer, walletAddress, chainID, summonAddress} = connection
 
   const [uri, setUri] = useState<any>("") // wallet connect URI
 
@@ -41,8 +32,8 @@ const onUriChange = async () => {
   if(!uri.startsWith("wc:")) {
     console.error("onUriChange was called, but the URI doesn't start with wc:")
   }
-  if(!signer || !safeAddress) {
-    console.error("onUriChange was called, but it's missing the signer or safe address")
+  if(!signer || !summonAddress) {
+    console.error("onUriChange was called, but it's missing the signer or summon address")
     return
   }
   
@@ -85,7 +76,7 @@ const onUriChange = async () => {
 
     connector.approveSession({
       accounts: [                 // required
-        safeAddress
+        summonAddress
       //  '0xa0f43C52211DEf09Be4cdEAB5cC0a19E0baBe88a'
       ],
       chainId: 5   }) 
@@ -168,25 +159,24 @@ const connect = async () => {
         window.location.reload();
     }
   })
-  // console.log(provider)
+
   await provider.send("eth_requestAccounts", []);
   const signer = provider.getSigner()
-  // setProvider(provider)
-  // setSigner(signer)
-  const walletAddress = await signer.getAddress()
-  // setWalletAddress(walletAddress)
-  const chainID = await signer.getChainId()
-  // setChainID(chainID)
 
-  const SummonSafe = "0x51148060911b6669E5edc27A4500624516A5ae14"
-  // setSafeAddress(SummonSafe)
+  const walletAddress = await signer.getAddress()
+
+  const chainID = await signer.getChainId()
+
+
+  const summonAddress = await getSummonAddress(walletAddress, chainID)
+
 
   setConnection({
   provider: provider,
   signer: signer,
   walletAddress: walletAddress,
   chainID: chainID,
-  safeAddress: SummonSafe})
+  summonAddress: summonAddress})
 
 
 }
@@ -204,7 +194,7 @@ const testFunc = async () => {
 
 
 }
-  const isSafeFound = safeAddress != "NO_SAFE_FOUND" && safeAddress != ""
+  const isSummonFound = summonAddress != "NO_SUMMON_FOUND" && summonAddress != ""
   return (
     <div className="App">
       <div className="summonHeader">
@@ -223,10 +213,10 @@ const testFunc = async () => {
       <span className={lendSelected ? "tabs" : "tabs selected"} onClick={()=> setLendSelected(false)}>borrow</span></div>
 
     <div className={lendSelected ? "" : "invisible"}>
-      {(walletAddress != undefined) ? <NFTlist connection={connection} isSafe={false} /> : <h1>NO WALLET CONNECTED</h1> }
+      {(walletAddress != undefined) ? <NFTlist connection={connection} isSummon={false} /> : <h1>NO WALLET CONNECTED</h1> }
     </div>
     <div className={lendSelected ? "invisible" : ""}>
-      {isSafeFound ? <NFTlist connection={connection} isSafe={true} /> : <h1>NO SAFE FOUND</h1> }
+      {isSummonFound ? <NFTlist connection={connection} isSummon={true} /> : <h1>NO SUMMON FOUND</h1> }
     </div>
 
 
@@ -234,7 +224,7 @@ const testFunc = async () => {
 
 
     {/* this is what I want to do, but it's calling the API every time I switch tabs, so I've come up with the solution above :/ */}
-    {/* {lendSelected ? <NFTlist address={walletAddress} chainID={chainID} isSafe={false} /> : <NFTlist address={safeAddress} chainID={chainID} isSafe={true} />} */}
+    {/* {lendSelected ? <NFTlist address={walletAddress} chainID={chainID} isSummon={false} /> : <NFTlist address={summonAddress} chainID={chainID} isSummon={true} />} */}
 
     </div>
   );

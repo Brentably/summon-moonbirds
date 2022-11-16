@@ -6,7 +6,7 @@ type IConnection = {
   signer?: ethers.Signer,
   walletAddress?: string,
   chainID?: number,
-  safeAddress?: string
+  summonAddress?: string
 }
 
 export default IConnection

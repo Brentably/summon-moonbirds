@@ -20,7 +20,7 @@ async function getNFTBalance(address: string, chainID: number) {
 
 
 
-
+    
     console.log(`calling https://api.covalenthq.com/v1/${chainID}/address/${address}/balances_v2/?${query}&key=${COVALENT_API_KEY}`)
     const resp = await fetch(`https://api.covalenthq.com/v1/${chainID}/address/${address}/balances_v2/?${query}&key=${COVALENT_API_KEY}`, {
     method: 'GET',

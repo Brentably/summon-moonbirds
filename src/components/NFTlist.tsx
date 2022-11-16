@@ -4,11 +4,11 @@ import NFTcard from './NFTcard'
 import IConnection from '../types/types'
 
 
-//NFT list works to render a list of NFT's whether its NFT's in a wallet, or NFT's in a safe
-function NFTlist(props: {connection: IConnection, isSafe: boolean}) {
+//NFT list works to render a list of NFT's whether its NFT's in a wallet, or NFT's in a summon wallet
+function NFTlist(props: {connection: IConnection, isSummon: boolean}) {
   // that means the first thing we need to do is determine which address we're showing NFT's for
-  const {connection, isSafe} = props
-  const address = isSafe ? connection.safeAddress : connection.walletAddress
+  const {connection, isSummon} = props
+  const address = isSummon ? connection.summonAddress : connection.walletAddress
   const {chainID} = connection
 
   const [NFTBalance, setNFTBalance] = useState<Array<any> | undefined>(undefined)
