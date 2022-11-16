@@ -1,15 +1,15 @@
 import {ethers} from 'ethers'
 
 import getApiKey from './getApiKey'
+import getFactoryAddress from './getFactoryAddress'
 
-const factoryAddress = "0x4C8D779e3D4dAEC47369408aE4D8F7aA85FF1023" // this is for GOERLI
 
 
 //we can do this by searching for summon creation calls to the factoryAddress by the walletAddress
 async function getSummonAddress(walletAddress:string, chainID:number) {
   const COVALENT_API_KEY = getApiKey()
+  const factoryAddress = getFactoryAddress(chainID)
   console.log("BRRRR getting summon wallet")
-
 
 
 

@@ -40,7 +40,7 @@ function NFTlist(props: {connection: IConnection, isSummon: boolean}) {
 
 
   const listitems = NFTBalance.map(collection => {
-    const listitemstest = collection.nft_data.map((NFT:any) => <NFTcard key={`${NFT.token_id}+${collection.contract_address}`} NFTitem={NFT} NFTcollection={collection}/>)
+    const listitemstest = collection.nft_data.map((NFT:any) => <NFTcard key={`${NFT.token_id}+${collection.contract_address}`} NFTitem={NFT} NFTcollection={collection} />)
     return listitemstest
   })
   return (

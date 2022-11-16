@@ -29,7 +29,7 @@ return (
         <div className="collectionTitleText">{collectionName}</div>
       </div> 
     </div>
-    <NFTlistButton text="lend" bright={true} />
+    <NFTlistButton type="lend" />
   </div>
 )
 } 

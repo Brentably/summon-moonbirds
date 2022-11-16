@@ -1,10 +1,11 @@
 
-function NFTlistButton(props:any) {
-const {text, bright} = props
+function NFTlistButton(props: {type: "lend" | "retrieve"}) {
+const {type} = props
+
 
 
   return (
-    <div className={bright? "NFTlistButton backgroundBright" : "NFTlistButton"}>{text}</div>
+    <div className={type == "lend" ? "NFTlistButton backgroundBright" : "NFTlistButton"}>{type}</div>
   )
 }
 
