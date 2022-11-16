@@ -1,25 +1,28 @@
 import React, {useEffect, useState} from 'react'
 import getNFTBalance from "../helpers/getNFTBalance"
 import NFTcard from './NFTcard'
+import IConnection from '../types/types'
 
-type INFTList = {
-  address: string,
-  chainID: number,
-  isSafe: boolean
-}
 
-function NFTlist(props : INFTList) {
-  const {address, chainID, isSafe} = props
-  const [NFTBalance, setNFTBalance] = useState<Array<any> | undefined>([])
+//NFT list works to render a list of NFT's whether its NFT's in a wallet, or NFT's in a safe
+function NFTlist(props: {connection: IConnection, isSafe: boolean}) {
+  // that means the first thing we need to do is determine which address we're showing NFT's for
+  const {connection, isSafe} = props
+  const address = isSafe ? connection.safeAddress : connection.walletAddress
+  const {chainID} = connection
+
+  const [NFTBalance, setNFTBalance] = useState<Array<any> | undefined>(undefined)
   
 
-  
+
   //instead of useNFTBalance being a hook that you pass the setNFTBalance function to, turn it into an async helper function called getNFTBalance(walletAddress, chainID)
   //setNFTBalance to getNFTBalance on componentDidMount
   // useNFTBalance(setNFTBalance, walletAddress, chainID) 
 
   useEffect(() => {
+    
     async function updateNFTs() {
+      if(!address || !chainID) return
       const NFTBalance:(any[] | undefined) = await getNFTBalance(address, chainID)
       setNFTBalance(await NFTBalance)
     }
@@ -32,7 +35,8 @@ function NFTlist(props : INFTList) {
 
 
   if(!address) return <h1>connect wallet</h1>
-  if(!NFTBalance || NFTBalance.length < 1) return <h1>Loading NFTs</h1>
+  if(!NFTBalance) return <h1>Loading NFTs</h1>
+  if(NFTBalance.length < 1) return <h1>no nft's :/</h1>
 
 
   const listitems = NFTBalance.map(collection => {

@@ -1,13 +1,14 @@
 import {ethers} from 'ethers'
-import getContractNetworks from './getContractNetworks'
+
 import getApiKey from './getApiKey'
 
+const factoryAddress = "0x4C8D779e3D4dAEC47369408aE4D8F7aA85FF1023" // this is for GOERLI
+
+
 //we can do this by searching for safe creation calls to the safeProxyFactoryAddress by the walletAddress
-async function getSummonSafe(walletAddress:String, chainID:number) {
+async function getSummonSafe(walletAddress:string, chainID:number) {
   const COVALENT_API_KEY = getApiKey()
   console.log("BRRRR getting summon safe")
-  const {[5]: {safeProxyFactoryAddress}} = getContractNetworks()
-  // 
 
 
 
@@ -27,13 +28,12 @@ async function getSummonSafe(walletAddress:String, chainID:number) {
   // filters the tx's for the ones sent to the safeProxyFactoryAddress
   const validTxs:Array<any> = await txs.filter((tx:any) => {
     return !tx.to_address ? false : // if the to_address is null, return false
-    (tx.to_address.toLowerCase() == safeProxyFactoryAddress.toLowerCase()) // if the to_address matches the safeProxyFactoryAddress, return true
+    (tx.to_address.toLowerCase() == factoryAddress.toLowerCase()) // if the to_address matches the factoryAddress, return true
   
   })
 
-
-  if(validTxs.length > 1) console.error("there are multiple safe creation tx's")
-  if(validTxs.length < 1) console.log("this user has not deployed a safe")
+  if(validTxs.length > 1) console.error("there are multiple summon creation tx's")
+  if(validTxs.length < 1) console.log("this user has not deployed a summon")
 
   console.log(validTxs)
   const SummonSafe:string = (validTxs.length > 0) ? validTxs[0].log_events[0].decoded.params[0].value : "NO_SAFE_FOUND";
