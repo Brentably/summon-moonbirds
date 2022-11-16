@@ -173,9 +173,9 @@ const testFunc = async () => {
 }
 
 
-  //destructure connection
 
 
+const needsSummon = summonAddress == "NO_SUMMON_FOUND"
   return (
     <div className="App">
       {/* <div className="summonHeader">
@@ -196,7 +196,7 @@ const testFunc = async () => {
       {(walletAddress != undefined) ? <><LendedNFTList connection={connection} /><NFTList connection={connection} isSummon={false} /></> : <h1>NO WALLET CONNECTED</h1> }
     </div>
     <div className={view == "home/borrow" ? "" : "invisible"}>
-      {summonAddress && (summonAddress != "NO_SUMMON_FOUND") ? <NFTList connection={connection} isSummon={true} /> : <h1>NO SUMMON FOUND</h1> }
+      {summonAddress && !needsSummon ? <NFTList connection={connection} isSummon={true} /> : <h1>NO SUMMON FOUND</h1> }
       <input type="text" value={`${uri}`} onChange={(e) => setState({...state, uri: e.target.value})} />
     </div>
 

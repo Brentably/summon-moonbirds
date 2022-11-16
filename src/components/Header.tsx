@@ -5,15 +5,16 @@ function Header(props: {store: any}) {
 const [state, setState] = props.store
 const {connection} = state
 
-const handleConnect = () => {
-  let newConnection = getConnection(connection)
-  setState({...state, ...newConnection})
+const handleConnect = async () => {
+  let newConnection = await getConnection(connection)
+  setState({...state, connection: newConnection})
+  console.log(newConnection)
 }
 
   return (
     <div className="summonHeader">
     <span className="summonHeaderText">summon </span>
-    <button onClick={() => getConnection(connection)} className={connection.signer ? "connect connected" : "connect notConnected"}> </button>
+    <button onClick={handleConnect} className={connection.signer ? "connect connected" : "connect notConnected"}> </button>
     </div>
   )
 }

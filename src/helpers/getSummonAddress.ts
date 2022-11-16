@@ -14,7 +14,7 @@ async function getSummonAddress(walletAddress:string, chainID:number) {
 
 
 
-
+  console.log(`searching for txs to ${factoryAddress} on chain ${chainID}`)
   const resp = await fetch(`https://api.covalenthq.com/v1/${chainID}/address/${factoryAddress}/transactions_v2/?&key=${COVALENT_API_KEY}`, {
   method: 'GET',
   headers: {
@@ -22,8 +22,9 @@ async function getSummonAddress(walletAddress:string, chainID:number) {
   },
   })
   if (!resp.ok) console.log('ERROR' + resp.status)
-  const {data: {items: txs}} = await resp.json() //gets an array of tx's
 
+  const {data: {items: txs}} = await resp.json() //gets an array of tx's
+  console.log(txs)
 
 
 
@@ -37,8 +38,12 @@ async function getSummonAddress(walletAddress:string, chainID:number) {
     return (owner == walletAddress)
   })
   
+  console.log(rightTxs)
   if(rightTxs.length > 1) console.error("there are multiple summon creation tx's! returning the first one")
-  if(rightTxs.length < 1) return "NO_SUMMON_FOUND"
+  if(rightTxs.length < 1) {
+    console.log("no summon address found")
+    return "NO_SUMMON_FOUND"
+}
 
   const [owner, summonAddress] = ethers.utils.defaultAbiCoder.decode(["address", "address"], rightTxs[0].log_events[0].raw_log_data)
   owner != walletAddress && console.log("somethings broken here")
