@@ -1,4 +1,3 @@
-
 import NFTListButton from './NFTListButton'
 import defaultNFTicon from '../template/defaultNFTicon.png'
 import lend from '../walletFunctions/lend'
@@ -13,7 +12,7 @@ const {external_data: {image, name}, token_id} = props.NFTitem
 const {contract_name: collectionName, contract_address: tokenAddress} = props.NFTcollection
 
 
-console.log(props.NFTcollection.contract_address)
+// console.log(props.NFTcollection.contract_address)
 
 // summonAddress: string, tokenAddress: string, tokenId: number, chainID: number
 function handleLend() {

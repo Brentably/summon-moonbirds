@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react'
 import getNFTBalance from "../helpers/getNFTBalance"
-import NFTCard from './NFTCard'
+// import NFTCard from './NFTCard'
 import IConnection from '../types/types'
 
 

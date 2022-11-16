@@ -5,39 +5,43 @@ import WalletConnect from "@walletconnect/client";
 import NFTList from './components/NFTList'
 import LendedNFTList from './components/LendedNFTList'
 import IConnection from './types/types'
-import getSummonAddress from './helpers/getSummonAddress';
+import getConnection from './helpers/getConnection';
+import Header from './components/Header';
 
 
 
 
 function App() {
-  const [lendSelected, setLendSelected] = useState<boolean>(true)
 
-  const [connection, setConnection] = useState<IConnection>({provider: undefined, signer: undefined, walletAddress: "", chainID: undefined, summonAddress: ""})
-  //destructure connection
+  const store = useState<{connection: IConnection, uri: any, view: string}>({
+    connection: {provider: undefined, signer: undefined, walletAddress: "", chainID: undefined, summonAddress: ""},
+    uri: "",
+    view: "home/lend"
+  })
+  const [state, setState] = store
+  const {connection, uri, view} = state
   const {provider, signer, walletAddress, chainID, summonAddress} = connection
+  
+  // const [uri, setUri] = useState<any>("") // wallet connect URI
 
-  const [uri, setUri] = useState<any>("") // wallet connect URI
-
-
+  
   const rejectWithMessage = (connector: WalletConnect, id: number | undefined, message: string) => {
     connector.rejectRequest({ id, error: { message } })
   }
   
-
   
   
-const onUriChange = async () => {
-  if(!uri) return // called on component did mount, so there will have to return for the times there is not a uri
-  if(!uri.startsWith("wc:")) {
-    console.error("onUriChange was called, but the URI doesn't start with wc:")
-  }
-  if(!signer || !summonAddress) {
-    console.error("onUriChange was called, but it's missing the signer or summon address")
-    return
-  }
-  
-  console.log("init new connector")
+  const onUriChange = async () => {
+    if(!uri) return // called on component did mount, so there will have to return for the times there is not a uri
+    if(!uri.startsWith("wc:")) {
+      console.error("onUriChange was called, but the URI doesn't start with wc:")
+    }
+    if(!signer || !summonAddress) {
+      console.error("onUriChange was called, but it's missing the signer or summon address")
+      return
+    }
+    
+    console.log("init new connector")
  const connector = await new WalletConnect({
   uri: uri,
   // bridge: "https://bridge.walletconnect.org"
@@ -147,76 +151,53 @@ console.log(connector)
 
 useEffect(() => {onUriChange()}, [uri])
 
-const connect = async () => {
-  const provider = new ethers.providers.Web3Provider(window.ethereum, "any")
-  if(!provider) return
-  // refreshes things on network changs
-  provider.on("network", (newNetwork, oldNetwork) => {
-    // When a Provider makes its initial connection, it emits a "network"
-    // event with a null oldNetwork along with the newNetwork. So, if the
-    // oldNetwork exists, it represents a changing network
-    if (oldNetwork) {
-        window.location.reload();
-    }
-  })
-
-  await provider.send("eth_requestAccounts", []);
-  const signer = provider.getSigner()
-
-  const walletAddress = await signer.getAddress()
-
-  const chainID = await signer.getChainId()
 
 
-  const summonAddress = await getSummonAddress(walletAddress, chainID)
 
 
-  setConnection({
-  provider: provider,
-  signer: signer,
-  walletAddress: walletAddress,
-  chainID: chainID,
-  summonAddress: summonAddress})
-
-
-}
 
   
 
-useEffect(()=> {connect()}, [])
+useEffect(()=> {
+  const thisPatternIsStupid = async() => {
+    let newConnection:IConnection|undefined = await getConnection(connection)
+    setState({...state, connection: {...newConnection}})
+  }
+  thisPatternIsStupid()
+}, [])
 
 
 useEffect(() => console.log(connection), [connection])
 
-
 const testFunc = async () => {
-
-
-
 }
-  const isSummonFound = summonAddress != "NO_SUMMON_FOUND" && summonAddress != ""
+
+
+  //destructure connection
+
+
   return (
     <div className="App">
-      <div className="summonHeader">
+      {/* <div className="summonHeader">
       <span className="summonHeaderText">summon </span>
       <button onClick={connect} className={signer ? "connect connected" : "connect notConnected"}> </button>
       </div>
       {/* remove in future */}
-      <input type="text" value={`${uri}`} onChange={(e) => setUri(e.target.value)} />
-      <br /><br />
-      <button onClick={testFunc}>TESTING BUTTTION</button>
-      {/* remove in future */}
+      {/* <br /><br />
+      <button onClick={testFunc}>TESTING BUTTTION</button> */}
+      <Header store={store} />
 
       
       <div className="tabsContainer">
-      <span className={lendSelected ? "tabs selected" : "tabs"} onClick={()=> setLendSelected(true)}>lend</span> 
-      <span className={lendSelected ? "tabs" : "tabs selected"} onClick={()=> setLendSelected(false)}>borrow</span></div>
+      <span className={view == "home/lend" ? "tabs selected" : "tabs"} onClick={()=> setState({...state, view: "home/lend"})}>lend</span> 
+      <span className={view == "home/lend" ? "tabs" : "tabs selected"} onClick={()=> setState({...state, view: "home/borrow"})}>borrow</span></div>
 
-    <div className={lendSelected ? "" : "invisible"}>
+    <div className={view == "home/lend" ? "" : "invisible"}>
       {(walletAddress != undefined) ? <><LendedNFTList connection={connection} /><NFTList connection={connection} isSummon={false} /></> : <h1>NO WALLET CONNECTED</h1> }
     </div>
-    <div className={lendSelected ? "invisible" : ""}>
-      {isSummonFound ? <NFTList connection={connection} isSummon={true} /> : <h1>NO SUMMON FOUND</h1> }
+    <div className={view == "home/borrow" ? "" : "invisible"}>
+      {summonAddress && (summonAddress != "NO_SUMMON_FOUND") ? <NFTList connection={connection} isSummon={true} /> : <h1>NO SUMMON FOUND</h1> }
+      <input type="text" value={`${uri}`} onChange={(e) => setState({...state, uri: e.target.value})} />
     </div>
 
 
