@@ -1,12 +1,12 @@
 
-function NFTlistButton(props: {type: "lend" | "retrieve"}) {
-const {type} = props
 
+function NFTListButton(props: {type: "lend" | "retrieve", onClick: React.MouseEventHandler<HTMLDivElement> | undefined}) {
+  const {type, onClick} = props
 
 
   return (
-    <div className={type == "lend" ? "NFTlistButton backgroundBright" : "NFTlistButton"}>{type}</div>
+    <div onClick={onClick} className={type == "lend" ? "NFTListButton backgroundBright" : "NFTListButton"}>{type}</div>
   )
 }
 
-export default NFTlistButton
+export default NFTListButton

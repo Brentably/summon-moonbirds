@@ -2,8 +2,8 @@ import {useEffect, useState, createContext, useContext} from 'react';
 import { ethers } from "ethers";
 import './App.css';
 import WalletConnect from "@walletconnect/client";
-import NFTlist from './components/NFTlist'
-
+import NFTList from './components/NFTList'
+import LendedNFTList from './components/LendedNFTList'
 import IConnection from './types/types'
 import getSummonAddress from './helpers/getSummonAddress';
 
@@ -213,10 +213,10 @@ const testFunc = async () => {
       <span className={lendSelected ? "tabs" : "tabs selected"} onClick={()=> setLendSelected(false)}>borrow</span></div>
 
     <div className={lendSelected ? "" : "invisible"}>
-      {(walletAddress != undefined) ? <NFTlist connection={connection} isSummon={false} /> : <h1>NO WALLET CONNECTED</h1> }
+      {(walletAddress != undefined) ? <><LendedNFTList connection={connection} /><NFTList connection={connection} isSummon={false} /></> : <h1>NO WALLET CONNECTED</h1> }
     </div>
     <div className={lendSelected ? "invisible" : ""}>
-      {isSummonFound ? <NFTlist connection={connection} isSummon={true} /> : <h1>NO SUMMON FOUND</h1> }
+      {isSummonFound ? <NFTList connection={connection} isSummon={true} /> : <h1>NO SUMMON FOUND</h1> }
     </div>
 
 

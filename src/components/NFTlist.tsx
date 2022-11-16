@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react'
 import getNFTBalance from "../helpers/getNFTBalance"
-import NFTcard from './NFTcard'
+import NFTCard from './NFTCard'
 import IConnection from '../types/types'
 
 
@@ -24,7 +24,11 @@ function NFTlist(props: {connection: IConnection, isSummon: boolean}) {
     async function updateNFTs() {
       if(!address || !chainID) return
       const NFTBalance:(any[] | undefined) = await getNFTBalance(address, chainID)
-      setNFTBalance(await NFTBalance)
+      setNFTBalance(NFTBalance)
+
+
+      console.log(NFTBalance)
+
     }
     updateNFTs()
   }, [address, chainID])
@@ -40,7 +44,7 @@ function NFTlist(props: {connection: IConnection, isSummon: boolean}) {
 
 
   const listitems = NFTBalance.map(collection => {
-    const listitemstest = collection.nft_data.map((NFT:any) => <NFTcard key={`${NFT.token_id}+${collection.contract_address}`} NFTitem={NFT} NFTcollection={collection} />)
+    const listitemstest = collection.nft_data.map((NFT:any) => <NFTCard key={`${NFT.token_id}+${collection.contract_address}`} NFTitem={NFT} NFTcollection={collection} connection={connection}/>)
     return listitemstest
   })
   return (

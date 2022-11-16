@@ -36,7 +36,7 @@ async function getNFTBalance(address: string, chainID: number) {
   //filtering balance data for NFT data
   const items:Array<any> = await data.data.items
   const filteredItems = await items.filter((item:any) => item.type == "nft")
-  // filter((item:any) => item.type == "nft")
+
 
   console.log(filteredItems)
 

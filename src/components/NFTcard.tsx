@@ -1,35 +1,47 @@
-import NFTlistButton from "./NFTlistButton"
-import defaultNFTicon from '../template/defaultNFTicon.png'
 
-function NFTCard(props:any) {
+import NFTListButton from './NFTListButton'
+import defaultNFTicon from '../template/defaultNFTicon.png'
+import lend from '../walletFunctions/lend'
+import retrieve from '../walletFunctions/retrieve'
+import IConnection from '../types/types'
+
+function NFTCard(props: {connection: IConnection, NFTitem:any, NFTcollection:any, lended?:boolean}) {
 //need to destructure NFT image, collection title, specific NFT name from NFT item
 // const {NFTitem} = props
+
 const {external_data: {image, name}, token_id} = props.NFTitem
-const {contract_name: collectionName} = props.NFTcollection
-// console.log(props.NFTitem.external_data)
-// console.log(image)
-// console.log(props.NFTitem)
-// console.log(image_1024)
-// console.log(token_id)
-// console.log(collectionName)
+const {contract_name: collectionName, contract_address: tokenAddress} = props.NFTcollection
+
+
+console.log(props.NFTcollection.contract_address)
+
+// summonAddress: string, tokenAddress: string, tokenId: number, chainID: number
+function handleLend() {
+ lend("fdsu", tokenAddress, token_id, props.connection)
+}
+function handleRetrieve() {
+  console.log("FUCK")
+}
+
+
 
 const cardTitle = name ? `${name}` : `#${token_id}`
 const isVideo = image && image.endsWith(".mp4")
 // const isVideo = true // testing
 return (
-  <div className="NFTcardContainer">
-    <div className="NFTcardLeft">
+  <div className="NFTCardContainer">
+    <div className="NFTCardLeft">
       {isVideo ? 
-      <video className="NFTcardImage">
+      <video className="NFTCardImage">
         <source src={image} type="video/mp4" />
     </video> 
-    : <img className="NFTcardImage" src={image || defaultNFTicon}/> }
-      <div className="NFTcardTitles">
-        <div className="NFTnameText">{cardTitle}</div>
+    : <img className="NFTCardImage" src={image || defaultNFTicon}/> }
+      <div className="NFTCardTitles">
+        <div className="NFTNameText">{cardTitle}</div>
         <div className="collectionTitleText">{collectionName}</div>
       </div> 
     </div>
-    <NFTlistButton type="lend" />
+    {props.lended ? <NFTListButton type="retrieve" onClick={handleRetrieve} /> : <NFTListButton type="lend" onClick={handleLend} />}
   </div>
 )
 } 

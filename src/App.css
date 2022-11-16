@@ -64,13 +64,13 @@ button.notConnected {
 button.connected {
   background: green;
 }
-img.NFTcardImage, video.NFTcardImage {
+img.NFTCardImage, video.NFTCardImage {
   border-radius: 10px;
   width: 50px;
   height: 50px;
   object-fit: contain;
 }
-div.NFTcardContainer {
+div.NFTCardContainer {
   display: flex;
   flex-direction: row;
   margin: 30px 20px 30px 20px;
@@ -78,7 +78,7 @@ div.NFTcardContainer {
   /* align-items: center; */
 }
 
-div.NFTcardLeft {
+div.NFTCardLeft {
   display: flex;
   flex-direction: row;
 
@@ -86,7 +86,7 @@ div.NFTcardLeft {
   white-space: nowrap;
 }
 
-div.NFTcardTitles {
+div.NFTCardTitles {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -94,7 +94,7 @@ div.NFTcardTitles {
   margin-left: 10px;
 }
 
-div.NFTnameText {
+div.NFTNameText {
   font-family: 'SF Pro Rounded';
   font-style: normal;
   font-weight: 400;
@@ -123,7 +123,7 @@ div.collectionTitleText {
   margin-top: 14px;
 }
 
-.NFTlistButton {
+.NFTListButton {
   background: #5d69d6;
   border-radius: 15px;
   max-width: 110px;
