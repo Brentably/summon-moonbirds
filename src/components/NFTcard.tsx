@@ -12,23 +12,28 @@ const {connection} = state
 const {external_data: {image, name}, token_id} = props.NFTitem
 const {contract_name: collectionName, contract_address: tokenAddress} = props.NFTcollection
 
+const cardTitle = name ? `${name}` : `#${token_id}`
+const isVideo = image && image.endsWith(".mp4")
 
 function handleClick() {
   setState({...state, 
-  view: "home/lend/lending",
+  view: "lending",
   action: {
     lend: {
       started: true,
       tokenAddress: tokenAddress,
       tokenId: token_id,
       toAddress: "",
+      image: image,
+      name: name,
+      collectionName: collectionName,
+      cardTitle: cardTitle,
+      isVideo: isVideo
     }
   }})
 }
 
 
-const cardTitle = name ? `${name}` : `#${token_id}`
-const isVideo = image && image.endsWith(".mp4")
 // const isVideo = true // testing
 return (
   <div className="NFTCardContainer">

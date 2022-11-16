@@ -6,11 +6,12 @@ import lend from '../walletFunctions/lend'
 
 
 //NFT list works to render a list of NFT's whether its NFT's in a wallet, or NFT's in a summon wallet
-function NFTlist(props: {store:any, isSummon: boolean}) {
+function NFTList(props: {store:any, isSummon: boolean}) {
   // that means the first thing we need to do is determine which address we're showing NFT's for
   const {store, isSummon} = props
   const {connection} = store[0]
-  const address = isSummon ? connection.summonAddress : connection.walletAddress
+  const {summonAddress, walletAddress} = connection
+  const address = isSummon ? summonAddress : walletAddress
   const {chainID} = connection
 
   const [NFTBalance, setNFTBalance] = useState<Array<any> | undefined>(undefined)
@@ -24,7 +25,7 @@ function NFTlist(props: {store:any, isSummon: boolean}) {
   useEffect(() => {
     
     async function updateNFTs() {
-      if(!address || !chainID) return
+      if(!address || !chainID || address == "needs") return
       const NFTBalance:(any[] | undefined) = await getNFTBalance(address, chainID)
       setNFTBalance(NFTBalance)
 
@@ -39,6 +40,7 @@ function NFTlist(props: {store:any, isSummon: boolean}) {
     
 
 
+  if(address == "needs") return <h1>NO Summon Found</h1>
   if(!address) return <h1>connect wallet</h1>
   if(!NFTBalance) return <h1>Loading NFTs</h1>
   if(NFTBalance.length < 1) return <h1>no nft's :/</h1>
@@ -60,4 +62,4 @@ function NFTlist(props: {store:any, isSummon: boolean}) {
   )
 }
 
-export default NFTlist
+export default NFTList

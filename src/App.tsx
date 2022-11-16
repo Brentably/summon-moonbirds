@@ -7,22 +7,32 @@ import LendedNFTList from './components/LendedNFTList'
 import IConnection from './types/types'
 import getConnection from './helpers/getConnection';
 import Header from './components/Header';
+import DeploySummon from './components/DeploySummon';
+
+
+
+
 
 
 
 
 function App() {
 
-  const store = useState<{connection: IConnection, uri: any, view: any[], action: any}>({
+  const store = useState<{connection: IConnection, uri: string, view: string, action: any}>({
     connection: {provider: undefined, signer: undefined, walletAddress: "", chainID: undefined, summonAddress: ""},
     uri: "",
-    view: ['lend'],
+    view: 'lend',
     action: {
       lend: {
         started: false,
         tokenAddress: "",
         tokenId: null,
-        toAddress: ""
+        toAddress: "",
+        image: "",
+        name: "",
+        collectionName: "",
+        cardTitle: "",
+        isVideo: false
       }
     }
   })
@@ -171,7 +181,8 @@ useEffect(()=> {
 }, [])
 
 
-useEffect(() => console.log(connection), [connection])
+useEffect(() => {console.log(connection)}, [connection])
+useEffect(() => {console.log(view)}, [view])
 
 const testFunc = async () => {
 }
@@ -179,29 +190,35 @@ const testFunc = async () => {
 
 
 
-const needsSummon = summonAddress == "NO_SUMMON_FOUND"
+
+
   return (
     <div className="App">
  
+    <div className={view == "lend" || view == "borrow" ? "" : "invisible"}>
+
       <Header store={store} />
 
+    </div>
+
+    <div className={view == "lend" ? "" : "invisible"}>
+
+      <LendedNFTList store={store} />
       
-      <div className="tabsContainer">
-      <span className={view == "home/lend" ? "tabs selected" : "tabs"} onClick={()=> setState({...state, view: "home/lend"})}>lend</span> 
-      <span className={view == "home/borrow" ? "tabs selected" : "tabs"} onClick={()=> setState({...state, view: "home/borrow"})}>borrow</span></div>
-
-    <div className={view == "home/lend" ? "" : "invisible"}>
-      {(walletAddress != undefined) ? <><LendedNFTList store={store} /><NFTList store={store} isSummon={false} /></> : <h1>NO WALLET CONNECTED</h1> }
+      <NFTList store={store} isSummon={false} />
     </div>
 
 
-
-    <div className={view == "home/borrow" ? "" : "invisible"}>
-      {summonAddress && !needsSummon ? <NFTList store={store} isSummon={true} /> : <h1>NO SUMMON FOUND</h1> }
+    <div className={view == "borrow" && summonAddress != "needs" ? "" : "invisible"}>
+      
       <input type="text" value={`${uri}`} onChange={(e) => setState({...state, uri: e.target.value})} />
+      <NFTList store={store} isSummon={true} />
     </div>
 
+    <div className={view == "borrow" && summonAddress == "needs" ? "" : "invisible"}>
 
+      <DeploySummon store={store}/>
+    </div>
 
 
 

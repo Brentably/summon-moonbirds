@@ -42,7 +42,7 @@ async function getSummonAddress(walletAddress:string, chainID:number) {
   if(rightTxs.length > 1) console.error("there are multiple summon creation tx's! returning the first one")
   if(rightTxs.length < 1) {
     console.log("no summon address found")
-    return "NO_SUMMON_FOUND"
+    return "needs"
 }
 
   const [owner, summonAddress] = ethers.utils.defaultAbiCoder.decode(["address", "address"], rightTxs[0].log_events[0].raw_log_data)
