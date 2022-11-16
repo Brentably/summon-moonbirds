@@ -13,10 +13,18 @@ import Header from './components/Header';
 
 function App() {
 
-  const store = useState<{connection: IConnection, uri: any, view: string}>({
+  const store = useState<{connection: IConnection, uri: any, view: any[], action: any}>({
     connection: {provider: undefined, signer: undefined, walletAddress: "", chainID: undefined, summonAddress: ""},
     uri: "",
-    view: "home/lend"
+    view: ['lend'],
+    action: {
+      lend: {
+        started: false,
+        tokenAddress: "",
+        tokenId: null,
+        toAddress: ""
+      }
+    }
   })
   const [state, setState] = store
   const {connection, uri, view} = state
@@ -154,10 +162,6 @@ useEffect(() => {onUriChange()}, [uri])
 
 
 
-
-
-  
-
 useEffect(()=> {
   const thisPatternIsStupid = async() => {
     let newConnection:IConnection|undefined = await getConnection(connection)
@@ -178,23 +182,20 @@ const testFunc = async () => {
 const needsSummon = summonAddress == "NO_SUMMON_FOUND"
   return (
     <div className="App">
-      {/* <div className="summonHeader">
-      <span className="summonHeaderText">summon </span>
-      <button onClick={connect} className={signer ? "connect connected" : "connect notConnected"}> </button>
-      </div>
-      {/* remove in future */}
-      {/* <br /><br />
-      <button onClick={testFunc}>TESTING BUTTTION</button> */}
+ 
       <Header store={store} />
 
       
       <div className="tabsContainer">
       <span className={view == "home/lend" ? "tabs selected" : "tabs"} onClick={()=> setState({...state, view: "home/lend"})}>lend</span> 
-      <span className={view == "home/lend" ? "tabs" : "tabs selected"} onClick={()=> setState({...state, view: "home/borrow"})}>borrow</span></div>
+      <span className={view == "home/borrow" ? "tabs selected" : "tabs"} onClick={()=> setState({...state, view: "home/borrow"})}>borrow</span></div>
 
     <div className={view == "home/lend" ? "" : "invisible"}>
       {(walletAddress != undefined) ? <><LendedNFTList store={store} /><NFTList store={store} isSummon={false} /></> : <h1>NO WALLET CONNECTED</h1> }
     </div>
+
+
+
     <div className={view == "home/borrow" ? "" : "invisible"}>
       {summonAddress && !needsSummon ? <NFTList store={store} isSummon={true} /> : <h1>NO SUMMON FOUND</h1> }
       <input type="text" value={`${uri}`} onChange={(e) => setState({...state, uri: e.target.value})} />

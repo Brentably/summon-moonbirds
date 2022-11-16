@@ -7,26 +7,24 @@ import IConnection from '../types/types'
 function NFTCard(props: {store: any, NFTitem:any, NFTcollection:any}) {
 //need to destructure NFT image, collection title, specific NFT name from NFT item
 // const {NFTitem} = props
-const [{connection}] = props.store
+const [state, setState] = props.store
+const {connection} = state
 const {external_data: {image, name}, token_id} = props.NFTitem
 const {contract_name: collectionName, contract_address: tokenAddress} = props.NFTcollection
 
 
-
-
-// summonAddress: string, tokenAddress: string, tokenId: number, chainID: number
-function handleLend() {
- lend("fdsu", tokenAddress, token_id, connection)
-}
-
-
-
 function handleClick() {
-  lend("toojoji", tokenAddress, token_id, connection)
+  setState({...state, 
+  view: "home/lend/lending",
+  action: {
+    lend: {
+      started: true,
+      tokenAddress: tokenAddress,
+      tokenId: token_id,
+      toAddress: "",
+    }
+  }})
 }
-
-
-
 
 
 const cardTitle = name ? `${name}` : `#${token_id}`
