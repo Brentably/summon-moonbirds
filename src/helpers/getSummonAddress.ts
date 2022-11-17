@@ -1,7 +1,7 @@
 import {ethers} from 'ethers'
 
 import getApiKey from './getApiKey'
-import getFactoryAddress from './getFactoryAddress'
+import getContracts from './getContracts'
 
 
 
@@ -9,14 +9,14 @@ import getFactoryAddress from './getFactoryAddress'
 async function getSummonAddress(walletAddress:string, chainID:number): Promise<string> {
   if(!walletAddress) return ""
   const COVALENT_API_KEY = getApiKey()
-  const factoryAddress = getFactoryAddress(chainID)
+  const [FactoryAddress] = getContracts(chainID)
   console.log("BRRRR getting summon wallet")
 
 
 
 
-  console.log(`searching for txs to ${factoryAddress} on chain ${chainID}`)
-  const resp = await fetch(`https://api.covalenthq.com/v1/${chainID}/address/${factoryAddress}/transactions_v2/?&key=${COVALENT_API_KEY}`, {
+  console.log(`searching for txs to ${FactoryAddress} on chain ${chainID}`)
+  const resp = await fetch(`https://api.covalenthq.com/v1/${chainID}/address/${FactoryAddress}/transactions_v2/?&key=${COVALENT_API_KEY}`, {
   method: 'GET',
   headers: {
     Accept: "application/json"
@@ -35,6 +35,7 @@ async function getSummonAddress(walletAddress:string, chainID:number): Promise<s
   
   // this is awful but we're rolling with it right now. once we have the contracts a little more established, we can just search for log events with a decoded abi
   const rightTxs = txs.filter((tx:any) => {
+    if(tx.log_events[0].raw_log_topics[0] != "0xc9c1da85374d40f21fe6aa2c3d2a15674a15de248a7713deaa981df3452eddcf") return false
     const [owner, summonAddress] = ethers.utils.defaultAbiCoder.decode(["address", "address"], tx.log_events[0].raw_log_data)
     return (owner == walletAddress)
   })

@@ -1,14 +1,15 @@
 import ethers from 'ethers'
-import getFactoryAddress from '../helpers/getFactoryAddress'
+import getContracts from '../helpers/getContracts'
 import IConnection from '../types/types'
 
 // address or summonAddress will work for address, we won't let them fuck it up :salute:
 async function lend(toAddress: string, tokenAddress: string, tokenId: number, connection: IConnection) {
 const {provider, signer, walletAddress, chainID} = connection
-const FactoryAddress = getFactoryAddress(chainID)
+const [FactoryAddress, FactoryABI] = getContracts(chainID)
 
 // find out if toAddress is Summon or wallet 
 
+let SummonFactory = new ethers.Contract( FactoryAddress , FactoryABI , signer)
 // if it's a wallet, find out if they have a Summon Address
 
 // if they don't, deploy one
