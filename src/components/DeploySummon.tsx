@@ -1,7 +1,6 @@
 import Button from './Button'
 
 
-
 function DeploySummon(store:any) {
 
   function handleDeploy() {
@@ -9,7 +8,11 @@ function DeploySummon(store:any) {
   }
 
 
-  return <Button text="deploy Summon wallet :)" onClick={handleDeploy} bright/>
+  return (
+    <div>
+      <Button text="deploy Summon wallet :)" onClick={handleDeploy} bright/>
+    </div>
+  )
 }
 
 export default DeploySummon
