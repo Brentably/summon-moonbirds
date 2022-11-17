@@ -12,7 +12,7 @@ const {connection} = state
 const {external_data: {image, name}, token_id} = props.NFTitem
 const {contract_name: collectionName, contract_address: tokenAddress} = props.NFTcollection
 
-const NFTTitle = name ? `${name}` : `#${token_id}`
+const NFTTitle = name ? `${name} #${token_id}` : `#${token_id}`
 const isVideo = image && image.endsWith(".mp4")
 
 function handleClick() {

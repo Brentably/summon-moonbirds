@@ -20,28 +20,30 @@ const Lending = (props: any) => {
   function handleClick() {
     console.log("lending")
   }
+  
+  function handleBack() {
+    setState({...state, view: "lend"})
+    console.log("goingback")
+  }
 
 
 
   return (
     <div className="LendingPage">
       <div className="lendingHeader">
-        <span className="backButton">
+        <div className="backButton" onClick={handleBack}>
           <img src={leftArrow} className="backButton" />
-        </span>
+        </div>
         <span className="lendingHeaderTitle">summon</span>
-        <span className="backButton">
-          <img src={leftArrow} className="backButton" />
-        </span>
+        
       </div>
-      <div className="lendingHeader">{lendingStatus}</div>
-      <div className="LendingNFTCard">
-          {isVideo ? <video className="NFTCardImage"><source src={image} type="video/mp4" /></video> : <img className="NFTCardImage" src={image || defaultNFTicon}/> }
-          <div className="">{NFTTitle}</div>
-          <div className="NFTNameText">{NFTTitle}</div>
-          <div className="collectionTitleText">{collectionName}</div>
+      <div className="lendingStatusHeader">{lendingStatus}</div>
+      <div className="lendingNFTCard">
+          {isVideo ? <video className="NFTCardImage"><source src={image} type="video/mp4" /></video> : <img className="lendNFTCardImage" src={image || defaultNFTicon}/> }
+          <div className="lendingNFTTitle">{NFTTitle}</div>
+          <div className="lendingCollectionName">{collectionName}</div>
       </div>
-      <div>to</div>
+      <div className="lendingTo">to</div>
       <input type="text" placeholder='Ex: 0xABC, ric.eth' value={localToAddress} onChange={handleAddress}/>
       <Button text="lend NFT" onClick={handleClick} bright/> 
     </div>
