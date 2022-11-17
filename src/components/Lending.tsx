@@ -2,23 +2,25 @@ import {useState} from "react"
 import defaultNFTicon from '../template/defaultNFTicon.png'
 import leftArrow from '../template/leftArrow.png'
 import Button from "./Button"
-
+import lend from '../walletFunctions/lend'
 
 const Lending = (props: any) => {
   const [state, setState] = props.store
-  const {action: {lend}} = state
-  const { started, tokenAddress, tokenId, toAddress, image, name, collectionName, NFTTitle, isVideo} = lend
+  const {lendData, connection} = state
+  const { started, tokenAddress, tokenId, toAddress, image, name, collectionName, NFTTitle, isVideo} = lendData
   const [lendingStatus, setLendingStatus] = useState<string>("lend")
   const [localToAddress, setLocalToAddress] = useState<string>(`${toAddress}`)
 
   const handleAddress = (e:any) => {
     setLocalToAddress(e.target.value)
     // console.log(e)
-    // setState({...state, lend: {...lend, toAddress: e.target.value}})
+    // setState({...state, lendData: {...lendData, toAddress: e.target.value}})
   }
 
-  function handleClick() {
+  async function handleClick() {
+    // toAddress: string, tokenAddress: string, tokenId: number, connection: IConnection
     console.log("lending")
+    lend("0x6A5a2a99A9B4c732fFfcccB9D9484c0Fe3a21F2e", tokenAddress, tokenId, connection)
   }
   
   function handleBack() {

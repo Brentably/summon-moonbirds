@@ -18,19 +18,18 @@ const isVideo = image && image.endsWith(".mp4")
 function handleClick() {
   setState({...state, 
   view: "lending",
-  action: {
-    lend: {
-      started: true,
-      tokenAddress: tokenAddress,
-      tokenId: token_id,
-      toAddress: "",
-      image: image,
-      name: name,
-      collectionName: collectionName,
-      NFTTitle: NFTTitle,
-      isVideo: isVideo
-    }
-  }})
+  lendData: {
+    started: true,
+    tokenAddress: tokenAddress,
+    tokenId: token_id,
+    toAddress: "",
+    image: image,
+    name: name,
+    collectionName: collectionName,
+    NFTTitle: NFTTitle,
+    isVideo: isVideo
+  }
+  })
 }
 
 

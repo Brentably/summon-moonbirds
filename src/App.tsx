@@ -19,23 +19,21 @@ import getSummonAddress from './helpers/getSummonAddress';
 
 function App() {
 
-  const store = useState<{connection: IConnection, summonAddress: string, uri: string, view: string, action: any}>({
+  const store = useState<{connection: IConnection, summonAddress: string, uri: string, view: string, lendData: any}>({
     connection: {provider: undefined, signer: undefined, walletAddress: "", chainID: 0},
     summonAddress: "",
     uri: "",
     view: 'lend',
-    action: {
-      lend: {
-        started: false,
-        tokenAddress: "",
-        tokenId: null,
-        toAddress: "",
-        image: "",
-        name: "",
-        collectionName: "",
-        NFTTitle: "",
-        isVideo: false
-      }
+    lendData: {
+      started: false,
+      tokenAddress: "",
+      tokenId: null,
+      toAddress: "",
+      image: "",
+      name: "",
+      collectionName: "",
+      NFTTitle: "",
+      isVideo: false
     }
   })
   const [state, setState] = store

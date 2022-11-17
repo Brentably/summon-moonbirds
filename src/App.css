@@ -14,7 +14,7 @@
 
 body {
   background: #edeef5;
-  padding-top: 20px;
+  padding: 20px;
 }
 
 .summonHeader {
@@ -154,6 +154,7 @@ div.collectionTitleText {
   margin-top: 5px;
   margin-bottom: 5px;
   /* padding: 5px 15px; */
+  align-self: center;
 }
 
 .backgroundBright {
@@ -162,10 +163,11 @@ div.collectionTitleText {
 
 
 .LendingPage {
+  min-height: 844px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  align-items: center;
+
 }
 
 
@@ -187,7 +189,7 @@ line-height: 48px;
 letter-spacing: 0.02em;
 color: #181C40;
 position: absolute;
-width: 100%;
+width: calc(100% - 40px);
 
 
 
@@ -202,7 +204,6 @@ div.backButton {
   justify-content: center;
   align-items: center;
   z-index: 69;
-  margin-left: 20px;
 }
 
 img.backButton {
@@ -218,7 +219,6 @@ line-height: 76px;
 letter-spacing: 0.02em;
 color: #181C40;
 
-margin: 40px auto
 
 }
 
@@ -266,12 +266,21 @@ color: #464966;
 }
 
 .lendingTo {
-  margin: 37px auto;
+
   font-size: 32px;
 line-height: 38px;
 letter-spacing: 0.02em;
 
 color: #181C40;
+}
+
+input[type=text] {
+ border: 2px solid #8F91A4;
+ border-radius: 8px;
+ background-color: #EDEEF5;
+ color: #464966;
+ outline: none;
+ padding: 12px;
 }
 
 
