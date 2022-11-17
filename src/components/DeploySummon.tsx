@@ -1,6 +1,15 @@
+import Button from './Button'
+
+
 
 function DeploySummon(store:any) {
-  return <button>NO SUMMON FOUND, DEPLOY SUMMON</button>
+
+  function handleDeploy() {
+    console.log("BBRRRRRR Deploying Summon")
+  }
+
+
+  return <Button text="deploy Summon wallet :)" onClick={handleDeploy} bright/>
 }
 
 export default DeploySummon

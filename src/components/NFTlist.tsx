@@ -9,8 +9,8 @@ import lend from '../walletFunctions/lend'
 function NFTList(props: {store:any, isSummon: boolean}) {
   // that means the first thing we need to do is determine which address we're showing NFT's for
   const {store, isSummon} = props
-  const {connection} = store[0]
-  const {summonAddress, walletAddress} = connection
+  const {connection, summonAddress} = store[0]
+  const {walletAddress} = connection
   const address = isSummon ? summonAddress : walletAddress
   const {chainID} = connection
 

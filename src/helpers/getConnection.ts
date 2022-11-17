@@ -1,10 +1,9 @@
 import { ethers } from "ethers";
 import IConnection from "../types/types";
-import getSummonAddress from "./getSummonAddress";
 
-const getConnection = async (connection: IConnection) => {
+
+const getConnection = async () => {
   const provider = new ethers.providers.Web3Provider(window.ethereum, "any")
-  if(!provider) return
   // refreshes things on network changs
   provider.on("network", (newNetwork, oldNetwork) => {
     // When a Provider makes its initial connection, it emits a "network"
@@ -23,15 +22,13 @@ const getConnection = async (connection: IConnection) => {
   const chainID = await signer.getChainId()
 
 
-  const summonAddress = await getSummonAddress(walletAddress, chainID)
 
 
   return ({
   provider: provider,
   signer: signer,
   walletAddress: walletAddress,
-  chainID: chainID,
-  summonAddress: summonAddress
+  chainID: chainID
 })
 
 

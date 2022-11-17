@@ -9,6 +9,7 @@ import getConnection from './helpers/getConnection';
 import Header from './components/Header';
 import DeploySummon from './components/DeploySummon';
 import Lending from './components/Lending'
+import getSummonAddress from './helpers/getSummonAddress';
 
 
 
@@ -18,8 +19,9 @@ import Lending from './components/Lending'
 
 function App() {
 
-  const store = useState<{connection: IConnection, uri: string, view: string, action: any}>({
-    connection: {provider: undefined, signer: undefined, walletAddress: "", chainID: undefined, summonAddress: ""},
+  const store = useState<{connection: IConnection, summonAddress: string, uri: string, view: string, action: any}>({
+    connection: {provider: undefined, signer: undefined, walletAddress: "", chainID: 0},
+    summonAddress: "",
     uri: "",
     view: 'lend',
     action: {
@@ -37,8 +39,8 @@ function App() {
     }
   })
   const [state, setState] = store
-  const {connection, uri, view} = state
-  const {provider, signer, walletAddress, chainID, summonAddress} = connection
+  const {connection, summonAddress, uri, view} = state
+  const {provider, signer, walletAddress, chainID} = connection
   
   // const [uri, setUri] = useState<any>("") // wallet connect URI
 
@@ -174,14 +176,19 @@ useEffect(() => {onUriChange()}, [uri])
 
 useEffect(()=> {
   const thisPatternIsStupid = async() => {
-    let newConnection:IConnection|undefined = await getConnection(connection)
+    let newConnection:IConnection = await getConnection()
     setState({...state, connection: {...newConnection}})
+
+    let summonAddress:string = await getSummonAddress(newConnection.walletAddress, newConnection.chainID)
+    setState({...state, connection: {...newConnection}, summonAddress: summonAddress}) //set states are async but destructuring should take care of any issues
   }
   thisPatternIsStupid()
 }, [])
 
 
-useEffect(() => {console.log(connection)}, [connection])
+
+
+
 useEffect(() => {console.log(view)}, [view])
 
 const testFunc = async () => {

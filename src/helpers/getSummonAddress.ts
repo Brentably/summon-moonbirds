@@ -6,7 +6,8 @@ import getFactoryAddress from './getFactoryAddress'
 
 
 //we can do this by searching for summon creation calls to the factoryAddress by the walletAddress
-async function getSummonAddress(walletAddress:string, chainID:number) {
+async function getSummonAddress(walletAddress:string, chainID:number): Promise<string> {
+  if(!walletAddress) return ""
   const COVALENT_API_KEY = getApiKey()
   const factoryAddress = getFactoryAddress(chainID)
   console.log("BRRRR getting summon wallet")

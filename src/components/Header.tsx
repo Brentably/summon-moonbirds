@@ -1,15 +1,18 @@
 import IConnection from "../types/types"
 import getConnection from "../helpers/getConnection"
+import { useEffect } from "react"
 
 function Header(props: {store: any}) {
 const [state, setState] = props.store
 const {connection, view} = state
 
 const handleConnect = async () => {
-  let newConnection = await getConnection(connection)
+  let newConnection = await getConnection()
   setState({...state, connection: newConnection})
   console.log(newConnection)
 }
+
+useEffect(() => console.log(connection), [connection])
 
   return (<>
     <div className="summonHeader">
