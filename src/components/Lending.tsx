@@ -34,7 +34,7 @@ const Lending = (props: any) => {
         <div className="backButton" onClick={handleBack}>
           <img src={leftArrow} className="backButton" />
         </div>
-        <span className="lendingHeaderTitle">summon</span>
+        <div className="lendingHeaderTitle">summon</div>
         
       </div>
       <div className="lendingStatusHeader">{lendingStatus}</div>

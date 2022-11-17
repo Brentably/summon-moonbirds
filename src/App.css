@@ -129,7 +129,8 @@ div.collectionTitleText {
   border-radius: 15px;
   max-width: 110px;
   min-width: 110px;
-
+  min-height: 39px;
+  max-height: 39px;
 
   /* font stuff */
   font-family: 'SF Pro Rounded';
@@ -156,13 +157,16 @@ div.collectionTitleText {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  align-items: center;
 }
 
 
 .lendingHeader {
  display: flex;
  flex-direction: row;
-}
+ align-self: stretch;
+align-items: center;
+} 
 
 
 .lendingHeaderTitle {
@@ -176,12 +180,12 @@ letter-spacing: 0.02em;
 color: #181C40;
 position: absolute;
 width: 100%;
+
+
+
 }
 
 div.backButton {
-  position: relative;
-  left: 10px;
-  top: 10px;
   width: 40px;
   height: 40px;
   border-radius: 100%;
@@ -190,6 +194,7 @@ div.backButton {
   justify-content: center;
   align-items: center;
   z-index: 69;
+  margin-left: 20px;
 }
 
 img.backButton {
