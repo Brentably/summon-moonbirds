@@ -217,15 +217,16 @@ const testFunc = async () => {
     </div>
 
 
-    <div className={view == "borrow" && summonAddress != "needs" ? "" : "invisible"}>
-      
-      <input type="text" value={`${uri}`} onChange={(e) => setState({...state, uri: e.target.value})} />
-      <NFTList store={store} isSummon={true} />
-    </div>
+        
+    <div className={view == "borrow" ? "" : "invisible"}>
 
-    <div className={view == "borrow" && summonAddress == "needs" ? "" : "invisible"}>
-
-      <DeploySummon store={store}/>
+      <div className={summonAddress != "needs" ? "" : "invisible"}>
+        <input type="text" value={`${uri}`} onChange={(e) => setState({...state, uri: e.target.value})} />
+        <NFTList store={store} isSummon={true} />
+      </div>
+      <div className={summonAddress == "needs" ? "" : "invisible"}>
+        <DeploySummon store={store}/>
+      </div>
     </div>
 
     <div className={view == "lending" ? "" : "invisible"}>

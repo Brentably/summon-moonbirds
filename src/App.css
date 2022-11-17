@@ -1,6 +1,13 @@
 .App {
   text-align: center;
 }
+
+.flex-container {
+  display: flex;
+  justify-content: center;
+  
+  /* align-items: stretch; */
+}
 .invisible {
   display: none;
 }
@@ -146,6 +153,7 @@ div.collectionTitleText {
   align-items: center;
   margin-top: 5px;
   margin-bottom: 5px;
+  /* padding: 5px 15px; */
 }
 
 .backgroundBright {

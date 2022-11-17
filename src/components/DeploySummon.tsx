@@ -9,8 +9,8 @@ function DeploySummon(store:any) {
 
 
   return (
-    <div>
-      <Button text="deploy Summon wallet :)" onClick={handleDeploy} bright/>
+    <div className='flex-container'>
+      <Button text="deploy summon wallet" onClick={handleDeploy} bright/>
     </div>
   )
 }
