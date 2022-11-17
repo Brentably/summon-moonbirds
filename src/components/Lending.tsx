@@ -1,4 +1,4 @@
-import {useState} from "react"
+import {useEffect, useState} from "react"
 import defaultNFTicon from '../template/defaultNFTicon.png'
 import leftArrow from '../template/leftArrow.png'
 import Button from "./Button"
@@ -7,12 +7,13 @@ import lend from '../walletFunctions/lend'
 const Lending = (props: any) => {
   const [state, setState] = props.store
   const {lendData, connection} = state
-  const { started, tokenAddress, tokenId, toAddress, image, name, collectionName, NFTTitle, isVideo} = lendData
+  const { started, tokenAddress, tokenId, image, name, collectionName, NFTTitle, isVideo} = lendData
   const [lendingStatus, setLendingStatus] = useState<string>("lend")
-  const [localToAddress, setLocalToAddress] = useState<string>(`${toAddress}`)
-
+  const [localToAddress, setLocalToAddress] = useState<string>('0x6A5a2a99A9B4c732fFfcccB9D9484c0Fe3a21F2e')
+  const [toAddressValid, setToAddressValid] = useState<boolean>(false)
   const handleAddress = (e:any) => {
     setLocalToAddress(e.target.value)
+
     // console.log(e)
     // setState({...state, lendData: {...lendData, toAddress: e.target.value}})
   }
@@ -20,7 +21,11 @@ const Lending = (props: any) => {
   async function handleClick() {
     // toAddress: string, tokenAddress: string, tokenId: number, connection: IConnection
     console.log("lending")
-    lend("0x6A5a2a99A9B4c732fFfcccB9D9484c0Fe3a21F2e", tokenAddress, tokenId, connection)
+    if (!toAddressValid) console.error("to address is not valid")
+
+
+
+    lend(localToAddress, tokenAddress, tokenId, connection)
   }
   
   function handleBack() {
@@ -28,7 +33,12 @@ const Lending = (props: any) => {
     console.log("goingback")
   }
 
+  //checks if the toAddress is Valid
+  useEffect(() => {
 
+    let valid = (localToAddress.length == 42 && localToAddress.startsWith('0x') || localToAddress.length == 0)
+    setToAddressValid(valid)
+  }, [localToAddress])
 
   return (
     <div className="LendingPage">
@@ -46,7 +56,7 @@ const Lending = (props: any) => {
           <div className="lendingCollectionName">{collectionName}</div>
       </div>
       <div className="lendingTo">to</div>
-      <input type="text" placeholder='Ex: 0xABC, ric.eth' value={localToAddress} onChange={handleAddress}/>
+      <input className={toAddressValid ? "" : "invalidToAddress"}type="text" placeholder='Ex: 0xABC, ric.eth' value={localToAddress} onChange={handleAddress}/>
       <Button text="lend NFT" onClick={handleClick} bright/> 
     </div>
   )

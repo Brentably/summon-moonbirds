@@ -283,7 +283,9 @@ input[type=text] {
  padding: 12px;
 }
 
-
+input.invalidToAddress {
+  border: 2px solid red;
+}
 
 /* create react app stuff below */
 

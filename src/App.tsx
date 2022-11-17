@@ -28,7 +28,6 @@ function App() {
       started: false,
       tokenAddress: "",
       tokenId: null,
-      toAddress: "",
       image: "",
       name: "",
       collectionName: "",
