@@ -40,6 +40,11 @@ const Lending = (props: any) => {
     setToAddressValid(valid)
   }, [localToAddress])
 
+
+  // FOR DEV
+  handleClick()
+
+
   return (
     <div className="LendingPage">
       <div className="lendingHeader">

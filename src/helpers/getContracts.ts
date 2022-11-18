@@ -1,10 +1,10 @@
-import SummonFactoryV2 from '../contracts/SummonFactoryV2.json';
+import SummonManager from '../contracts/SummonV2Manager.json';
 
 function getContracts(chainID: number): any[] {
 // if(chainID == 5) return "0x4C8D779e3D4dAEC47369408aE4D8F7aA85FF1023"
-const FactoryABI = SummonFactoryV2.abi
+const ManagerABI = SummonManager.abi
 
-const returnArray = new Array<any>("0xEC87E83C301884E167d5D129fB3089C62626Cb4d", FactoryABI)
+const returnArray = new Array<any>("0x346995C5894ea02F1b25b32389E42E71355d6F36", ManagerABI)
 // return address and abi
 if(chainID == 5) return returnArray
 
