@@ -55,15 +55,30 @@ return stringArr.join('&')
 const queryParams = getOpenSeaParamsFromTokens(Tokens)
 
 // const resp = await fetch(`https://testnets-api.opensea.io/api/v1/assets?token_ids=1140991&asset_contract_addresses=0xf5de760f2e916647fd766B4AD9E85ff943cE3A2b&token_ids=278&asset_contract_addresses=0x932Ca55B9Ef0b3094E8Fa82435b3b4c50d713043`, {
-const resp = await fetch(`https://testnets-api.opensea.io/api/v1/assets?${queryParams}`, {
+console.log(`calling https://testnets-api.opensea.io/api/v1/assets?limit=30&${queryParams}`)
+const resp = await fetch(`https://testnets-api.opensea.io/api/v1/assets?limit=30&${queryParams}`, {
 method: 'GET',
 headers: {
-  Accept: "application/json"
+  Accept: "application/json",
+  'X-API-KEY': OPENSEA_KEY
 },
 })
 if (!resp.ok) console.log('ERROR' + resp.status)
-// bug will show up here b/c if you searched for [0xABC, 3] and [0xBCD, 4] OpenSea will return you [0xABC, 4] and [0xBCD, 3] as well
+
 const data = await resp.json()
+console.log(data.assets)
+if(data.assets.length == 30) console.error("HIT 30 ASSET API CALL LIMIT: contact one of the Summon people and tell them you saw this error -Brent")
+
+// bug will show up here b/c if you searched for [0xABC, 3] and [0xBCD, 4] OpenSea will return you [0xABC, 4] and [0xBCD, 3] as well, so I'm filtering stuff
+const filteredData:any = data.assets.filter((asset:any) => {
+  const assetToken: Array<string | number> = [asset.asset_contract.address, +asset.token_id]
+  console.log(assetToken)
+  Tokens.forEach(token => {
+    return (token[0] == assetToken[0] && token[1] == assetToken[1])
+  })
+})
+
+console.log(filteredData)
 
 
 
