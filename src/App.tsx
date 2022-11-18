@@ -19,10 +19,11 @@ import getSummonAddress from './helpers/getSummonAddress';
 
 function App() {
 
-  const store = useState<{connection: IConnection, summonAddress: string, uri: string, view: string, lendData: any}>({
+  const store = useState<{connection: IConnection, summonAddress: string, uri: string, uriValid: boolean, view: string, lendData: any}>({
     connection: {provider: undefined, signer: undefined, walletAddress: "", chainID: 0},
     summonAddress: "",
     uri: "",
+    uriValid: true,
     view: 'lend',
     lendData: {
       started: false,
@@ -36,7 +37,7 @@ function App() {
     }
   })
   const [state, setState] = store
-  const {connection, summonAddress, uri, view} = state
+  const {connection, summonAddress, uri, uriValid, view} = state
   const {provider, signer, walletAddress, chainID} = connection
   
   // const [uri, setUri] = useState<any>("") // wallet connect URI
@@ -47,12 +48,12 @@ function App() {
   }
   
   
-  
+  useEffect(() => {
   const onUriChange = async () => {
+    let uriValid = (uri.length >= 12 && uri.startsWith('wc:') || uri.length == 0) // 12 is random i didnt actually look that up
+    setState({...state, uriValid: uriValid })
+    
     if(!uri) return // called on component did mount, so there will have to return for the times there is not a uri
-    if(!uri.startsWith("wc:")) {
-      console.error("onUriChange was called, but the URI doesn't start with wc:")
-    }
     if(!signer || !summonAddress) {
       console.error("onUriChange was called, but it's missing the signer or summon address")
       return
@@ -164,9 +165,10 @@ function App() {
 
 console.log(connector)
 
-} //end onUriChange
+} 
+onUriChange() 
 
-useEffect(() => {onUriChange()}, [uri])
+}, [uri])
 
 
 
@@ -216,9 +218,9 @@ const testFunc = async () => {
 
         
     <div className={view == "borrow" ? "" : "invisible"}>
-
       <div className={summonAddress != "needs" ? "" : "invisible"}>
-        <input type="text" value={`${uri}`} onChange={(e) => setState({...state, uri: e.target.value})} />
+        <br /> <br />
+        <input type="text" className={uriValid ? "" : "invalidInput"} placeholder="paste connection link" value={`${uri}`} onChange={(e) => setState({...state, uri: e.target.value})} />
         <NFTList store={store} isSummon={true} />
       </div>
       <div className={summonAddress == "needs" ? "" : "invisible"}>
