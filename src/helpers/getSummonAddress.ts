@@ -31,12 +31,15 @@ async function getSummonAddress(connection: IConnection): Promise<string> {
 
   const SummonManager = new ethers.Contract(ManagerAddress, ManagerABI, signer)
   const SummonVaults = SummonManager.filters.SummonCreated(walletAddress)
-  const AllVaultsLogs = await SummonManager.queryFilter(SummonVaults, -1000, "latest");
-  // const VaultsForAddress = AllVaultsLogs.filter(logs => )
+  const AllVaultsLogs = await SummonManager.queryFilter(SummonVaults, -10000, "latest");
+  console.dir(AllVaultsLogs)
+  const VaultsForAddress = AllVaultsLogs.filter(log => log?.args?.owner == walletAddress)
+  if(VaultsForAddress == undefined) return "error"
+  if(VaultsForAddress.length > 1) console.error("multiple summmons deployed, returning the first one")
+  if(VaultsForAddress.length < 1) return "needs"
   
-
+  return VaultsForAddress[0].args?.summonAddress
   
-  return "needs"
   // return summonAddress // returns summon address or "needs"
 }
 
