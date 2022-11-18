@@ -60,6 +60,7 @@ const Lending = (props: any) => {
       <div className="lendingTo">to</div>
       <input className={toAddressValid ? "" : "invalidInput"} type="text" placeholder='Ex: 0xABC, ric.eth' value={localToAddress} onChange={handleAddress}/>
         <Button text="lend NFT" onClick={handleLend} bright invisible={lendingStatus != "lend"}/> 
+        <Button text="approving" invisible={lendingStatus != "approving"}/> 
         <Button text="lending" invisible={lendingStatus != "lending"}/> 
         <Button text="return home" onClick={handleBack} bright invisible={lendingStatus != "lended"}/> 
     </div>

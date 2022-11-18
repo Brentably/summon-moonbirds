@@ -179,7 +179,7 @@ useEffect(()=> {
     setState({...state, connection: {...newConnection}})
 
     //maybe move this to another useEffect
-    let summonAddress:string = await getSummonAddress(newConnection.walletAddress, newConnection.chainID)
+    let summonAddress:string = await getSummonAddress(newConnection)
     setState({...state, connection: {...newConnection}, summonAddress: summonAddress}) //set states are async but destructuring should take care of any issues
   }
   thisPatternIsStupid()
