@@ -13,6 +13,7 @@
 }
 .invisible {
   display: none;
+  height: none;
 }
 
 body {

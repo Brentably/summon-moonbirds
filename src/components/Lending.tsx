@@ -19,14 +19,13 @@ const Lending = (props: any) => {
     // setState({...state, lendData: {...lendData, toAddress: e.target.value}})
   }
 
-  async function handleClick() {
+  async function handleLend() {
     // toAddress: string, tokenAddress: string, tokenId: number, connection: IConnection
-    console.log("lending")
     if (!toAddressValid) console.error("to address is not valid")
 
 
 
-    lend(localToAddress, tokenAddress, tokenId, connection)
+    lend(localToAddress, tokenAddress, tokenId, connection, setLendingStatus)
   }
   
   function handleBack() {
@@ -41,8 +40,8 @@ const Lending = (props: any) => {
     setToAddressValid(valid)
   }, [localToAddress])
 
-
-
+  const lendingHeaderText = (lendingStatus == "lended") ? "lended✅" : lendingStatus == "approving" ? "lend" : lendingStatus;
+  const processing:boolean = (lendingStatus == "lending")
   return (
     <div className="LendingPage">
       <div className="lendingHeader">
@@ -52,7 +51,7 @@ const Lending = (props: any) => {
         <div className="lendingHeaderTitle">summon</div>
         
       </div>
-      <div className="lendingStatusHeader">{lendingStatus}</div>
+      <div className="lendingStatusHeader">{lendingHeaderText}</div>
       <div className="lendingNFTCard">
           {isVideo ? <video className="NFTCardImage"><source src={image} type="video/mp4" /></video> : <img className="lendNFTCardImage" src={image || defaultNFTicon}/> }
           <div className="lendingNFTTitle">{NFTTitle}</div>
@@ -60,7 +59,9 @@ const Lending = (props: any) => {
       </div>
       <div className="lendingTo">to</div>
       <input className={toAddressValid ? "" : "invalidInput"} type="text" placeholder='Ex: 0xABC, ric.eth' value={localToAddress} onChange={handleAddress}/>
-      <Button text="lend NFT" onClick={handleClick} bright/> 
+        <Button text="lend NFT" onClick={handleLend} bright invisible={lendingStatus != "lend"}/> 
+        <Button text="lending" invisible={lendingStatus != "lending"}/> 
+        <Button text="return home" onClick={handleBack} bright invisible={lendingStatus != "lended"}/> 
     </div>
   )
 }
