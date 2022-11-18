@@ -41,9 +41,6 @@ const Lending = (props: any) => {
   }, [localToAddress])
 
 
-  // FOR DEV
-  handleClick()
-
 
   return (
     <div className="LendingPage">
