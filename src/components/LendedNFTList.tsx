@@ -50,8 +50,8 @@ function LendedNFTList(props: {store:any}) {
  
 
   if(!walletAddress) return null
+  if(LendedNFTBalance?.length == 0) return <h1>No NFT's Found</h1>
   if(LendedNFTBalance == undefined) return <h1>Loading Lended NFT's</h1>
-  if(LendedNFTBalance.length == 0) return <h1>No NFT's Found</h1>
 
    
    const listitems = LendedNFTBalance.map(asset => {
