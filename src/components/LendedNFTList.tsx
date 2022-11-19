@@ -4,6 +4,7 @@ import getNFTBalance from "../helpers/getNFTBalance"
 
 import IConnection from '../types/types'
 import LendNFTCard from './LendNFTCard'
+import NFTCard from './NFTCard'
 
 
 // lets look at every safeTransferFrom(SummonManager,...) (1 call), then query all the data for every token...
@@ -44,20 +45,40 @@ function LendedNFTList(props: {store:any}) {
   if(LendedNFTBalance == undefined) return <h1>Loading Lended NFT's</h1>
   if(LendedNFTBalance.length == 0) return <h1>No NFT's Found</h1>
   
+   function handleRetrieve() {
+    console.log(`retrieve`)
+   }
+
+
    
+   const listitems = LendedNFTBalance.map(asset => {
+    console.log(asset)
+    const {image_url: image, name, token_id, collection: {name: collectionName}} = asset
+    const NFTTitle = name ? `${name} #${token_id}` : `#${token_id}`
+    const isVideo = image && image.endsWith(".mp4")
+    return <NFTCard key={asset.asset_contract.address+token_id} icon={image} isVideo={isVideo} NFTTitle={NFTTitle} collectionName={collectionName} buttonText="retrieve" onButton={handleRetrieve} />
+   })
+
+
+
+
   //  const listitems = NFTBalance.map(collection => {
      
   //    const listitemstest = collection.nft_data.map((NFT:any) => {
   //    return (
-  //    <LendNFTCard key={`${NFT.token_id}+${collection.contract_address}`} NFTitem={NFT} NFTcollection={collection} store={store}/>
+  //    <NFTCard icon={image} isVideo={isVideo} NFTTitle={NFTTitle} collectionName={collectionName} buttonText="lend" onButton={handleClick} bright/>
   //  )})
   //    return listitemstest
   //  })
-  //  return (
-  //    <>
-  //    {listitems}
-  //    </>
-  //  )
+   return (
+     <>
+     {listitems}
+     </>
+   )
+
+
+
+
 
 
   return <h1>lended NFT's here</h1>

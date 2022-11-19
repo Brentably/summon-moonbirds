@@ -78,8 +78,10 @@ const queryParams = getOpenSeaParamsFromTokens(LendedTokens)
 
 // const resp = await fetch(`https://testnets-api.opensea.io/api/v1/assets?token_ids=1140991&asset_contract_addresses=0xf5de760f2e916647fd766B4AD9E85ff943cE3A2b&token_ids=278&asset_contract_addresses=0x932Ca55B9Ef0b3094E8Fa82435b3b4c50d713043`, {
 if(queryParams.length == 0) return
-console.log(`calling https://testnets-api.opensea.io/api/v1/assets?limit=30&${queryParams}`)
-const resp = await fetch(`https://testnets-api.opensea.io/api/v1/assets?limit=30&${queryParams}`, {
+
+const endpoint = chainID == 5 ? `https://testnets-api.opensea.io/api/v1/assets?limit=30&${queryParams}` : `https://api.opensea.io/api/v1/assets?limit=30&${queryParams}`
+
+const resp = await fetch(endpoint, {
 method: 'GET',
 headers: {
   Accept: "application/json",
