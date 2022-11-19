@@ -19,31 +19,53 @@ async function getLendedNFTBalance(connection: IConnection) {
   const retrieveLogs = await SummonManager.queryFilter(filterRetrieve, -10000, "latest");
   
   // returns nice arrays of lender, summon, tokenAddress, and tokenId
-  const filteredLendLogs = lendLogs.map(elog => elog.args && ({...elog.args, tokenId: elog.args.tokenId.toNumber(), eventType: "lend"}))
-  const filteredRetrieveLogs = retrieveLogs.map(elog => elog.args && ({...elog.args, tokenId: elog.args.tokenId.toNumber(), eventType: "retrieve"}))
+  const filteredLendLogs = lendLogs.map(elog => elog.args && ({...elog.args, tokenId: `${elog.args.tokenId.toNumber()}`, eventType: "lend"}))
+  const filteredRetrieveLogs = retrieveLogs.map(elog => elog.args && ({...elog.args, tokenId: `${elog.args.tokenId.toNumber()}`, eventType: "retrieve"}))
   console.log(`${filteredLendLogs.length - filteredRetrieveLogs.length} tokens currently lended out`)
 
   const TokenEventsForAddress:Array<any> = filteredLendLogs.concat(filteredRetrieveLogs) // all events
   // console.log(TokenEventsForAddress)
   
-  let Tokens = new Set<Array<string | number>>()
+  type TokensByAddress = {
+    tokenAddress: { tokenid: number} // move count
+  }
+  // tokens is supposed to be an array of all the tokens. increment the move count by 
+  let AllTokens:any = new Object()
   for(let tokenEvent of TokenEventsForAddress) {
     let {lender, summon, tokenAddress, tokenId, eventType} = tokenEvent
-    let hasToken = Tokens.has([tokenAddress, tokenId])
-    hasToken ? Tokens.delete([tokenAddress, tokenId]) : Tokens.add([tokenAddress, tokenId])
-    console.log(Tokens)
+    console.log(tokenEvent)
+    
+    let hasTokenAddress = AllTokens[tokenAddress]
+    if(!hasTokenAddress) AllTokens[tokenAddress] = {[tokenId]: 1}
+
+    let hasToken = AllTokens[tokenAddress][tokenId]
+    if(!hasToken) AllTokens[tokenAddress][tokenId] = 1
+
+    if(hasToken && hasTokenAddress) AllTokens[tokenAddress][tokenId] += 1
+
+
   }
+console.log(AllTokens)
+let LendedTokens:any[] = new Array()
+
+for(let address in AllTokens) {
+  for(let tokenId in AllTokens[address]) {
+    if(AllTokens[address][tokenId] % 2) LendedTokens.push([address, tokenId])
+  }
+}
+
+console.log(LendedTokens)
+
 // so we have a list of collection addresses and tokenId's. now we need the external data, so we have to make either 1 api call to opensea (where you can search for multiple collections and tokens at the same time. Or we have to iterate through the tokens / addreses and make multiple api calls.
 
 // until now I have built everything to be composable with any evm chain
 
-const options = {method: 'GET'};
 const OPENSEA_KEY = getApiKey("opensea")
 
-function getOpenSeaParamsFromTokens(Tokens: Set<Array<string | number>>) {
+function getOpenSeaParamsFromTokens(LendedTokens: Array<Array<string>>) {
 
 let stringArr: string[] = []
-Tokens.forEach(token => {
+LendedTokens.forEach(token => {
 stringArr.push(`asset_contract_addresses=${token[0]}`)
 stringArr.push(`token_ids=${token[1]}`)
 })
@@ -52,9 +74,10 @@ return stringArr.join('&')
 
 }
 
-const queryParams = getOpenSeaParamsFromTokens(Tokens)
+const queryParams = getOpenSeaParamsFromTokens(LendedTokens)
 
 // const resp = await fetch(`https://testnets-api.opensea.io/api/v1/assets?token_ids=1140991&asset_contract_addresses=0xf5de760f2e916647fd766B4AD9E85ff943cE3A2b&token_ids=278&asset_contract_addresses=0x932Ca55B9Ef0b3094E8Fa82435b3b4c50d713043`, {
+if(queryParams.length == 0) return
 console.log(`calling https://testnets-api.opensea.io/api/v1/assets?limit=30&${queryParams}`)
 const resp = await fetch(`https://testnets-api.opensea.io/api/v1/assets?limit=30&${queryParams}`, {
 method: 'GET',
@@ -71,14 +94,11 @@ if(data.assets.length == 30) console.error("HIT 30 ASSET API CALL LIMIT: contact
 
 // bug will show up here b/c if you searched for [0xABC, 3] and [0xBCD, 4] OpenSea will return you [0xABC, 4] and [0xBCD, 3] as well, so I'm filtering stuff
 const filteredData:any = data.assets.filter((asset:any) => {
-  const assetToken: Array<string | number> = [asset.asset_contract.address, +asset.token_id]
-  console.log(assetToken)
-  Tokens.forEach(token => {
-    return (token[0] == assetToken[0] && token[1] == assetToken[1])
-  })
+  const assetToken: Array<string> = [asset.asset_contract.address, asset.token_id]
+  return LendedTokens.some(lendedToken => lendedToken.join().toLowerCase() == assetToken.join().toLowerCase())
 })
 
-console.log(filteredData)
+
 
 
 
