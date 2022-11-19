@@ -1,6 +1,6 @@
 @font-face {
   font-family: 'SF Pro Rounded';
-  src: local(../fonts/SF-Pro-Rounded/SF-Pro-Rounded-Regular.otf);
+  src: url(./fonts/SF-Pro-Rounded/SF-Pro-Rounded-Regular.otf);
 }
 
 .App {
