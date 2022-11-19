@@ -88,7 +88,7 @@ img.NFTCardImage, video.NFTCardImage {
 div.NFTCardContainer {
   display: flex;
   flex-direction: row;
-  margin: 30px 20px 30px 20px;
+  margin: 15px 10px;
   justify-content: space-between;
   /* align-items: center; */
 }
@@ -167,7 +167,6 @@ div.collectionTitleText {
 .backgroundBright {
   background: #2A3FFE;
 }
-
 
 .LendingPage {
   min-height: 844px;
@@ -281,6 +280,19 @@ letter-spacing: 0.02em;
 color: #181C40;
 }
 
+.walletConnectContainer {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 75px;
+}
+
+.walletConnectLogo {
+  max-width: 70px;
+  max-height: 40px;
+  align-self: center;
+  padding: 35px;
+}
+
 input[type=text] {
  border: 2px solid #8F91A4;
  border-radius: 8px;
@@ -293,6 +305,15 @@ input[type=text] {
 input.invalidInput {
   border: 2px solid red;
 }
+
+
+
+.tabContainer {
+  display: flex;
+  flex-direction: column;
+  margin-top: 75px;
+} 
+
 
 /* 
 
@@ -326,6 +347,7 @@ div.borrow {
   font-size: calc(10px + 2vmin);
   color: white;
 }
+
 
 .App-link {
   color: #61dafb;

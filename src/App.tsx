@@ -10,7 +10,7 @@ import Header from './components/Header';
 import DeploySummon from './components/DeploySummon';
 import Lending from './components/Lending'
 import getSummonAddress from './helpers/getSummonAddress';
-
+import walletConnectLogo from './template/walletConnectHQ.png'
 
 
 
@@ -207,7 +207,7 @@ const testFunc = async () => {
 
     </div>
 
-    <div className={view == "lend" ? "" : "invisible"}>
+    <div className={view == "lend" ? "tabContainer" : "invisible"}>
 
       <LendedNFTList store={store} />
       
@@ -217,12 +217,14 @@ const testFunc = async () => {
 
         
     <div className={view == "borrow" ? "" : "invisible"}>
-      <div className={summonAddress != "needs" ? "" : "invisible"}>
-        <br /> <br />
-        <input type="text" className={uriValid ? "" : "invalidInput"} placeholder="paste connection link" value={`${uri}`} onChange={(e) => setState({...state, uri: e.target.value})} />
+      <div className={summonAddress != "needs" ? "tabContainer" : "invisible"}>
+        <div className="walletConnectContainer">
+          <img src={walletConnectLogo} className="walletConnectLogo" />
+          <input type="text" className={uriValid ? "" : "invalidInput"} placeholder="Paste Connection Link" value={`${uri}`} onChange={(e) => setState({...state, uri: e.target.value})} />
+        </div>
         <NFTList store={store} isSummon={true} />
       </div>
-      <div className={summonAddress == "needs" ? "" : "invisible"}>
+      <div className={summonAddress == "needs" ? "tabContainer" : "invisible"}>
         <DeploySummon store={store}/>
       </div>
     </div>
