@@ -1,3 +1,8 @@
+@font-face {
+  font-family: 'SF Pro Rounded';
+  src: local(../fonts/SF-Pro-Rounded/SF-Pro-Rounded-Regular.otf);
+}
+
 .App {
   text-align: center;
   min-height: 844px;
