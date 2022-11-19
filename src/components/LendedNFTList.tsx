@@ -16,6 +16,7 @@ function LendedNFTList(props: {store:any}) {
   const {walletAddress, chainID} = connection
   const [status, setStatus] = useState<string>("retrieve")
   const [LendedNFTBalance, setLendedNFTBalance] = useState<Array<any> | undefined>(undefined)
+  const [loading, setLoading] = useState<boolean>(true)
   
  
  
@@ -27,16 +28,15 @@ function LendedNFTList(props: {store:any}) {
      
      async function updateNFTs() {
       if(!walletAddress || !chainID) return
-       const NFTBalance:(any[] | undefined) = await getLendedNFTBalance(connection)
+       const NFTBalance:any[] = await getLendedNFTBalance(connection)
        setLendedNFTBalance(NFTBalance)
- 
- 
-      //  console.log(NFTBalance)
+       console.log(NFTBalance)
  
      }
      updateNFTs()
    }, [walletAddress, chainID])
  
+
  
    function handleRetrieve(contractAddress:string, tokenId:string) {
 
@@ -48,10 +48,12 @@ function LendedNFTList(props: {store:any}) {
 
  
  
-
   if(!walletAddress) return null
-  if(LendedNFTBalance?.length == 0) return <h1>No NFT's Found</h1>
-  if(LendedNFTBalance == undefined) return <h1>Loading Lended NFT's</h1>
+  if(!LendedNFTBalance) return <h1>Loading Lended NFT's</h1>
+  if(LendedNFTBalance.length == 0) return null
+  // if(typeof LendedNFTBalance == 'string') return <h1>No NFT's Found</h1>
+
+
 
    
    const listitems = LendedNFTBalance.map(asset => {
@@ -60,20 +62,11 @@ function LendedNFTList(props: {store:any}) {
     const NFTTitle = name ? `${name} #${token_id}` : `#${token_id}`
     const isVideo = image && image.endsWith(".mp4")
 
-    return <NFTCard key={asset.asset_contract.address+token_id} icon={image} isVideo={isVideo} NFTTitle={NFTTitle} collectionName={collectionName} buttonText="retrieve" onButton={() => handleRetrieve(asset.asset_contract.address, token_id)} />
+    return <NFTCard key={asset.asset_contract.address+token_id} icon={image} isVideo={isVideo} NFTTitle={NFTTitle} collectionName={collectionName} buttonText={status} onButton={() => memoizedRetreive(asset.asset_contract.address, token_id)} />
    })
 
 
 
-
-  //  const listitems = NFTBalance.map(collection => {
-     
-  //    const listitemstest = collection.nft_data.map((NFT:any) => {
-  //    return (
-  //    <NFTCard icon={image} isVideo={isVideo} NFTTitle={NFTTitle} collectionName={collectionName} buttonText="lend" onButton={handleClick} bright/>
-  //  )})
-  //    return listitemstest
-  //  })
    return (
      <>
      {listitems}

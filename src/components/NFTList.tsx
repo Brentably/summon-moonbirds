@@ -31,7 +31,7 @@ function NFTList(props: {store:any, isSummon: boolean}) {
       setNFTBalance(NFTBalance)
 
 
-      console.log(NFTBalance)
+
 
     }
     updateNFTs()
@@ -41,10 +41,10 @@ function NFTList(props: {store:any, isSummon: boolean}) {
     
 
 
-  if(address == "needs") return <h1>NO Summon Found</h1>
+  if(address == "needs") return <h1 style={{textAlign: "left"}}>NO Summon Found</h1>
   if(!address) return <h1>connect wallet</h1>
   if(!NFTBalance) return <h1>Loading NFTs</h1>
-  if(NFTBalance.length < 1) return <h1>no nft's :/</h1>
+  if(NFTBalance.length < 1) return <h3 className="sub">No NFTs Found</h3>
   
 
   

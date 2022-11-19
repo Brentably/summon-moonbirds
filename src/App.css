@@ -10,11 +10,18 @@
   flex-direction: column;
 }
 
+h3.sub {
+ text-align: left;
+ margin-left: 10px;
+ font-family: 'SF Pro Rounded';
+ letter-spacing: 0.02em
+}
+
 .flex-container {
   display: flex;
   justify-content: center;
   
-  /* align-items: stretch; */
+  align-items: stretch;
 }
 .invisible {
   display: none;
@@ -207,10 +214,10 @@ width: calc(100% - 40px);
 }
 
 div.backButton {
-  width: 40px;
-  height: 40px;
+  width: 50px;
+  height: 50px;
   border-radius: 100%;
-  background-color: #bebebe;
+  /* background-color: #bebebe; */
   display: flex;
   justify-content: center;
   align-items: center;

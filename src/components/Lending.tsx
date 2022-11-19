@@ -10,7 +10,7 @@ const Lending = (props: any) => {
   const { started, tokenAddress, tokenId, image, name, collectionName, NFTTitle, isVideo} = lendData
   const [lendingStatus, setLendingStatus] = useState<string>("lend")
   // const [localToAddress, setLocalToAddress] = useState<string>('0x6A5a2a99A9B4c732fFfcccB9D9484c0Fe3a21F2e')
-  const [localToAddress, setLocalToAddress] = useState<string>('0x1c7e51D7481fb83249C4e60d87ed4C937A23cD37')
+  const [localToAddress, setLocalToAddress] = useState<string>('')
   const [toAddressValid, setToAddressValid] = useState<boolean>(false)
   const handleAddress = (e:any) => {
     setLocalToAddress(e.target.value)

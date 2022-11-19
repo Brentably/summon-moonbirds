@@ -5,7 +5,7 @@ import getApiKey from "./getApiKey"
 import getContracts from "./getContracts"
 
 
-async function getLendedNFTBalance(connection: IConnection) {
+async function getLendedNFTBalance(connection: IConnection): Promise<any[]> {
 
   // First part is finding the tokens that are currently lended out. We do this by searching for on chain log events
   // and then do some js magic to get a set of lended tokens at the bottom.
@@ -54,6 +54,7 @@ for(let address in AllTokens) {
   }
 }
 
+if(LendedTokens.length == 0) return LendedTokens
 // console.log(LendedTokens)
 
 // so we have a list of collection addresses and tokenId's. now we need the external data, so we have to make either 1 api call to opensea (where you can search for multiple collections and tokens at the same time. Or we have to iterate through the tokens / addreses and make multiple api calls.
@@ -77,7 +78,7 @@ return stringArr.join('&')
 const queryParams = getOpenSeaParamsFromTokens(LendedTokens)
 
 // const resp = await fetch(`https://testnets-api.opensea.io/api/v1/assets?token_ids=1140991&asset_contract_addresses=0xf5de760f2e916647fd766B4AD9E85ff943cE3A2b&token_ids=278&asset_contract_addresses=0x932Ca55B9Ef0b3094E8Fa82435b3b4c50d713043`, {
-if(queryParams.length == 0) return
+
 
 const endpoint = chainID == 5 ? `https://testnets-api.opensea.io/api/v1/assets?limit=30&${queryParams}` : `https://api.opensea.io/api/v1/assets?limit=30&${queryParams}`
 
@@ -100,7 +101,7 @@ const filteredData:any[] = data.assets.filter((asset:any) => {
   return LendedTokens.some(lendedToken => lendedToken.join().toLowerCase() == assetToken.join().toLowerCase())
 })
 
-
+  
   return filteredData
 }
 
