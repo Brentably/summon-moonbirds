@@ -13,6 +13,7 @@ function DeploySummon(props: {store: any}) {
   
   async function handleDeploy() {
     const SummonManager = new ethers.Contract(ManagerAddress, ManagerABI, signer)
+    console.log((await SummonManager.estimateGas.CreateNewSummon(walletAddress)).toNumber())
     let tx = await SummonManager.CreateNewSummon(walletAddress)
     setDeployStatus("deploying")
     let tx_r = await tx.wait()

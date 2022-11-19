@@ -4,10 +4,12 @@ import leftArrow from '../template/leftArrow.png'
 import Button from "./Button"
 import lend from '../walletFunctions/lend'
 import Loader from "./Loader"
+import { ethers } from "ethers"
 
 const Lending = (props: any) => {
   const [state, setState] = props.store
   const {lendData, connection} = state
+  const {provider} = connection
   const { started, tokenAddress, tokenId, image, name, collectionName, NFTTitle, isVideo} = lendData
   const [lendingStatus, setLendingStatus] = useState<string>("lend")
   // const [localToAddress, setLocalToAddress] = useState<string>('0x6A5a2a99A9B4c732fFfcccB9D9484c0Fe3a21F2e')
@@ -23,10 +25,16 @@ const Lending = (props: any) => {
   async function handleLend() {
     // toAddress: string, tokenAddress: string, tokenId: number, connection: IConnection
     if (!toAddressValid) console.error("to address is not valid")
+    const MainnetProvider = new ethers.providers.JsonRpcProvider('https://eth-mainnet.g.alchemy.com/v2/ZExueRaApEKiFWwbbmcqyzPgX8xUWOjM');
 
 
+    let resolvedAddress:string|null = localToAddress.endsWith('.eth') ? await MainnetProvider.resolveName(localToAddress) : localToAddress
+    if(resolvedAddress == null) {
+      setToAddressValid(false)
+      return
+    }
 
-    lend(localToAddress, tokenAddress, tokenId, connection, setLendingStatus)
+    lend(resolvedAddress, tokenAddress, tokenId, connection, setLendingStatus)
   }
   
   function handleBack() {
@@ -37,7 +45,7 @@ const Lending = (props: any) => {
   //checks if the toAddress is Valid
   useEffect(() => {
 
-    let valid = (localToAddress.length == 42 && localToAddress.startsWith('0x') || localToAddress.length == 0)
+    let valid = (localToAddress.length == 42 && localToAddress.startsWith('0x') || localToAddress.length == 0 || localToAddress.endsWith('.eth'))
     setToAddressValid(valid)
   }, [localToAddress])
 
