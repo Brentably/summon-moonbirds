@@ -2,6 +2,7 @@ import getContracts from '../helpers/getContracts'
 import {ethers} from 'ethers'
 import Button from './Button'
 import {useState, useCallback} from 'react'
+import Loader from './Loader'
 
 
 function DeploySummon(props: {store: any}) {
@@ -22,10 +23,11 @@ function DeploySummon(props: {store: any}) {
   const memoizedDeploy = useCallback(handleDeploy, [connection])
 
   if(chainID == 0) return null;
+
   return (
     <div className='flex-container'>
-      <Button text="deploy summon wallet" onClick={memoizedDeploy} bright invisible={deployStatus != "deploy"} />
-      <Button text="deploying" invisible={deployStatus != "deploying"} />
+      {deployStatus == "deploy" && <Button text="deploy summon wallet" onClick={memoizedDeploy} bright />}
+      {deployStatus == "deploying" && <Loader />}
     </div>
   )
 }

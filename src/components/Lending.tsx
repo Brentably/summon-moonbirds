@@ -25,9 +25,8 @@ const Lending = (props: any) => {
   async function handleLend() {
     // toAddress: string, tokenAddress: string, tokenId: number, connection: IConnection
     if (!toAddressValid) console.error("to address is not valid")
+    
     const MainnetProvider = new ethers.providers.JsonRpcProvider('https://eth-mainnet.g.alchemy.com/v2/ZExueRaApEKiFWwbbmcqyzPgX8xUWOjM');
-
-
     let resolvedAddress:string|null = localToAddress.endsWith('.eth') ? await MainnetProvider.resolveName(localToAddress) : localToAddress
     if(resolvedAddress == null) {
       setToAddressValid(false)
