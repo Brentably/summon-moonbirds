@@ -374,3 +374,43 @@ div.borrow {
     transform: rotate(360deg);
   }
 }
+/* loader bullshit here */
+.NFTCardLoader {
+ flex-grow: 1
+}
+
+.LoaderContainer {
+  align-self: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.LoaderInner, .LoaderOuter {
+  position: absolute;
+}
+
+.LoaderInner {
+  animation: inner 1.5s infinite linear;
+}
+.LoaderOuter {
+  animation: outer 3s infinite linear;
+}
+
+@keyframes inner {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(-359deg);
+  }
+}
+
+@keyframes outer {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(359deg);
+  }
+}

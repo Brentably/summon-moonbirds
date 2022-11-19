@@ -11,6 +11,7 @@ import DeploySummon from './components/DeploySummon';
 import Lending from './components/Lending'
 import getSummonAddress from './helpers/getSummonAddress';
 import walletConnectLogo from './template/walletConnectHQ.png'
+import Loader from './components/Loader';
 
 
 
@@ -213,7 +214,6 @@ const testFunc = async () => {
       
       <NFTList store={store} isSummon={false} />
     </div>
-
 
         
     <div className={view == "borrow" ? "" : "invisible"}>

@@ -5,6 +5,7 @@ import getNFTBalance from "../helpers/getNFTBalance"
 import IConnection from '../types/types'
 import retrieve from '../walletFunctions/retrieve'
 import LendNFTCard from './LendNFTCard'
+import Loader from './Loader'
 import NFTCard from './NFTCard'
 
 
@@ -16,8 +17,7 @@ function LendedNFTList(props: {store:any}) {
   const {walletAddress, chainID} = connection
   const [status, setStatus] = useState<string>("retrieve")
   const [LendedNFTBalance, setLendedNFTBalance] = useState<Array<any> | undefined>(undefined)
-  const [loading, setLoading] = useState<boolean>(true)
-  
+  const [payload, setPayload] = useState<any[]>([])
  
  
   //  //instead of useNFTBalance being a hook that you pass the setNFTBalance function to, turn it into an async helper function called getNFTBalance(walletAddress, chainID)
@@ -41,6 +41,7 @@ function LendedNFTList(props: {store:any}) {
    function handleRetrieve(contractAddress:string, tokenId:string) {
 
     retrieve(contractAddress, tokenId, connection, setStatus)
+    setPayload([contractAddress, tokenId])
   }
   const memoizedRetreive = useCallback(handleRetrieve, [connection])
 
@@ -49,7 +50,7 @@ function LendedNFTList(props: {store:any}) {
  
  
   if(!walletAddress) return null
-  if(!LendedNFTBalance) return <h1>Loading Lended NFT's</h1>
+  if(!LendedNFTBalance) return <Loader />
   if(LendedNFTBalance.length == 0) return null
   // if(typeof LendedNFTBalance == 'string') return <h1>No NFT's Found</h1>
 
@@ -58,11 +59,12 @@ function LendedNFTList(props: {store:any}) {
    
    const listitems = LendedNFTBalance.map(asset => {
     // console.log(asset)
-    const {image_url: image, name, token_id, collection: {name: collectionName}} = asset
+    const {image_url: image, name, token_id, collection: {name: collectionName}, asset_contract: {address: tokenAddress}} = asset
     const NFTTitle = name ? `${name} #${token_id}` : `#${token_id}`
     const isVideo = image && image.endsWith(".mp4")
 
-    return <NFTCard key={asset.asset_contract.address+token_id} icon={image} isVideo={isVideo} NFTTitle={NFTTitle} collectionName={collectionName} buttonText={status} onButton={() => memoizedRetreive(asset.asset_contract.address, token_id)} />
+    return <NFTCard key={tokenAddress+token_id} icon={image} isVideo={isVideo} NFTTitle={NFTTitle} collectionName={collectionName} buttonText={"retrieve"} onButton={() => memoizedRetreive(tokenAddress, token_id)} loader={(tokenAddress == payload[0] && token_id == payload[1]) && status == "retrieving"}/>
+    
    })
 
 

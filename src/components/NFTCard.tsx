@@ -1,9 +1,10 @@
 import Button from "./Button"
 import defaultNFTicon from '../template/defaultNFTicon.png'
 import { MouseEventHandler } from "react";
+import SmallLoader from "./SmallLoader";
 
-function NFTCard(props: {icon: string, isVideo?: boolean, NFTTitle: string, collectionName: string, buttonText: string, onButton?: MouseEventHandler<HTMLDivElement>, bright?: boolean, nobutton?:boolean}) {
- const {icon, isVideo, NFTTitle, collectionName, buttonText, onButton, bright, nobutton} = props;
+function NFTCard(props: {icon: string, isVideo?: boolean, NFTTitle: string, collectionName: string, buttonText: string, onButton?: MouseEventHandler<HTMLDivElement>, bright?: boolean, nobutton?:boolean, loader?:boolean}) {
+ const {icon, isVideo, NFTTitle, collectionName, buttonText, onButton, bright, nobutton, loader} = props;
 
 
 
@@ -21,7 +22,8 @@ function NFTCard(props: {icon: string, isVideo?: boolean, NFTTitle: string, coll
           <div className="collectionTitleText">{collectionName}</div>
         </div> 
       </div>
-      {!nobutton && <Button text={buttonText} onClick={onButton} bright={bright}/>}
+      {!nobutton && !loader && <Button text={buttonText} onClick={onButton} bright={bright}/>}
+      {loader && <SmallLoader/>}
     </div>
   )
 }

@@ -3,6 +3,7 @@ import defaultNFTicon from '../template/defaultNFTicon.png'
 import leftArrow from '../template/leftArrow.png'
 import Button from "./Button"
 import lend from '../walletFunctions/lend'
+import Loader from "./Loader"
 
 const Lending = (props: any) => {
   const [state, setState] = props.store
@@ -61,7 +62,8 @@ const Lending = (props: any) => {
       <input className={toAddressValid ? "" : "invalidInput"} type="text" placeholder='Ex: 0xABC, ric.eth' value={localToAddress} onChange={handleAddress}/>
         <Button text="lend NFT" onClick={handleLend} bright invisible={lendingStatus != "lend"}/> 
         <Button text="approving" invisible={lendingStatus != "approving"}/> 
-        <Button text="lending" invisible={lendingStatus != "lending"}/> 
+        {/* <Button text="lending" invisible={lendingStatus != "lending"}/>  */}
+        {lendingStatus == "lending" && <Loader/>}
         <Button text="return home" onClick={handleBack} bright invisible={lendingStatus != "lended"}/> 
     </div>
   )

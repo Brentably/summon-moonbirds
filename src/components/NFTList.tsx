@@ -4,6 +4,7 @@ import LendNFTCard from './LendNFTCard'
 import IConnection from '../types/types'
 import lend from '../walletFunctions/lend'
 import SummonNFTCard from './SummonNFTCard'
+import Loader from './Loader'
 
 
 //NFT list works to render a list of NFT's whether its NFT's in a wallet, or NFT's in a summon wallet
@@ -43,7 +44,7 @@ function NFTList(props: {store:any, isSummon: boolean}) {
 
   if(address == "needs") return <h1 style={{textAlign: "left"}}>NO Summon Found</h1>
   if(!address) return <h1>connect wallet</h1>
-  if(!NFTBalance) return <h1>Loading NFTs</h1>
+  if(!NFTBalance) return <Loader />
   if(NFTBalance.length < 1 && isSummon) return <h3 className="sub">No NFTs Found</h3>
   if(NFTBalance.length < 1) return <h3 className="sub">No NFTs Found, <a href="https://goerli-nfts.vercel.app/" target="_blank">mint Goerli NFT's here</a></h3>
   
