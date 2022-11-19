@@ -99,13 +99,7 @@ const filteredData:any = data.assets.filter((asset:any) => {
 })
 
 
-
-
-
-
-
-
-  return undefined
+  return filteredData
 }
 
 export default getLendedNFTBalance
