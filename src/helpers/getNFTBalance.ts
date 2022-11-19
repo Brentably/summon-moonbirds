@@ -7,8 +7,7 @@ async function getNFTBalance(address: string, chainID: number) {
 
   
   if(!chainID || !address) return
-    console.log("use NFT Balance is running, the chainID is: " + chainID)
-    console.log("use NFT Balance is running, the address is: " + address)
+    console.log(`use NFT Balance is running. chainID: ${chainID} address: ${address}`)
 
     const query = new URLSearchParams({
       "quote-currency": 'USD',
@@ -31,14 +30,14 @@ async function getNFTBalance(address: string, chainID: number) {
 
   if (!resp.ok) console.log('ERROR' + resp.status)
   const data = await resp.json()
-  console.log(data)
+  // console.log(data)
 
   //filtering balance data for NFT data
   const items:Array<any> = await data.data.items
   const filteredItems = await items.filter((item:any) => item.type == "nft")
 
 
-  console.log(filteredItems)
+  // console.log(filteredItems)
 
 
 

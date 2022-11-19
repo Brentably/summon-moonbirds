@@ -33,7 +33,7 @@ async function getLendedNFTBalance(connection: IConnection) {
   let AllTokens:any = new Object()
   for(let tokenEvent of TokenEventsForAddress) {
     let {lender, summon, tokenAddress, tokenId, eventType} = tokenEvent
-    console.log(tokenEvent)
+    // console.log(tokenEvent)
     
     let hasTokenAddress = AllTokens[tokenAddress]
     if(!hasTokenAddress) AllTokens[tokenAddress] = {[tokenId]: 1}
@@ -45,7 +45,7 @@ async function getLendedNFTBalance(connection: IConnection) {
 
 
   }
-console.log(AllTokens)
+// console.log(AllTokens)
 let LendedTokens:any[] = new Array()
 
 for(let address in AllTokens) {
@@ -54,7 +54,7 @@ for(let address in AllTokens) {
   }
 }
 
-console.log(LendedTokens)
+// console.log(LendedTokens)
 
 // so we have a list of collection addresses and tokenId's. now we need the external data, so we have to make either 1 api call to opensea (where you can search for multiple collections and tokens at the same time. Or we have to iterate through the tokens / addreses and make multiple api calls.
 
@@ -93,7 +93,7 @@ console.log(data.assets)
 if(data.assets.length == 30) console.error("HIT 30 ASSET API CALL LIMIT: contact one of the Summon people and tell them you saw this error -Brent")
 
 // bug will show up here b/c if you searched for [0xABC, 3] and [0xBCD, 4] OpenSea will return you [0xABC, 4] and [0xBCD, 3] as well, so I'm filtering stuff
-const filteredData:any = data.assets.filter((asset:any) => {
+const filteredData:any[] = data.assets.filter((asset:any) => {
   const assetToken: Array<string> = [asset.asset_contract.address, asset.token_id]
   return LendedTokens.some(lendedToken => lendedToken.join().toLowerCase() == assetToken.join().toLowerCase())
 })

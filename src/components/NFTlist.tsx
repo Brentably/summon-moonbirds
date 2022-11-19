@@ -1,6 +1,6 @@
 import React, {useCallback, useEffect, useState} from 'react'
 import getNFTBalance from "../helpers/getNFTBalance"
-import NFTCard from './NFTCard'
+import LendNFTCard from './LendNFTCard'
 import IConnection from '../types/types'
 import lend from '../walletFunctions/lend'
 
@@ -51,7 +51,7 @@ function NFTList(props: {store:any, isSummon: boolean}) {
     
     const listitemstest = collection.nft_data.map((NFT:any) => {
     return (
-    <NFTCard key={`${NFT.token_id}+${collection.contract_address}`} NFTitem={NFT} NFTcollection={collection} store={store}/>
+    <LendNFTCard key={`${NFT.token_id}+${collection.contract_address}`} NFTitem={NFT} NFTcollection={collection} store={store}/>
   )})
     return listitemstest
   })

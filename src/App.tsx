@@ -89,7 +89,6 @@ function App() {
   connector.on("connect", ()=> console.log('connect'))
 
   connector.on("session_request", (error, payload) => {
-    console.log('anything random')
     if (error) {
       throw error;
     }
@@ -189,7 +188,7 @@ useEffect(()=> {
 
 
 
-useEffect(() => {console.log(view)}, [view])
+useEffect(() => {console.log(`view changed to: ${view}`)}, [view])
 
 const testFunc = async () => {
 }
