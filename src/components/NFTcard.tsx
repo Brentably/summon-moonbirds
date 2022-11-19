@@ -2,7 +2,7 @@ import Button from "./Button"
 import defaultNFTicon from '../template/defaultNFTicon.png'
 import { MouseEventHandler } from "react";
 
-function NFTCard(props: {icon: string, isVideo?: boolean, NFTTitle: string, collectionName: string, buttonText: string, onButton: MouseEventHandler<HTMLDivElement>, bright?: boolean}) {
+function NFTCard(props: {icon: string, isVideo?: boolean, NFTTitle: string, collectionName: string, buttonText: string, onButton?: MouseEventHandler<HTMLDivElement>, bright?: boolean}) {
  const {icon, isVideo, NFTTitle, collectionName, buttonText, onButton, bright} = props;
 
 

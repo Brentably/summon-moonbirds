@@ -3,6 +3,7 @@ import getNFTBalance from "../helpers/getNFTBalance"
 import LendNFTCard from './LendNFTCard'
 import IConnection from '../types/types'
 import lend from '../walletFunctions/lend'
+import SummonNFTCard from './SummonNFTCard'
 
 
 //NFT list works to render a list of NFT's whether its NFT's in a wallet, or NFT's in a summon wallet
@@ -45,14 +46,16 @@ function NFTList(props: {store:any, isSummon: boolean}) {
   if(!NFTBalance) return <h1>Loading NFTs</h1>
   if(NFTBalance.length < 1) return <h1>no nft's :/</h1>
   
-  
+
   
   const listitems = NFTBalance.map(collection => {
     
     const listitemstest = collection.nft_data.map((NFT:any) => {
-    return (
-    <LendNFTCard key={`${NFT.token_id}+${collection.contract_address}`} NFTitem={NFT} NFTcollection={collection} store={store}/>
-  )})
+    if(isSummon) return <SummonNFTCard key={`${NFT.token_id}+${collection.contract_address}`} NFTitem={NFT} NFTcollection={collection} store={store}/>
+
+    return <LendNFTCard key={`${NFT.token_id}+${collection.contract_address}`} NFTitem={NFT} NFTcollection={collection} store={store}/>
+  })
+
     return listitemstest
   })
   return (
