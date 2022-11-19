@@ -7,7 +7,7 @@ function NFTCard(props: {icon: string, isVideo?: boolean, NFTTitle: string, coll
 
 
 
-
+  // if(!icon) return null 
   return(
     <div className="NFTCardContainer">
       <div className="NFTCardLeft">
