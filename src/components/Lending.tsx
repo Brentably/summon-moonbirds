@@ -68,7 +68,6 @@ const Lending = (props: any) => {
   const lendingHeaderText = (lendingStatus == "lended") ? "lended✅" : lendingStatus;
   const processing:boolean = (lendingStatus == "lending")
   const nameDecided = lendingStatus == "lending" || lendingStatus == "lended"
-  console.log(localToAddress.endsWith('.eth'))
 
   return (<>
       <div className="lendingHeader">

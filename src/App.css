@@ -27,9 +27,11 @@ body {
 
 
 
-h3.left {text-align: left;}
+h3.left {
+  text-align: left;
+  margin-left: 10px;
+}
 .sub {
- margin-left: 10px;
  font-family: 'SF Pro Rounded';
  letter-spacing: 0.02em;
  white-space: wrap;
