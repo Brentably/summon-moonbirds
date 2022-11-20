@@ -68,7 +68,8 @@ const Lending = (props: any) => {
       </div>
       <div className="lendingTo">to</div>
       {!nameDecided && <input className={toAddressValid ? "" : "invalidInput"} type="text" placeholder='Ex: 0xABC, ric.eth' value={localToAddress} onChange={handleAddress}/>}
-      {nameDecided && <h3 className="sub">{localToAddress}</h3>}
+      {nameDecided && localToAddress.endsWith('.eth') && <h3 className="sub">{localToAddress}</h3>}
+      {nameDecided && <h3 className="sub">{localToAddress.substring(0,5)}...{localToAddress.substring(38)}</h3>}
         <Button text="lend NFT" onClick={handleLend} bright invisible={lendingStatus != "lend"}/> 
         {(lendingStatus == "lending" || lendingStatus == "approving") && <Loader/>}
         <Button text="return home" onClick={handleBack} bright invisible={lendingStatus != "lended"}/> 
