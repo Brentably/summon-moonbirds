@@ -217,7 +217,7 @@ const testFunc = async () => {
 
         
     <div className={view == "borrow" ? "" : "invisible"}>
-      <div className={summonAddress != "needs" ? "tabContainer" : "invisible"}>
+      <div className="tabContainer">
         <div className="walletConnectContainer">
           <img src={walletConnectLogo} className="walletConnectLogo" />
           <input type="text" className={uriValid ? "" : "invalidInput"} placeholder="Paste Connection Link" value={`${uri}`} onChange={(e) => setState({...state, uri: e.target.value})} />
@@ -225,10 +225,10 @@ const testFunc = async () => {
         <h3 className='sub left'>Your borrowed NFTs</h3>
         <NFTList store={store} isSummon={true} />
       </div>
-      <div className={summonAddress == "needs" ? "tabContainer" : "invisible"}>
-        <h3 className="sub">nobody has lended you anything </h3>
+      {/* <div className={summonAddress == "needs" ? "tabContainer" : "invisible"}>
+        <h3 className="sub">nobody has lended you anything. hint: try lending yourself something</h3>
         {/* <DeploySummon store={store}/> */}
-      </div>
+      {/* </div> */} 
     </div>
 
     <div className={view == "lending" ? "" : "invisible"}>

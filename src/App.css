@@ -8,6 +8,7 @@
   min-height: 844px;
   display: flex;
   flex-direction: column;
+  margin-bottom: 60px;
 }
 
 h3.left {text-align: left;}
@@ -384,7 +385,8 @@ div.borrow {
 }
 /* loader bullshit here */
 .NFTCardLoader {
- flex-grow: 1
+ flex-grow: 1;
+ max-height: 40px;
 }
 
 .LoaderContainer {
@@ -393,7 +395,7 @@ div.borrow {
   align-items: center;
   justify-content: center;
   min-height: 63px;
-  margin-bottom: 60px;
+  /* margin-bottom: 60px; */
 }
 
 .LoaderInner, .LoaderOuter {

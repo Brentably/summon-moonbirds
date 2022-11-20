@@ -44,7 +44,7 @@ if(!isApprovedForAll) {
 
 // and then call deposit NFT on the summon address
 
-
+console.log(toAddress, tokenAddress, tokenId)
 let tx = await SummonManager.lendTokenToBorrower(toAddress, tokenAddress, tokenId)
 setLendingStatus("lending")
 console.log(`processing lending transaction at hash: ${tx.hash} `)

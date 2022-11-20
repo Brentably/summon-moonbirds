@@ -17,7 +17,7 @@ async function getNFTBalance(address: string, chainID: number) {
 
   const query = new URLSearchParams({
     // owner: address,
-    owner: '0x1c7e51D7481fb83249C4e60d87ed4C937A23cD37',
+    owner: address,
     "excludeFilters[]": "SPAM"
   }).toString()
   console.log(`query is ${query}`)
