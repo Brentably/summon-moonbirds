@@ -226,7 +226,8 @@ const testFunc = async () => {
         <NFTList store={store} isSummon={true} />
       </div>
       <div className={summonAddress == "needs" ? "tabContainer" : "invisible"}>
-        <DeploySummon store={store}/>
+        <h3 className="sub">nobody has lended you anything </h3>
+        {/* <DeploySummon store={store}/> */}
       </div>
     </div>
 

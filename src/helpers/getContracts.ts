@@ -5,7 +5,7 @@ if(chainID == 0) return []
 
 const ManagerABI = SummonManager.abi
 
-const returnArray = new Array<any>("0xE7144D25a66DAeda0032F7Cd19551B166d9b8468", ManagerABI)
+const returnArray = new Array<any>("0x6f2AB9E7D74c27E53E9050C0f7A57905a9572365", ManagerABI)
 // return address and abi
 if(chainID == 5) return returnArray
 else {
