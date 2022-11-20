@@ -4,7 +4,7 @@ import getNFTBalance from "../helpers/getNFTBalance"
 
 import IConnection from '../types/types'
 import retrieve from '../walletFunctions/retrieve'
-import LendNFTCard from './LendNFTCard'
+
 import Loader from './Loader'
 import NFTCard from './NFTCard'
 
@@ -63,7 +63,7 @@ function LendedNFTList(props: {store:any}) {
     const NFTTitle = name ? `${name} #${token_id}` : `#${token_id}`
     const isVideo = image && image.endsWith(".mp4")
 
-    return <NFTCard key={tokenAddress+token_id} icon={image} isVideo={isVideo} NFTTitle={NFTTitle} collectionName={collectionName} buttonText={status} onButton={() => memoizedRetreive(tokenAddress, token_id)} loader={(tokenAddress == payload[0] && token_id == payload[1]) && status == "retrieving"} nobutton={status=="retrieved"} />
+    return <NFTCard key={tokenAddress+token_id} icon={image} isVideo={isVideo} NFTTitle={NFTTitle} collectionName={collectionName} buttonText={status} onButton={() => memoizedRetreive(tokenAddress, token_id)} loader={(tokenAddress == payload[0] && token_id == payload[1]) && status == "retrieving"} noButton={status=="retrieved"} />
     
    })
 

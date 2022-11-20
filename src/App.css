@@ -10,8 +10,8 @@
   flex-direction: column;
 }
 
+h3.left {text-align: left;}
 h3.sub {
- text-align: left;
  margin-left: 10px;
  font-family: 'SF Pro Rounded';
  letter-spacing: 0.02em;
@@ -176,6 +176,17 @@ div.collectionTitleText {
   align-self: center;
 }
 
+.noButtonText {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  align-self: center;
+  font-family: 'SF Pro Rounded';
+  font-style: normal;
+  font-weight: 600;
+}
+
+
 .backgroundBright {
   background: #2A3FFE;
 }
@@ -236,8 +247,6 @@ font-size: 64px;
 line-height: 76px;
 letter-spacing: 0.02em;
 color: #181C40;
-
-
 }
 
 .lendNFTCardImage {
@@ -383,6 +392,8 @@ div.borrow {
   display: flex;
   align-items: center;
   justify-content: center;
+  min-height: 63px;
+  margin-bottom: 60px;
 }
 
 .LoaderInner, .LoaderOuter {

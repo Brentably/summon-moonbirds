@@ -1,7 +1,7 @@
 import React, {useCallback, useEffect, useState} from 'react'
 import getNFTBalance from "../helpers/getNFTBalance"
 import getSummonNFTBalance from "../helpers/getSummonNFTBalance"
-import LendNFTCard from './LendNFTCard'
+
 import IConnection from '../types/types'
 import lend from '../walletFunctions/lend'
 import SummonNFTCard from './SummonNFTCard'
@@ -53,9 +53,8 @@ function NFTList(props: {store:any, isSummon: boolean}) {
 
 
 function handleLend(asset:any) {
-  const {image_url: image, name, token_id, collection: {name: collectionName}, asset_contract: {address: tokenAddress}} = asset
-  const NFTTitle = name ? `${name} #${token_id}` : `#${token_id}`
-      const isVideo = image && image.endsWith(".mp4")
+  const {image, name, token_id, collectionName, tokenAddress, NFTTitle, isVideo} = asset
+
   setState({...state, 
   view: "lending",
   lendData: {
@@ -78,18 +77,16 @@ function handleLend(asset:any) {
   if(!address) return <h1>connect wallet</h1>
   if(!NFTBalance) return <Loader />
   if(NFTBalance == undefined) return <Loader />
-  if(NFTBalance.length < 1 && isSummon) return <h3 className="sub">No NFTs Found</h3>
-  if(NFTBalance.length < 1) return <h3 className="sub">No NFTs Found, <a href="https://goerli-nfts.vercel.app/" target="_blank">mint Goerli NFT's here</a></h3>
+  if(NFTBalance.length < 1 && isSummon) return <h3 className="sub left">No NFTs Found</h3>
+  if(NFTBalance.length < 1) return <h3 className="sub left">No NFTs Found, <a href="https://goerli-nfts.vercel.app/" target="_blank">mint Goerli NFT's here</a></h3>
   
   
   
 
   const listitems = NFTBalance.map(asset => {
 
-    console.log(asset)
-    const {image_url: image, name, token_id, collection: {name: collectionName}, asset_contract: {address: tokenAddress}} = asset
-    const NFTTitle = name ? `${name} #${token_id}` : `#${token_id}`
-    const isVideo = image && image.endsWith(".mp4")
+    const {image, name, token_id, collectionName, tokenAddress, NFTTitle, isVideo} = asset
+
 
     if(isSummon) return <NFTCard key={tokenAddress+token_id} icon={image} isVideo={isVideo} NFTTitle={NFTTitle} collectionName={collectionName} />
 

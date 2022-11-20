@@ -48,8 +48,9 @@ const Lending = (props: any) => {
     setToAddressValid(valid)
   }, [localToAddress])
 
-  const lendingHeaderText = (lendingStatus == "lended") ? "lended✅" : lendingStatus == "approving" ? "lend" : lendingStatus;
+  const lendingHeaderText = (lendingStatus == "lended") ? "lended✅" : lendingStatus;
   const processing:boolean = (lendingStatus == "lending")
+  const nameDecided = lendingStatus == "lending" || lendingStatus == "lended"
   return (
     <div className="LendingPage">
       <div className="lendingHeader">
@@ -66,10 +67,9 @@ const Lending = (props: any) => {
           <div className="lendingCollectionName">{collectionName}</div>
       </div>
       <div className="lendingTo">to</div>
-      <input className={toAddressValid ? "" : "invalidInput"} type="text" placeholder='Ex: 0xABC, ric.eth' value={localToAddress} onChange={handleAddress}/>
+      {!nameDecided && <input className={toAddressValid ? "" : "invalidInput"} type="text" placeholder='Ex: 0xABC, ric.eth' value={localToAddress} onChange={handleAddress}/>}
+      {nameDecided && <h3 className="sub">{localToAddress}</h3>}
         <Button text="lend NFT" onClick={handleLend} bright invisible={lendingStatus != "lend"}/> 
-        <Button text="approving" invisible={lendingStatus != "approving"}/> 
-        {/* <Button text="lending" invisible={lendingStatus != "lending"}/>  */}
         {(lendingStatus == "lending" || lendingStatus == "approving") && <Loader/>}
         <Button text="return home" onClick={handleBack} bright invisible={lendingStatus != "lended"}/> 
     </div>

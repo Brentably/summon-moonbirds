@@ -45,8 +45,7 @@ if(!isApprovedForAll) {
   setLendingStatus("approving")
   let tx_r = await tx.wait(1)
   console.log(`Summon Manager address was approved for all status: ${tx_r.status}`)
-  const isApprovedForAllTwo = await TokenContract.isApprovedForAll(walletAddress, OnChainSummonAddress) // owner, operator
-  console.log(isApprovedForAllTwo)
+  if(tx_r.status == 1) setLendingStatus("lend")
 }
 
 

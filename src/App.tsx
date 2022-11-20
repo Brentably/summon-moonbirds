@@ -222,7 +222,7 @@ const testFunc = async () => {
           <img src={walletConnectLogo} className="walletConnectLogo" />
           <input type="text" className={uriValid ? "" : "invalidInput"} placeholder="Paste Connection Link" value={`${uri}`} onChange={(e) => setState({...state, uri: e.target.value})} />
         </div>
-        <h3 className='sub'>Your borrowed NFTs</h3>
+        <h3 className='sub left'>Your borrowed NFTs</h3>
         <NFTList store={store} isSummon={true} />
       </div>
       <div className={summonAddress == "needs" ? "tabContainer" : "invisible"}>
