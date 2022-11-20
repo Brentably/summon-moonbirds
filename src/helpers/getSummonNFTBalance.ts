@@ -1,30 +1,30 @@
 
 import { ethers } from "ethers"
-import { AbiCoder } from "ethers/lib/utils"
 import IConnection from "../types/types"
 import getApiKey from "./getApiKey"
 import getContracts from "./getContracts"
 
 
-async function getLendedNFTBalance(connection: IConnection): Promise<any[]> {
+async function getSummonNFTBalance(connection: IConnection): Promise<any[]> {
+
+  //basically want to copy this thing, but I want to 
 
   // First part is finding the tokens that are currently lended out. We do this by searching for on chain log events
   // and then do some js magic to get a set of lended tokens at the bottom.
   const {walletAddress, chainID, signer} = connection
-  const [ManagerAddress, ManagerABI] = getContracts(5)
+  const [ManagerAddress, ManagerABI] = getContracts(chainID)
   const SummonManager = new ethers.Contract(ManagerAddress, ManagerABI, signer)
   // console.dir(SummonManager)
-  const filterLend = SummonManager.filters.TokenLendedFrom(walletAddress);
-  const filterRetrieve = SummonManager.filters.TokenWithdrawnTo(walletAddress);
+  const summonAddress = await SummonManager.OwnerToSummonAddress(walletAddress)
+  const filterLend = SummonManager.filters.TokenLendedFrom(null, summonAddress);
+  const filterRetrieve = SummonManager.filters.TokenWithdrawnTo(null, summonAddress);
   const lendLogs = await SummonManager.queryFilter(filterLend, -10000, "latest");
   const retrieveLogs = await SummonManager.queryFilter(filterRetrieve, -10000, "latest");
   
   // returns nice arrays of lender, summon, tokenAddress, and tokenId
-  
   const filteredLendLogs = lendLogs.map(elog => elog.args && ({...elog.args, tokenId: `${elog.args.tokenId.toString()}`, eventType: "lend"}))
   const filteredRetrieveLogs = retrieveLogs.map(elog => elog.args && ({...elog.args, tokenId: `${elog.args.tokenId.toString()}`, eventType: "retrieve"}))
-  // const filteredRetrieveLogs = retrieveLogs.map(elog => elog.args && ({...elog.args, tokenId: `${elog.args.tokenId.toString()}`, eventType: "retrieve"}))
-  console.log(`${filteredLendLogs.length - filteredRetrieveLogs.length} tokens currently lended out`)
+  console.log(`${filteredLendLogs.length - filteredRetrieveLogs.length} tokens currently lended to you`)
 
   const TokenEventsForAddress:Array<any> = filteredLendLogs.concat(filteredRetrieveLogs) // all events
   // console.log(TokenEventsForAddress)
@@ -108,4 +108,4 @@ const filteredData:any[] = data.assets.filter((asset:any) => {
   return filteredData
 }
 
-export default getLendedNFTBalance
+export default getSummonNFTBalance

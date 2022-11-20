@@ -70,7 +70,7 @@ const Lending = (props: any) => {
         <Button text="lend NFT" onClick={handleLend} bright invisible={lendingStatus != "lend"}/> 
         <Button text="approving" invisible={lendingStatus != "approving"}/> 
         {/* <Button text="lending" invisible={lendingStatus != "lending"}/>  */}
-        {lendingStatus == "lending" && <Loader/>}
+        {(lendingStatus == "lending" || lendingStatus == "approving") && <Loader/>}
         <Button text="return home" onClick={handleBack} bright invisible={lendingStatus != "lended"}/> 
     </div>
   )

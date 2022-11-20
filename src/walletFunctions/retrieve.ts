@@ -14,7 +14,7 @@ console.log('hi')
 let tx = await SummonManager.withdrawTokenFromSummon(tokenAddress, tokenId)
 setStatus("retrieving")
 let tx_r = await tx.wait()
-tx_r.status = 1 ? setStatus("retrieved") : setStatus("call failed")
+tx_r.status = 1 ? setStatus("retrieved") : setStatus("failed :(")
 
 
 console.log("WOOOHOOO NFT retrieved (not really)")

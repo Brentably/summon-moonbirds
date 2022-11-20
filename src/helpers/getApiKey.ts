@@ -1,5 +1,6 @@
-function getApiKey(api?: string) {
-  if(api == "opensea") return '5bec8ae0372044cab1bef0d866c98618'
+function getApiKey(api?: string, chainID?: number) {
+  if(api == "opensea" && chainID == 1) return '3e5b9d40eaf64147882619dc07d7d50a'
+  if(api == "opensea") return ''
   return "ckey_2b4e40855724423b83d84b656a6" // covalent api key
 }
 

@@ -24,7 +24,7 @@ const isVideo = image && image.endsWith(".mp4")
 
 // const isVideo = true // testing
 return (
-  <NFTCard icon={image} isVideo={isVideo} NFTTitle={NFTTitle} collectionName={collectionName} buttonText="borrowing" nobutton />
+  <NFTCard icon={image} isVideo={isVideo} NFTTitle={NFTTitle} collectionName={collectionName} />
 )
 } 
 

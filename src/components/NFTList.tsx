@@ -1,17 +1,20 @@
 import React, {useCallback, useEffect, useState} from 'react'
 import getNFTBalance from "../helpers/getNFTBalance"
+import getSummonNFTBalance from "../helpers/getSummonNFTBalance"
 import LendNFTCard from './LendNFTCard'
 import IConnection from '../types/types'
 import lend from '../walletFunctions/lend'
 import SummonNFTCard from './SummonNFTCard'
 import Loader from './Loader'
+import NFTCard from './NFTCard'
+
 
 
 //NFT list works to render a list of NFT's whether its NFT's in a wallet, or NFT's in a summon wallet
 function NFTList(props: {store:any, isSummon: boolean}) {
   // that means the first thing we need to do is determine which address we're showing NFT's for
-  const {store, isSummon} = props
-  const {connection, summonAddress} = store[0]
+  const {store: [state, setState], isSummon} = props
+  const {connection, summonAddress} = state
   const {walletAddress} = connection
   const address = isSummon ? summonAddress : walletAddress
   const {chainID} = connection
@@ -28,10 +31,20 @@ function NFTList(props: {store:any, isSummon: boolean}) {
     
     async function updateNFTs() {
       if(!address || !chainID || address == "needs") return
-      const NFTBalance:(any[] | undefined) = await getNFTBalance(address, chainID)
+      
+      function delay(time:number) {
+        return new Promise((resolve) => setTimeout(resolve, time))
+      }
+      // if(!isSummon) return //for testing
+
+      await delay(1000)
+      if(isSummon) await delay(1000)
+      const NFTBalance:any[] = isSummon? await getSummonNFTBalance(connection) : await getNFTBalance(address, chainID)
+
+      // const NFTBalance:any[] = await getNFTBalance(address, chainID)
       setNFTBalance(NFTBalance)
 
-
+      console.log(NFTBalance)
 
 
     }
@@ -39,32 +52,70 @@ function NFTList(props: {store:any, isSummon: boolean}) {
   }, [address, chainID])
 
 
+function handleLend(asset:any) {
+  const {image_url: image, name, token_id, collection: {name: collectionName}, asset_contract: {address: tokenAddress}} = asset
+  const NFTTitle = name ? `${name} #${token_id}` : `#${token_id}`
+      const isVideo = image && image.endsWith(".mp4")
+  setState({...state, 
+  view: "lending",
+  lendData: {
+    started: true,
+    tokenAddress: tokenAddress,
+    tokenId: token_id,
+    toAddress: "",
+    image: image,
+    name: name,
+    collectionName: collectionName,
+    NFTTitle: NFTTitle,
+    isVideo: isVideo
+  }
+  })
+}
     
 
 
   if(address == "needs") return <h1 style={{textAlign: "left"}}>NO Summon Found</h1>
   if(!address) return <h1>connect wallet</h1>
   if(!NFTBalance) return <Loader />
+  if(NFTBalance == undefined) return <Loader />
   if(NFTBalance.length < 1 && isSummon) return <h3 className="sub">No NFTs Found</h3>
   if(NFTBalance.length < 1) return <h3 className="sub">No NFTs Found, <a href="https://goerli-nfts.vercel.app/" target="_blank">mint Goerli NFT's here</a></h3>
   
-
   
-  const listitems = NFTBalance.map(collection => {
-    
-    const listitemstest = collection.nft_data.map((NFT:any) => {
-    if(isSummon) return <SummonNFTCard key={`${NFT.token_id}+${collection.contract_address}`} NFTitem={NFT} NFTcollection={collection} store={store}/>
+  
 
-    return <LendNFTCard key={`${NFT.token_id}+${collection.contract_address}`} NFTitem={NFT} NFTcollection={collection} store={store}/>
+  const listitems = NFTBalance.map(asset => {
+
+    console.log(asset)
+    const {image_url: image, name, token_id, collection: {name: collectionName}, asset_contract: {address: tokenAddress}} = asset
+    const NFTTitle = name ? `${name} #${token_id}` : `#${token_id}`
+    const isVideo = image && image.endsWith(".mp4")
+
+    if(isSummon) return <NFTCard key={tokenAddress+token_id} icon={image} isVideo={isVideo} NFTTitle={NFTTitle} collectionName={collectionName} />
+
+    return <NFTCard key={tokenAddress+token_id} icon={image} isVideo={isVideo} NFTTitle={NFTTitle} collectionName={collectionName} buttonText="lend" onButton={() => handleLend(asset)} bright />
+  
+
+    return null
   })
 
-    return listitemstest
-  })
   return (
     <>
     {listitems}
     </>
   )
+
+
+  
+  // const listitems = LendedNFTBalance.map(asset => {
+  //   // console.log(asset)
+  //   const {image_url: image, name, token_id, collection: {name: collectionName}, asset_contract: {address: tokenAddress}} = asset
+  //   const NFTTitle = name ? `${name} #${token_id}` : `#${token_id}`
+  //   const isVideo = image && image.endsWith(".mp4")
+
+  //   return <NFTCard key={tokenAddress+token_id} icon={image} isVideo={isVideo} NFTTitle={NFTTitle} collectionName={collectionName} buttonText={"retrieve"} onButton={() => memoizedRetreive(tokenAddress, token_id)} loader={(tokenAddress == payload[0] && token_id == payload[1]) && status == "retrieving"}/>
+    
+  //  })
 }
 
 export default NFTList
