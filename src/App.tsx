@@ -191,12 +191,6 @@ useEffect(()=> {
 
 useEffect(() => {console.log(`view changed to: ${view}`)}, [view])
 
-const testFunc = async () => {
-}
-
-
-
-
 
 
   return (

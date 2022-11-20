@@ -15,9 +15,7 @@ function LendedNFTList(props: {store:any}) {
   const {store} = props
   const {connection, summonAddress} = store[0]
   const {walletAddress, chainID} = connection
-  const [status, setStatus] = useState<string>("retrieve")
   const [LendedNFTBalance, setLendedNFTBalance] = useState<Array<any> | undefined>(undefined)
-  const [payload, setPayload] = useState<any[]>([])
  
  
   //  //instead of useNFTBalance being a hook that you pass the setNFTBalance function to, turn it into an async helper function called getNFTBalance(walletAddress, chainID)
@@ -35,15 +33,28 @@ function LendedNFTList(props: {store:any}) {
      }
      updateNFTs()
    }, [walletAddress, chainID])
- 
 
+   
+   
+
+
+   const updateNFTStatus = (tokenAddress: string, tokenId:string, status:string) => {
+
+     if(!LendedNFTBalance) return
+     let newNFTBalance = LendedNFTBalance.map(NFT => {
+
+       if(NFT.tokenAddress == tokenAddress && NFT.token_id == tokenId) return {...NFT, status: status}
+       else return NFT
+     })
+     setLendedNFTBalance(newNFTBalance)
+    }
  
    function handleRetrieve(contractAddress:string, tokenId:string) {
 
-    retrieve(contractAddress, tokenId, connection, setStatus)
-    setPayload([...payload, [contractAddress, tokenId]])
+
+    retrieve(contractAddress, tokenId, connection, updateNFTStatus)
   }
-  const memoizedRetreive = useCallback(handleRetrieve, [connection])
+
 
 
 
@@ -59,13 +70,11 @@ function LendedNFTList(props: {store:any}) {
    
    const listitems = LendedNFTBalance.map(asset => {
     // console.log(asset)
-    const {image_url: image, name, token_id, collection: {name: collectionName}, asset_contract: {address: tokenAddress}} = asset
-    const NFTTitle = name ? `${name} #${token_id}` : `#${token_id}`
-    const isVideo = image && image.endsWith(".mp4")
-    console.dir(payload)
-    const isActiveToken = payload.some(payload => (tokenAddress == payload[0] && token_id == payload[1]))
+    const {image, name, token_id, collectionName, tokenAddress, NFTTitle, isVideo, status} = asset
 
-    return <NFTCard key={tokenAddress+token_id} icon={image} isVideo={isVideo} NFTTitle={NFTTitle} collectionName={collectionName} buttonText={isActiveToken ? status : "retrieve"} onButton={() => memoizedRetreive(tokenAddress, token_id)} loader={isActiveToken && status == "retrieving"} noButton={isActiveToken && status=="retrieved"} />
+
+
+    return <NFTCard key={tokenAddress+token_id} icon={image} isVideo={isVideo} NFTTitle={NFTTitle} collectionName={collectionName} buttonText={status == "lended" ? "retrieve" : status} onButton={() => handleRetrieve(tokenAddress, token_id)} loader={status == "retrieving"} noButton={status=="retrieved"} />
     
    })
 
@@ -78,11 +87,8 @@ function LendedNFTList(props: {store:any}) {
    )
 
 
-
-
-
-
-  return <h1>lended NFT's here</h1>
 }
 
 export default LendedNFTList
+
+

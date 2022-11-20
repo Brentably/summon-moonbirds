@@ -1,7 +1,7 @@
 import Button from './Button'
 import defaultNFTicon from '../template/defaultNFTicon.png'
 import lend from '../walletFunctions/lend'
-import retrieve from '../walletFunctions/retrieve'
+
 import IConnection from '../types/types'
 import NFTCard from './NFTCard'
 

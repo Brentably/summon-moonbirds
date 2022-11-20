@@ -104,8 +104,19 @@ const filteredData:any[] = data.assets.filter((asset:any) => {
   return LendedTokens.some(lendedToken => lendedToken.join().toLowerCase() == assetToken.join().toLowerCase())
 })
 
-  
-  return filteredData
+const final = filteredData.map(asset => {
+  const {image_url: image, name, token_id, collection: {name: collectionName}, asset_contract: {address: tokenAddress}} = asset
+    const NFTTitle = name ? `${name} #${token_id}` : `#${token_id}`
+    const isVideo = image && image.endsWith(".mp4")
+    const status = "lended"
+
+    return {image, name, token_id, collectionName, tokenAddress, NFTTitle, isVideo, status}
+
+}
+
+)  
+
+  return final
 }
 
 export default getLendedNFTBalance
