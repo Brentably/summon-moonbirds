@@ -25,8 +25,8 @@ function NFTCard(props: {icon: string, isVideo?: boolean, NFTTitle: string, coll
       <div className="buttonContainer">
         {noButton && !loader && <div className="noButtonText">{buttonText}</div>}
         {loader && <SmallLoader/>}
-      </div>
         {!noButton && buttonText && !loader && <Button text={buttonText} onClick={onButton} bright={bright}/>}
+      </div>
     </div>
   )
 }
