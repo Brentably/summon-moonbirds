@@ -15,7 +15,7 @@ body {
   display: flex;
   flex-direction: column;
   margin-bottom: 60px;
-  min-width: 100vw;
+  max-width: 100vw;
 }
 
 @media screen and (min-width: 650px) {
@@ -195,7 +195,7 @@ div.collectionTitleText {
   max-width: 250px;
   min-height: 39px;
   max-height: 39px;
-  
+
   align-self: center;
   display: flex;
   justify-content: center;
@@ -223,7 +223,7 @@ div.collectionTitleText {
   min-height: 844px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: space-around;
 
 }
 
@@ -345,6 +345,8 @@ color: #181C40;
   padding: 35px;
 }
 
+
+
 input[type=text] {
  border: 2px solid #8F91A4;
  border-radius: 8px;
@@ -352,6 +354,9 @@ input[type=text] {
  color: #464966;
  outline: none;
  padding: 12px;
+ min-width: 356px;
+ max-width: 356px;
+
 }
 
 input.invalidInput {
