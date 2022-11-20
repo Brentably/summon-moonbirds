@@ -64,7 +64,7 @@ function LendedNFTList(props: {store:any}) {
     const isVideo = image && image.endsWith(".mp4")
     const isActiveToken = (tokenAddress == payload[0] && token_id == payload[1])
 
-    return <NFTCard key={tokenAddress+token_id} icon={image} isVideo={isVideo} NFTTitle={NFTTitle} collectionName={collectionName} buttonText={status} onButton={() => memoizedRetreive(tokenAddress, token_id)} loader={isActiveToken && status == "retrieving"} noButton={isActiveToken && status=="retrieved"} />
+    return <NFTCard key={tokenAddress+token_id} icon={image} isVideo={isVideo} NFTTitle={NFTTitle} collectionName={collectionName} buttonText={isActiveToken ? status : "retrieve"} onButton={() => memoizedRetreive(tokenAddress, token_id)} loader={isActiveToken && status == "retrieving"} noButton={isActiveToken && status=="retrieved"} />
     
    })
 

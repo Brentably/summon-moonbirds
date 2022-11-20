@@ -15,6 +15,7 @@ const Lending = (props: any) => {
   // const [localToAddress, setLocalToAddress] = useState<string>('0x6A5a2a99A9B4c732fFfcccB9D9484c0Fe3a21F2e')
   const [localToAddress, setLocalToAddress] = useState<string>('')
   const [toAddressValid, setToAddressValid] = useState<boolean>(false)
+  useEffect(() => window.scrollTo(0, 0), [])
   const handleAddress = (e:any) => {
     setLocalToAddress(e.target.value)
 
@@ -37,7 +38,23 @@ const Lending = (props: any) => {
   }
   
   function handleBack() {
-    setState({...state, view: "lend"})
+    setState({...state, 
+      view: "lend",
+      lendData: {
+        started: false,
+        tokenAddress: '',
+        tokenId: null,
+        toAddress: "",
+        image: null,
+        name: "",
+        collectionName: "",
+        NFTTitle: "",
+        isVideo: false
+      }
+      })
+    setLendingStatus("lend")
+    setLocalToAddress('')
+    setToAddressValid(false)
     console.log("goingback")
   }
 
@@ -51,15 +68,16 @@ const Lending = (props: any) => {
   const lendingHeaderText = (lendingStatus == "lended") ? "lended✅" : lendingStatus;
   const processing:boolean = (lendingStatus == "lending")
   const nameDecided = lendingStatus == "lending" || lendingStatus == "lended"
-  return (
-    <div className="LendingPage">
+  console.log(localToAddress.endsWith('.eth'))
+
+  return (<>
       <div className="lendingHeader">
         <div className="backButton" onClick={handleBack}>
           <img src={leftArrow} className="backButton" />
         </div>
         <div className="lendingHeaderTitle">summon</div>
-        
       </div>
+    <div className="LendingPage">
       <div className="lendingStatusHeader">{lendingHeaderText}</div>
       <div className="lendingNFTCard">
           {isVideo ? <video className="NFTCardImage"><source src={image} type="video/mp4" /></video> : <img className="lendNFTCardImage" src={image || defaultNFTicon}/> }
@@ -69,12 +87,12 @@ const Lending = (props: any) => {
       <div className="lendingTo">to</div>
       {!nameDecided && <input className={toAddressValid ? "" : "invalidInput"} type="text" placeholder='Ex: 0xABC, ric.eth' value={localToAddress} onChange={handleAddress}/>}
       {nameDecided && localToAddress.endsWith('.eth') && <h3 className="sub">{localToAddress}</h3>}
-      {nameDecided && <h3 className="sub">{localToAddress.substring(0,5)}...{localToAddress.substring(38)}</h3>}
+      {nameDecided && !localToAddress.endsWith('.eth') && <h3 className="sub">{localToAddress.substring(0,5)}...{localToAddress.substring(38)}</h3>}
         <Button text="lend NFT" onClick={handleLend} bright invisible={lendingStatus != "lend"}/> 
         {(lendingStatus == "lending" || lendingStatus == "approving") && <Loader/>}
         <Button text="return home" onClick={handleBack} bright invisible={lendingStatus != "lended"}/> 
     </div>
-  )
+    </>)
 }
 
 export default Lending

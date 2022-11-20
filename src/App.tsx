@@ -231,11 +231,11 @@ const testFunc = async () => {
       {/* </div> */} 
     </div>
 
-    <div className={view == "lending" ? "" : "invisible"}>
+    {/* <div className={view == "lending" ? "" : "invisible"}>
 
       <Lending store={store} />
-    </div>
-
+    </div> */}
+    {view == "lending" && <Lending store={store}/>}
 
     {/* this is what I want to do, but it's calling the API every time I switch tabs, so I've come up with the solution above :/ */}
     {/* {lendSelected ? <NFTlist address={walletAddress} chainID={chainID} isSummon={false} /> : <NFTlist address={summonAddress} chainID={chainID} isSummon={true} />} */}

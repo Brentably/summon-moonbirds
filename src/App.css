@@ -3,13 +3,28 @@
   src: url(./fonts/SF-Pro-Rounded/SF-Pro-Rounded-Regular.otf);
 }
 
+body {
+  display: flex;
+  justify-content: center;
+}
+
+
 .App {
   text-align: center;
   min-height: 844px;
   display: flex;
   flex-direction: column;
   margin-bottom: 60px;
+  min-width: 100vw;
 }
+
+@media screen and (min-width: 650px) {
+  .App {
+    min-width: 650px;
+  }
+}
+
+
 
 h3.left {text-align: left;}
 .sub {
@@ -172,9 +187,21 @@ div.collectionTitleText {
   display: flex;
   justify-content: center;
   align-items: center;
+  align-self: center;
+}
+
+.buttonContainer {
+  min-width: 110px;
+  max-width: 250px;
+  min-height: 39px;
+  max-height: 39px;
+  
+  align-self: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   margin-top: 5px;
   margin-bottom: 5px;
-  align-self: center;
 }
 
 .noButtonText {
@@ -202,10 +229,10 @@ div.collectionTitleText {
 
 
 .lendingHeader {
- display: flex;
- flex-direction: row;
+ /* display: flex; */
+ /* flex-direction: row;
  align-self: stretch;
-align-items: center;
+align-items: center; */
 } 
 
 
@@ -218,8 +245,8 @@ line-height: 48px;
 /* identical to box height */
 letter-spacing: 0.02em;
 color: #181C40;
-position: absolute;
-width: calc(100% - 40px);
+/* position: absolute; */
+/* width: calc(100% - 40px); */
 
 
 
@@ -230,6 +257,7 @@ div.backButton {
   height: 50px;
   border-radius: 100%;
   /* background-color: #bebebe; */
+  position: absolute;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -306,6 +334,8 @@ color: #181C40;
   display: flex;
   flex-direction: column;
   margin-bottom: 75px;
+  width: 350px;
+  align-self: center;
 }
 
 .walletConnectLogo {
