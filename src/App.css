@@ -362,6 +362,10 @@ input[type=text] {
 
 }
 
+input.greenBorder {
+  border: 2px solid green;
+}
+
 input.invalidInput {
   border: 2px solid red;
 }

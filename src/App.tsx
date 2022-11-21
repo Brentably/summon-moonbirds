@@ -40,6 +40,7 @@ function App() {
   const [state, setState] = store
   const {connection, summonAddress, uri, uriValid, view} = state
   const {provider, signer, walletAddress, chainID} = connection
+  const [wConnected, setWConnected] = useState(false)
   
   // const [uri, setUri] = useState<any>("") // wallet connect URI
 
@@ -87,7 +88,7 @@ function App() {
   }
 
 
-  connector.on("connect", ()=> console.log('connect'))
+  connector.on("connect", ()=> setWConnected(true))
 
   connector.on("session_request", (error, payload) => {
     if (error) {
@@ -154,6 +155,7 @@ function App() {
   });
 
   connector.on("disconnect", (error, payload) => {
+    setWConnected(false)
     console.log("DISCONNENCTEJNELKJ")
     if (error) {
       throw error;
@@ -215,7 +217,7 @@ useEffect(() => {console.log(`view changed to: ${view}`)}, [view])
         <div className="walletConnectContainer">
           <img src={walletConnectLogo} className="walletConnectLogo" />
           
-            <input type="text" className={uriValid ? "" : "invalidInput"} placeholder="Paste Connection Link" value={`${uri}`} onChange={(e) => setState({...state, uri: e.target.value})} />
+            <input type="text" className={wConnected ? "greenBorder" : uriValid ? "" : "invalidInput"} placeholder="Paste Connection Link" value={`${uri}`} onChange={(e) => setState({...state, uri: e.target.value})} />
           
         </div>
         <h3 className='sub left'>Your borrowed NFTs</h3>
