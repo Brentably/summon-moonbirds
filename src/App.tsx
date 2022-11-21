@@ -43,7 +43,7 @@ function App() {
   const [wConnected, setWConnected] = useState(false)
   
   // const [uri, setUri] = useState<any>("") // wallet connect URI
-
+  
   
   const rejectWithMessage = (connector: WalletConnect, id: number | undefined, message: string) => {
     connector.rejectRequest({ id, error: { message } })
@@ -51,11 +51,16 @@ function App() {
   
   
   useEffect(() => {
+    console.log('useeffect called')
   const onUriChange = async () => {
     let uriValid = (uri.length >= 12 && uri.startsWith('wc:') || uri.length == 0) // 12 is random i didnt actually look that up
     setState({...state, uriValid: uriValid })
     
     if(!uri) return // called on component did mount, so there will have to return for the times there is not a uri
+    if(summonAddress == "needs") {
+      console.log("on uri change was called but there's no summon address")
+      return
+    }
     if(!signer || !summonAddress) {
       console.error("onUriChange was called, but it's missing the signer or summon address")
       return
@@ -76,6 +81,10 @@ function App() {
 
   console.log(connector)
 
+  connector.on("connect", () => {
+    console.log("WC connected")
+    setWConnected(true)
+  })
 
 
   if (!connector.connected) {
@@ -88,7 +97,6 @@ function App() {
   }
 
 
-  connector.on("connect", ()=> setWConnected(true))
 
   connector.on("session_request", (error, payload) => {
     if (error) {
@@ -130,7 +138,7 @@ function App() {
 
   console.log(`message is ${message}`)
   console.log(`wallet is ${wallet}`)
-  console.log(`signed message is ` + await signedMessage)
+  console.log(`signed message is ` + signedMessage)
     
   connector.approveRequest({
     id: payload.id,
@@ -170,7 +178,7 @@ console.log(connector)
 } 
 onUriChange() 
 
-}, [uri, summonAddress])
+}, [uri, connection, summonAddress])
 
 
 
