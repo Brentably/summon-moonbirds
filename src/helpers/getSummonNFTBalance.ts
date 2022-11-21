@@ -18,8 +18,8 @@ async function getSummonNFTBalance(connection: IConnection): Promise<any[]> {
   const summonAddress = await SummonManager.OwnerToSummonAddress(walletAddress)
   const filterLend = SummonManager.filters.TokenLendedFrom(null, summonAddress);
   const filterRetrieve = SummonManager.filters.TokenWithdrawnTo(null, summonAddress);
-  const lendLogs = await SummonManager.queryFilter(filterLend, -10000, "latest");
-  const retrieveLogs = await SummonManager.queryFilter(filterRetrieve, -10000, "latest");
+  const lendLogs = await SummonManager.queryFilter(filterLend, -100000, "latest");
+  const retrieveLogs = await SummonManager.queryFilter(filterRetrieve, -100000, "latest");
   
   // returns nice arrays of lender, summon, tokenAddress, and tokenId
   const filteredLendLogs = lendLogs.map(elog => elog.args && ({...elog.args, tokenId: `${elog.args.tokenId.toString()}`, eventType: "lend"}))
