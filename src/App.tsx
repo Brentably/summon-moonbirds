@@ -170,7 +170,7 @@ console.log(connector)
 } 
 onUriChange() 
 
-}, [uri])
+}, [uri, summonAddress])
 
 
 
