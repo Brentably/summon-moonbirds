@@ -17,7 +17,7 @@ body {
   margin-bottom: 60px;
   width: 100vw;
   max-width: 650px;
-  align-items: center;
+  /* align-items: center; */
 }
 
 @media screen and (min-width: 650px) {
@@ -115,6 +115,8 @@ button.connected {
 
 
 
+
+
 img.NFTCardImage, video.NFTCardImage {
   border-radius: 10px;
   width: 50px;
@@ -197,6 +199,10 @@ div.collectionTitleText {
   align-self: center;
 }
 
+.backButton, .Button:hover {
+  cursor: pointer;
+}
+
 .buttonContainer {
   min-width: 110px;
   max-width: 250px;
@@ -209,6 +215,11 @@ div.collectionTitleText {
   align-items: center;
   margin-top: 5px;
   margin-bottom: 5px;
+}
+
+.connectWalletContainer {
+  margin: 10px auto;
+
 }
 
 .noButtonText {
