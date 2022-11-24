@@ -199,9 +199,6 @@ div.collectionTitleText {
   align-self: center;
 }
 
-.backButton, .Button:hover {
-  cursor: pointer;
-}
 
 .buttonContainer {
   min-width: 110px;
@@ -216,6 +213,11 @@ div.collectionTitleText {
   margin-top: 5px;
   margin-bottom: 5px;
 }
+
+.Button:hover, .backButton:hover, .tabs:hover {
+  cursor: pointer;
+}
+
 
 .connectWalletContainer {
   margin: 10px auto;

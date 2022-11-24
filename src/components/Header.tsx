@@ -35,7 +35,7 @@ useEffect(() => console.log(connection), [connection])
     <span className="summonHeaderText">summon </span>
     {/* <button disabled={connecting} onClick={() => connect()} className={connection.signer ? "connect connected" : "connect notConnected"}>Connect Wallet</button> */}
     </div>
-    {!Boolean(wallet?.provider) && <div className="buttonContainer connectWalletContainer">
+    {!connection.signer && <div className="buttonContainer connectWalletContainer pointer">
       <Button onClick={() => connect()} text="connect wallet" bright/>
     </div>}
     <div className="tabsContainer">
