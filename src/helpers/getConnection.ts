@@ -1,9 +1,13 @@
+
+import { WalletState, EIP1193Provider } from "@web3-onboard/core";
 import { ethers } from "ethers";
 import IConnection from "../types/types";
 
 
-const getConnection = async () => {
-  const provider = new ethers.providers.Web3Provider(window.ethereum, "any")
+const getConnection = async (_provider?: EIP1193Provider) => {
+  const provider = _provider ? new ethers.providers.Web3Provider(_provider, 'any') : new ethers.providers.Web3Provider(window.ethereum, "any")
+  // const provider = new ethers.providers.Web3Provider(window.ethereum, "any")
+
   // refreshes things on network changs
   provider.on("network", (newNetwork, oldNetwork) => {
     // When a Provider makes its initial connection, it emits a "network"

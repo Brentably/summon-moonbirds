@@ -18,6 +18,7 @@ import Loader from './components/Loader';
 
 
 
+
 function App() {
 
   const store = useState<{connection: IConnection, summonAddress: string, uri: string, uriValid: boolean, view: string, lendData: any}>({
@@ -45,6 +46,7 @@ function App() {
   // const [uri, setUri] = useState<any>("") // wallet connect URI
   
   
+  
   const rejectWithMessage = (connector: WalletConnect, id: number | undefined, message: string) => {
     connector.rejectRequest({ id, error: { message } })
   }
@@ -52,7 +54,7 @@ function App() {
   
   useEffect(() => {
     console.log('useeffect called')
-  const onUriChange = async () => {
+    const onUriChange = async () => {
     let uriValid = (uri.length >= 12 && uri.startsWith('wc:') || uri.length == 0) // 12 is random i didnt actually look that up
     setState({...state, uriValid: uriValid })
     

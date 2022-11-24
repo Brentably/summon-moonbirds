@@ -3,7 +3,64 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { Web3OnboardProvider, init } from '@web3-onboard/react'
+import injectedModule from '@web3-onboard/injected-wallets'
+import walletConnectModule from '@web3-onboard/walletconnect'
+import { AccountCenter } from '@web3-onboard/core';
+
 window.Buffer = window.Buffer || require("buffer").Buffer; 
+
+
+
+const ethereumGoerli = {
+  id: 5,
+  token: 'gETH',
+  label: 'Ethereum Goerli',
+  rpcUrl: `https://eth-goerli.g.alchemy.com/v2/qNtE2MdnnNXNh8G5hjIZ-baxFqFnqvoQ`
+}
+
+const mainnet = {
+  id: 1,
+  token: 'ETH',
+  label: 'Ethereum',
+  rpcUrl: `https://eth-goerli.g.alchemy.com/v2/qNtE2MdnnNXNh8G5hjIZ-baxFqFnqvoQ`
+}
+
+const polygonMainnet = {
+  id: '0x89',
+  token: 'MATIC',
+  label: 'Polygon',
+  rpcUrl: 'https://matic-mainnet.chainstacklabs.com'
+}
+
+const chains = [ethereumGoerli, mainnet]
+
+const wallets = [injectedModule()]
+const walletConnect = walletConnectModule()
+
+const appMetadata = {
+  name: 'Connect Wallet Example',
+  icon: '<svg>My App Icon</svg>',
+  description: 'Example showcasing how to connect a wallet.',
+  recommendedInjectedWallets: [
+    { name: 'MetaMask', url: 'https://metamask.io' },
+    { name: 'Coinbase', url: 'https://wallet.coinbase.com/' }
+  ]
+}
+
+const NoAccountCenter:AccountCenter = {
+  enabled: false}
+
+const web3Onboard = init({
+  wallets: [...wallets, walletConnect],
+  chains,
+  appMetadata,
+  accountCenter: {
+    desktop: NoAccountCenter,
+    mobile: NoAccountCenter
+}
+})
+
 
 
 const root = ReactDOM.createRoot(
@@ -11,7 +68,9 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <React.StrictMode>
-    <App />
+    <Web3OnboardProvider web3Onboard={web3Onboard}>
+      <App />
+    </Web3OnboardProvider>
   </React.StrictMode>
 );
 
