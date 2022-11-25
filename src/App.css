@@ -453,7 +453,7 @@ div.borrow {
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 63px;
+  /* min-height: 63px; */
   /* margin-bottom: 60px; */
 }
 
