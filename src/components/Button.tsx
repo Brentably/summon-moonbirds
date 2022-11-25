@@ -6,7 +6,7 @@ function Button(props: {text: string, onClick?: React.MouseEventHandler<HTMLDivE
   const innerText = invisible ? "" : text
 
   return (
-    <div onClick={onClick} className={invisible ? "invisible" : bright ? "Button backgroundBright" : "Button"}><span style={{margin: "0 30px"}}>{innerText}</span></div>
+    <div onClick={onClick} className={invisible ? "invisible" : bright ? "Button backgroundBright" : "Button"}><span style={{padding: "0 20px"}}>{innerText}</span></div>
   )
 }
 
