@@ -11,7 +11,7 @@ const [ManagerABI, ManagerAddress] = getContracts(chainID)
 const SummonManager = new ethers.Contract(ManagerABI, ManagerAddress, signer)
 
 
-// const encodedToken = await SummonManager.getEncodedToken(tokenAddress, tokenId)
+
 try {
 let tx = await SummonManager.withdrawTokenFromSummon(tokenAddress, tokenId)
 console.log(tx)
