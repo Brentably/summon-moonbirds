@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from 'react'
+import React, {useCallback, useEffect, useReducer, useState} from 'react'
 import getLendedNFTBalance from '../helpers/getLendedNFTBalance'
 import getNFTBalance from "../helpers/getNFTBalance"
 
@@ -9,25 +9,44 @@ import Loader from './Loader'
 import NFTCard from './NFTCard'
 
 
+
+function reducer(state:Array<any> | undefined, action: any) {
+  switch (action.type) {
+    case 'set':
+      return [...action.payload];
+    case 'updateStatus':
+      if(!state) return
+      const [tokenAddress, tokenId, status] = action.payload
+      const newNFTBalance = state.map(NFT => {
+       if(NFT.tokenAddress == tokenAddress && NFT.token_id == tokenId) return {...NFT, status: status}
+       else return NFT
+     })
+      return newNFTBalance;
+    default:
+      throw new Error();
+  }
+}
+
+
 // lets look at every safeTransferFrom(SummonManager,...) (1 call), then query all the data for every token...
 function LendedNFTList(props: {store:any}) {
   //  // that means the first thing we need to do is determine which address we're showing NFT's for
   const {store} = props
   const {connection, summonAddress} = store[0]
   const {walletAddress, chainID} = connection
-  const [LendedNFTBalance, setLendedNFTBalance] = useState<Array<any> | undefined>(undefined)
+
+  const [LendedNFTState, dispatch] = useReducer(reducer, []);
  
- 
-  //  //instead of useNFTBalance being a hook that you pass the setNFTBalance function to, turn it into an async helper function called getNFTBalance(walletAddress, chainID)
-  //  //setNFTBalance to getNFTBalance on componentDidMount
-  //  // useNFTBalance(setNFTBalance, walletAddress, chainID) 
+
+
  
    useEffect(() => {
      
      async function updateNFTs() {
       if(!walletAddress || !chainID) return
        const NFTBalance:any[] = await getLendedNFTBalance(connection)
-       setLendedNFTBalance(NFTBalance)
+       dispatch({type: 'set', payload: NFTBalance})
+      //  setLendedNFTBalance(NFTBalance)
        console.log(NFTBalance)
  
      }
@@ -40,14 +59,11 @@ function LendedNFTList(props: {store:any}) {
 
    const updateNFTStatus = (tokenAddress: string, tokenId:string, status:string) => {
 
-     if(!LendedNFTBalance) return
-     let newNFTBalance = LendedNFTBalance.map(NFT => {
 
-       if(NFT.tokenAddress == tokenAddress && NFT.token_id == tokenId) return {...NFT, status: status}
-       else return NFT
-     })
-     setLendedNFTBalance(newNFTBalance)
+    dispatch({type: "updateStatus", payload: [tokenAddress, tokenId, status]})
+
     }
+
  
    function handleRetrieve(contractAddress:string, tokenId:string) {
 
@@ -61,14 +77,14 @@ function LendedNFTList(props: {store:any}) {
  
  
   if(!walletAddress) return null
-  if(!LendedNFTBalance) return <Loader />
-  if(LendedNFTBalance.length == 0) return null
-  // if(typeof LendedNFTBalance == 'string') return <h1>No NFT's Found</h1>
+  if(!LendedNFTState) return <Loader />
+  // if(LendedNFTBalance.length == 0) return null
+
 
 
 
    
-   const listitems = LendedNFTBalance.map(asset => {
+   const listitems = LendedNFTState.map(asset => {
     // console.log(asset)
     const {image, name, token_id, collectionName, tokenAddress, NFTTitle, isVideo, status} = asset
 
