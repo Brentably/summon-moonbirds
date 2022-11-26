@@ -18,6 +18,7 @@ type IState = {connection: IConnection, summonAddress: string, MainNFTBalance: I
 const initialState = {
   connection: {provider: undefined, signer: undefined, walletAddress: "", chainID: 0},
   summonAddress: "",
+  LendedNFTBalance: undefined,
   MainNFTBalance: undefined,
   SummonNFTBalance: undefined,
   uri: "",
@@ -37,12 +38,18 @@ const initialState = {
 
 
 
-function reducer(state: IState, action: {type: string, payload: any}) {
+function reducer(state: IState, action: {type: string, payload: any, target?: string}) {
   switch (action.type) {
     case 'set':
       return {...state, ...action.payload};
-    // case 'decrement':
-    //   return {count: state.count - 1};
+      case 'updateNFTStatus':
+        if(!action.target) return
+        const [tokenAddress, tokenId, status] = action.payload
+        const newNFTBalance = state[action.target as keyof IState].map((NFT: IAsset) => {
+         if(NFT.tokenAddress == tokenAddress && NFT.token_id == tokenId) return {...NFT, status: status}
+         else return NFT
+       })
+        return {...state, [action.target as keyof IState]: newNFTBalance};
     default:
       throw new Error();
   }
