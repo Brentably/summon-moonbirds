@@ -12,6 +12,7 @@ import Lending from './components/Lending'
 import getSummonAddress from './helpers/getSummonAddress';
 import walletConnectLogo from './template/walletConnectHQ.png'
 import Loader from './components/Loader';
+import Footer from './components/Footer';
 
 type IState = {connection: IConnection, summonAddress: string, MainNFTBalance: IAsset[] | undefined, SummonNFTBalance: IAsset[] | undefined, uri: string, uriValid: boolean, view: string, lendData: any}
 
@@ -276,7 +277,7 @@ useEffect(() => {console.log(`view changed to: ${view}`)}, [view])
 
     {/* this is what I want to do, but it's calling the API every time I switch tabs, so I've come up with the solution above :/ */}
     {/* {lendSelected ? <NFTlist address={walletAddress} chainID={chainID} isSummon={false} /> : <NFTlist address={summonAddress} chainID={chainID} isSummon={true} />} */}
-
+    <Footer />
     </div>
   );
 }
