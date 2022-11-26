@@ -57,16 +57,15 @@ function LendedNFTList(props: {store:any}) {
    
 
 
-   const updateNFTStatus = (tokenAddress: string, tokenId:string, status:string) => {
-
-
-    dispatch({type: "updateStatus", payload: [tokenAddress, tokenId, status]})
-
-    }
 
  
    function handleRetrieve(contractAddress:string, tokenId:string) {
+    const updateNFTStatus = (tokenAddress: string, tokenId:string, status:string) => {
 
+
+      dispatch({type: "updateStatus", payload: [tokenAddress, tokenId, status]})
+  
+      }
 
     retrieve(contractAddress, tokenId, connection, updateNFTStatus)
   }
