@@ -4,7 +4,7 @@ import './App.css';
 import WalletConnect from "@walletconnect/client";
 import NFTList from './components/NFTList'
 import LendedNFTList from './components/LendedNFTList'
-import IConnection from './types/types'
+import IConnection, { IAsset } from './types/types'
 import getConnection from './helpers/getConnection';
 import Header from './components/Header';
 import DeploySummon from './components/DeploySummon';
@@ -13,9 +13,13 @@ import getSummonAddress from './helpers/getSummonAddress';
 import walletConnectLogo from './template/walletConnectHQ.png'
 import Loader from './components/Loader';
 
+type IState = {connection: IConnection, summonAddress: string, MainNFTBalance: IAsset[] | undefined, SummonNFTBalance: IAsset[] | undefined, uri: string, uriValid: boolean, view: string, lendData: any}
+
 const initialState = {
   connection: {provider: undefined, signer: undefined, walletAddress: "", chainID: 0},
   summonAddress: "",
+  MainNFTBalance: undefined,
+  SummonNFTBalance: undefined,
   uri: "",
   uriValid: true,
   view: 'lend',
@@ -31,7 +35,6 @@ const initialState = {
   }
 }
 
-type IState = {connection: IConnection, summonAddress: string, uri: string, uriValid: boolean, view: string, lendData: any}
 
 
 function reducer(state: IState, action: {type: string, payload: any}) {

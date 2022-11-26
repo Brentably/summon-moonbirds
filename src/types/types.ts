@@ -8,4 +8,15 @@ type IConnection = {
   chainID: number,
 }
 
+export type IAsset = { 
+  image: string, 
+  name: string, 
+  token_id: string, 
+  collectionName: string, 
+  tokenAddress: string, 
+  NFTTitle: string, 
+  isVideo: boolean,
+  status?: string
+}
+
 export default IConnection

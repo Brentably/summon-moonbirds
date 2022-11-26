@@ -2,7 +2,7 @@ import React, {useCallback, useEffect, useState} from 'react'
 import getNFTBalance from "../helpers/getNFTBalance"
 import getSummonNFTBalance from "../helpers/getSummonNFTBalance"
 
-import IConnection from '../types/types'
+import IConnection, { IAsset } from '../types/types'
 import lend from '../walletFunctions/lend'
 import SummonNFTCard from './SummonNFTCard'
 import Loader from './Loader'
@@ -14,12 +14,12 @@ import NFTCard from './NFTCard'
 function NFTList(props: {store:any, isSummon: boolean}) {
   // that means the first thing we need to do is determine which address we're showing NFT's for
   const {store: [state, dispatch], isSummon} = props
-  const {connection, summonAddress} = state
-  const {walletAddress} = connection
+  const {connection, summonAddress, MainNFTBalance, SummonNFTBalance} = state
+  const {walletAddress, chainID} = connection
   const address = isSummon ? summonAddress : walletAddress
-  const {chainID} = connection
+  const NFTBalance = isSummon ? SummonNFTBalance : MainNFTBalance
 
-  const [NFTBalance, setNFTBalance] = useState<Array<any> | undefined>(undefined)
+  // const [NFTBalance, setNFTBalance] = useState<Array<any> | undefined>(undefined)
   
 
 
@@ -39,10 +39,10 @@ function NFTList(props: {store:any, isSummon: boolean}) {
 
       await delay(1000)
       if(isSummon) await delay(1000)
-      const NFTBalance:any[] = isSummon? await getSummonNFTBalance(connection) : await getNFTBalance(address, chainID)
+      const NFTBalance:any[] = isSummon ? await getSummonNFTBalance(connection) : await getNFTBalance(address, chainID)
 
       // const NFTBalance:any[] = await getNFTBalance(address, chainID)
-      setNFTBalance(NFTBalance)
+      isSummon ? dispatch({type: "set", payload: {SummonNFTBalance: NFTBalance}}) : dispatch({type: "set", payload: {MainNFTBalance: NFTBalance}})
 
       console.log(NFTBalance)
 
@@ -85,7 +85,7 @@ if(address == "needs") return <h3 className="sub left">No NFTs Found</h3>
   
   
 
-  const listitems = NFTBalance.map(asset => {
+  const listitems = NFTBalance.map((asset: IAsset)=> {
 
     const {image, name, token_id, collectionName, tokenAddress, NFTTitle, isVideo} = asset
 
@@ -95,7 +95,6 @@ if(address == "needs") return <h3 className="sub left">No NFTs Found</h3>
     return <NFTCard key={tokenAddress+token_id} icon={image} isVideo={isVideo} NFTTitle={NFTTitle} collectionName={collectionName} buttonText="lend" onButton={() => handleLend(asset)} bright />
   
 
-    return null
   })
 
   return (
