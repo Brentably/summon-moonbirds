@@ -13,7 +13,7 @@ import NFTCard from './NFTCard'
 //NFT list works to render a list of NFT's whether its NFT's in a wallet, or NFT's in a summon wallet
 function NFTList(props: {store:any, isSummon: boolean}) {
   // that means the first thing we need to do is determine which address we're showing NFT's for
-  const {store: [state, setState], isSummon} = props
+  const {store: [state, dispatch], isSummon} = props
   const {connection, summonAddress} = state
   const {walletAddress} = connection
   const address = isSummon ? summonAddress : walletAddress
@@ -55,18 +55,20 @@ function NFTList(props: {store:any, isSummon: boolean}) {
 function handleLend(asset:any) {
   const {image, name, token_id, collectionName, tokenAddress, NFTTitle, isVideo} = asset
 
-  setState({...state, 
-  view: "lending",
-  lendData: {
-    started: true,
-    tokenAddress: tokenAddress,
-    tokenId: token_id,
-    toAddress: "",
-    image: image,
-    name: name,
-    collectionName: collectionName,
-    NFTTitle: NFTTitle,
-    isVideo: isVideo
+  dispatch({type: "set",
+  payload: { 
+    view: "lending",
+    lendData: {
+      started: true,
+      tokenAddress: tokenAddress,
+      tokenId: token_id,
+      toAddress: "",
+      image: image,
+      name: name,
+      collectionName: collectionName,
+      NFTTitle: NFTTitle,
+      isVideo: isVideo
+    }
   }
   })
 }

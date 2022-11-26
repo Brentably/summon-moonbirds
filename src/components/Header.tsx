@@ -5,22 +5,22 @@ import { useConnectWallet } from '@web3-onboard/react'
 import Button from "./Button"
 
 function Header(props: {store: any}) {
-const [state, setState] = props.store
+const [state, dispatch] = props.store
 const {connection, view} = state
 const [{ wallet, connecting }, connect, disconnect] = useConnectWallet()
 
 const handleConnect = async () => {
   let newConnection = await getConnection()
-  setState({...state, connection: newConnection})
+  dispatch({type: 'set', payload: {connection: newConnection}})
   console.log(newConnection)
 }
 
 useEffect(() => {
   const stupid = async () => {
-  // If the wallet has a provider than the wallet is connected
-  if (wallet?.provider) {
-    let newConnection = await getConnection(wallet.provider)
-    setState({...state, connection: newConnection})
+    // If the wallet has a provider than the wallet is connected
+    if (wallet?.provider) {
+      let newConnection = await getConnection(wallet.provider)
+      dispatch({type: 'set', payload: {connection: newConnection}})
   }}
 
   stupid()
@@ -39,8 +39,8 @@ useEffect(() => console.log(connection), [connection])
       <Button onClick={() => connect()} text="connect wallet" bright/>
     </div>}
     <div className="tabsContainer">
-    <span className={view == "lend" ? "tabs selected" : "tabs"} onClick={()=> setState({...state, view: "lend"})}>lend</span> 
-    <span className={view == "borrow" ? "tabs selected" : "tabs"} onClick={()=> setState({...state, view: "borrow"})}>borrow</span></div>
+    <span className={view == "lend" ? "tabs selected" : "tabs"} onClick={()=> dispatch({type: 'set', payload: {view: "lend"}})}>lend</span> 
+    <span className={view == "borrow" ? "tabs selected" : "tabs"} onClick={()=> dispatch({type: 'set', payload: {view: "borrow"}})}>borrow</span></div>
     </>)
 }
 export default Header

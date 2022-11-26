@@ -1,4 +1,4 @@
-import {useEffect, useState, createContext, useContext} from 'react';
+import {useEffect, useState, createContext, useContext, useReducer} from 'react';
 import { ethers } from "ethers";
 import './App.css';
 import WalletConnect from "@walletconnect/client";
@@ -13,32 +13,50 @@ import getSummonAddress from './helpers/getSummonAddress';
 import walletConnectLogo from './template/walletConnectHQ.png'
 import Loader from './components/Loader';
 
+const initialState = {
+  connection: {provider: undefined, signer: undefined, walletAddress: "", chainID: 0},
+  summonAddress: "",
+  uri: "",
+  uriValid: true,
+  view: 'lend',
+  lendData: {
+    started: false,
+    tokenAddress: "",
+    tokenId: null,
+    image: "",
+    name: "",
+    collectionName: "",
+    NFTTitle: "",
+    isVideo: false
+  }
+}
+
+type IState = {connection: IConnection, summonAddress: string, uri: string, uriValid: boolean, view: string, lendData: any}
 
 
+function reducer(state: IState, action: {type: string, payload: any}) {
+  switch (action.type) {
+    case 'set':
+      return {...state, ...action.payload};
+    // case 'decrement':
+    //   return {count: state.count - 1};
+    default:
+      throw new Error();
+  }
+}
+
+
+//control f every setState to a dispatch
 
 
 
 
 function App() {
 
-  const store = useState<{connection: IConnection, summonAddress: string, uri: string, uriValid: boolean, view: string, lendData: any}>({
-    connection: {provider: undefined, signer: undefined, walletAddress: "", chainID: 0},
-    summonAddress: "",
-    uri: "",
-    uriValid: true,
-    view: 'lend',
-    lendData: {
-      started: false,
-      tokenAddress: "",
-      tokenId: null,
-      image: "",
-      name: "",
-      collectionName: "",
-      NFTTitle: "",
-      isVideo: false
-    }
-  })
-  const [state, setState] = store
+  // const store = useState<>()
+  const store = useReducer(reducer, initialState);
+
+  const [state, dispatch] = store
   const {connection, summonAddress, uri, uriValid, view} = state
   const {provider, signer, walletAddress, chainID} = connection
   const [wConnected, setWConnected] = useState(false)
@@ -56,7 +74,7 @@ function App() {
     console.log('useeffect called')
     const onUriChange = async () => {
     let uriValid = (uri.length >= 12 && uri.startsWith('wc:') || uri.length == 0) // 12 is random i didnt actually look that up
-    setState({...state, uriValid: uriValid })
+    dispatch({type: "set", payload: {uriValid: uriValid }})
     
     if(!uri) return // called on component did mount, so there will have to return for the times there is not a uri
     if(summonAddress == "needs") {
@@ -69,7 +87,7 @@ function App() {
     }
     
     console.log("init new connector")
- const connector = await new WalletConnect({
+ const connector = new WalletConnect({
   uri: uri,
   // bridge: "https://bridge.walletconnect.org"
   // ,
@@ -188,11 +206,12 @@ onUriChange()
 useEffect(()=> {
   const thisPatternIsStupid = async() => {
     let newConnection:IConnection = await getConnection()
-    setState({...state, connection: {...newConnection}})
-
+    // setState({...state, connection: {...newConnection}})
+    dispatch({type: "set", payload: {connection: {...newConnection}}})
     //maybe move this to another useEffect
     let summonAddress:string = await getSummonAddress(newConnection)
-    setState({...state, connection: {...newConnection}, summonAddress: summonAddress}) //set states are async but destructuring should take care of any issues
+    // setState({...state, connection: {...newConnection}, summonAddress: summonAddress}) //set states are async but destructuring should take care of any issues
+    dispatch({type: "set", payload: { connection: {...newConnection}, summonAddress: summonAddress }})
   }
   thisPatternIsStupid()
 }, [])
@@ -227,7 +246,7 @@ useEffect(() => {console.log(`view changed to: ${view}`)}, [view])
         <div className="walletConnectContainer">
           <img src={walletConnectLogo} className="walletConnectLogo" />
           
-            <input type="text" className={wConnected ? "greenBorder" : uriValid ? "" : "invalidInput"} placeholder="Paste Connection Link" value={`${uri}`} onChange={(e) => setState({...state, uri: e.target.value})} />
+            <input type="text" className={wConnected ? "greenBorder" : uriValid ? "" : "invalidInput"} placeholder="Paste Connection Link" value={`${uri}`} onChange={(e) => dispatch({type: 'set', payload: {uri: e.target.value}})} />
           
         </div>
         <h3 className='sub left'>Your borrowed NFTs</h3>

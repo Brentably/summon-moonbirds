@@ -7,7 +7,7 @@ import Loader from "./Loader"
 import { ethers } from "ethers"
 
 const Lending = (props: any) => {
-  const [state, setState] = props.store
+  const [state, dispatch] = props.store
   const {lendData, connection} = state
   const {provider} = connection
   const { started, tokenAddress, tokenId, image, name, collectionName, NFTTitle, isVideo} = lendData
@@ -38,7 +38,8 @@ const Lending = (props: any) => {
   }
   
   function handleBack() {
-    setState({...state, 
+    dispatch({type: 'set',
+    payload: { 
       view: "lend",
       lendData: {
         started: false,
@@ -50,7 +51,7 @@ const Lending = (props: any) => {
         collectionName: "",
         NFTTitle: "",
         isVideo: false
-      }
+      }}
       })
     setLendingStatus("lend")
     setLocalToAddress('')

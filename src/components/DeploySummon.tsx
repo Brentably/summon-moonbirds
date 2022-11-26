@@ -6,7 +6,7 @@ import Loader from './Loader'
 
 
 function DeploySummon(props: {store: any}) {
-  const [state, setState] = props.store
+  const [state, dispatch] = props.store
   const {connection, summonAddress} = state
   const {chainID, signer, walletAddress} = connection
   const [ManagerAddress, ManagerABI] = getContracts(chainID)
