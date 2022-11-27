@@ -40,16 +40,19 @@ async function getNFTBalance(address: string, chainID: number) {
 
 
   const final = data.ownedNfts.map((NFT:any) => {
-    const image = NFT.metadata.image
+    console.dir(NFT)
+    const image = NFT.media[0].gateway || NFT.metadata.image
     const name = NFT.title
     const encodedTokenId = NFT.id.tokenId
 
-    const [bigNumStringTokenId] = ethers.utils.defaultAbiCoder.decode(['uint'], encodedTokenId)
-    const bigNumTokenId = ethers.BigNumber.from(bigNumStringTokenId)
-    const token_id = bigNumTokenId.toString() // had to parse this from their api
+    // const [bigNumStringTokenId] = ethers.utils.defaultAbiCoder.decode(['uint256'], encodedTokenId)
+    // console.log(encodedTokenId)
+    // const bigNumTokenId = ethers.BigNumber.from(bigNumStringTokenId)
+    // const token_id = bigNumTokenId.toString() // had to parse this from their api
+    const token_id = parseInt(encodedTokenId, 16)
     const collectionName = NFT.contractMetadata.name
     const tokenAddress = NFT.contract.address
-    const NFTTitle = name ? `${name} #${token_id}` : `#${token_id}`
+    const NFTTitle = name ? `${name}` : `#${collectionName}`
     const isVideo = image && image.endsWith(".mp4")
     const status = "lend"
     return {image, name, token_id, collectionName, tokenAddress, NFTTitle, isVideo, status}

@@ -11,7 +11,7 @@ async function getLendedNFTBalance(connection: IConnection): Promise<any[]> {
   // First part is finding the tokens that are currently lended out. We do this by searching for on chain log events
   // and then do some js magic to get a set of lended tokens at the bottom.
   const {walletAddress, chainID, signer} = connection
-  const [ManagerAddress, ManagerABI] = getContracts(5)
+  const [ManagerAddress, ManagerABI] = getContracts(chainID)
   const SummonManager = new ethers.Contract(ManagerAddress, ManagerABI, signer)
   // console.dir(SummonManager)
   const filterLend = SummonManager.filters.TokenLendedFrom(walletAddress);

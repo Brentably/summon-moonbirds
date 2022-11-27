@@ -6,7 +6,7 @@ import walletConnectLogo from '../template/walletConnectHQ.png'
 export default (props: {store:any}) => {
   const [state, dispatch] = props.store
   const {uriValid, uri, summonAddress, connection} = state
-  const {signer} = connection
+  const {signer, chainID} = connection
   const [wConnected, setWConnected] = useState(false)
   const [dropdown, setDropdown] = useState(false)
 
@@ -70,7 +70,7 @@ export default (props: {store:any}) => {
         summonAddress
       //  '0xa0f43C52211DEf09Be4cdEAB5cC0a19E0baBe88a'
       ],
-      chainId: 5   }) 
+      chainId: chainID   }) 
 
   });
 

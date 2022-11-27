@@ -14,7 +14,7 @@ async function getSummonNFTBalance(connection: IConnection): Promise<any[]> {
   const {walletAddress, chainID, signer} = connection
   const [ManagerAddress, ManagerABI] = getContracts(chainID)
   const SummonManager = new ethers.Contract(ManagerAddress, ManagerABI, signer)
-  // console.dir(SummonManager)
+  console.dir(SummonManager)
   const summonAddress = await SummonManager.OwnerToSummonAddress(walletAddress)
   const filterLend = SummonManager.filters.TokenLendedFrom(null, summonAddress);
   const filterRetrieve = SummonManager.filters.TokenWithdrawnTo(null, summonAddress);
