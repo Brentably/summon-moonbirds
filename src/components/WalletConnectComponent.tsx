@@ -2,13 +2,14 @@ import WalletConnect from "@walletconnect/client"
 import { ethers } from "ethers"
 import { useEffect, useState } from "react"
 import walletConnectLogo from '../template/walletConnectHQ.png'
+import Button from "./Button"
 
 export default (props: {store:any}) => {
   const [state, dispatch] = props.store
-  const {uriValid, uri, summonAddress, connection} = state
+  const {uriValid, uri, summonAddress, connection, connector} = state
   const {signer, chainID} = connection
   const [wConnected, setWConnected] = useState(false)
-  const [dropdown, setDropdown] = useState(false)
+  // const [connector, setConnector] = useState<WalletConnect | null>(null)
 
   useEffect(() => {
     console.log('useeffect called')
@@ -16,7 +17,7 @@ export default (props: {store:any}) => {
     let uriValid = (uri.length >= 12 && uri.startsWith('wc:') || uri.length == 0) // 12 is random i didnt actually look that up
     dispatch({type: "set", payload: {uriValid: uriValid }})
     
-    if(!uri) return // called on component did mount, so there will have to return for the times there is not a uri
+    if(!uri || !uriValid) return // called on component did mount, so there will have to return for the times there is not a uri
     if(summonAddress == "needs") {
       console.log("on uri change was called but there's no summon address")
       return
@@ -47,15 +48,6 @@ export default (props: {store:any}) => {
   })
 
 
-  if (!connector.connected) {
-    console.log('bop')
-    // create new session
-    const createSession = async () => {
-    await connector.createSession();
-    }
-    createSession()
-  }
-
 
 
   connector.on("session_request", (error, payload) => {
@@ -71,6 +63,8 @@ export default (props: {store:any}) => {
       //  '0xa0f43C52211DEf09Be4cdEAB5cC0a19E0baBe88a'
       ],
       chainId: chainID   }) 
+      // setConnector(connector)
+      dispatch({type: "set", payload: {connector: connector }})
 
   });
 
@@ -124,6 +118,8 @@ export default (props: {store:any}) => {
 
   connector.on("disconnect", (error, payload) => {
     setWConnected(false)
+    dispatch({type: "set", payload: {connector: connector }})
+    dispatch({type: 'set', payload: {uri: ''}})
     console.log("DISCONNENCTEJNELKJ")
     if (error) {
       throw error;
@@ -132,7 +128,16 @@ export default (props: {store:any}) => {
      // Delete connector
 });
 
+ if (!connector.connected) {
+    console.log('connector was not connected so creating new session')
+    // create new session
+    const createSession = async () => {
+    await connector.createSession();
+    }
+    createSession()
+  }
 
+  dispatch({type: "set", payload: {connector: connector }})
 console.log(connector)
 
 } 
@@ -144,21 +149,21 @@ onUriChange()
     <div className="walletConnectContainer">
           <img src={walletConnectLogo} className="walletConnectLogo" />
           
-            <input type="text" className={wConnected ? "greenBorder" : uriValid ? "" : "invalidInput"} placeholder="Paste Connection Link" value={`${uri}`} onChange={(e) => dispatch({type: 'set', payload: {uri: e.target.value}})} />
+            {!(connector?.peerId) && <input type="text" className={wConnected ? "greenBorder" : uriValid ? "" : "invalidInput"} placeholder="Paste Connection Link" value={`${uri}`} onChange={(e) => dispatch({type: 'set', payload: {uri: e.target.value}})} /> }
+              <div className="wConnection">
+                {connector?.peerId && <img className="peerIcon" src={connector.peerMeta?.icons[0]} />}
+                {connector?.peerId && connector.peerMeta?.name}
+                {connector?.peerId && <Button onClick={() => connector.killSession()} text="disconnect"/>}
+              </div>
+            {!(connector?.peerId) && 
             <div className="left wcQuestionContainer">
-              {/* <span 
-                className="wcQuestion"
-                onClick={() => window.open("https://www.notion.so/Lend-and-borrow-NFTs-8be4078124024309b872a48d5c023321#55983ede7cc742ea8ed19d850ae3cda4", "_blank")}
-              >
-                  How to find the connection link? 	🔗
-              </span>  */}
               <a 
                 className="wcQuestion"
                 href="https://www.notion.so/Lend-and-borrow-NFTs-8be4078124024309b872a48d5c023321#55983ede7cc742ea8ed19d850ae3cda4" target="_blank"
               >
                   How to find the connection link? 	🔗
               </a> 
-            </div>
+            </div>}
         </div>
   )
 }

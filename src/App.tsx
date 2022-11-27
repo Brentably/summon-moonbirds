@@ -14,7 +14,7 @@ import Loader from './components/Loader';
 import Footer from './components/Footer';
 import WalletConnectComponent from './components/WalletConnectComponent';
 
-type IState = {connection: IConnection, summonAddress: string, MainNFTBalance: IAsset[] | undefined, SummonNFTBalance: IAsset[] | undefined, uri: string, uriValid: boolean, view: string, lendData: any}
+type IState = {connection: IConnection, summonAddress: string, MainNFTBalance: IAsset[] | undefined, SummonNFTBalance: IAsset[] | undefined, uri: string, uriValid: boolean, view: string, lendData: any, connector: WalletConnect | null}
 
 const initialState = {
   connection: {provider: undefined, signer: undefined, walletAddress: "", chainID: 0},
@@ -34,7 +34,8 @@ const initialState = {
     collectionName: "",
     NFTTitle: "",
     isVideo: false
-  }
+  },
+  connector: null
 }
 
 
