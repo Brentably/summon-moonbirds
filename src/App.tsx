@@ -121,7 +121,8 @@ useEffect(() => {console.log(`view changed to: ${view}`)}, [view])
       <Header store={store} />
 
     </div>
-    {/* {chainID != 5 && chainID != 0 && <h3 className='sub'>Summon is currently live on testnet, switch chains to Goerli</h3>} */}
+    {chainID != 5 && chainID != 0 && chainID != 1 && <h3 className='sub'>Summon is currently live on testnet, switch chains to Goerli</h3>}
+    {chainID == 1 && <h3 className='sub red'>Summon is experimental on mainnet. <br /> Switch chains to Goerli or use at your own risk.</h3>}
     <div className={view == "lend" ? "tabContainer" : "invisible"}>
 
       <LendedNFTList store={store} />
