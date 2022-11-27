@@ -29,9 +29,7 @@ async function getSummonNFTBalance(connection: IConnection): Promise<any[]> {
   const TokenEventsForAddress:Array<any> = filteredLendLogs.concat(filteredRetrieveLogs) // all events
   // console.log(TokenEventsForAddress)
   
-  type TokensByAddress = {
-    tokenAddress: { tokenid: number} // move count
-  }
+
   // tokens is supposed to be an array of all the tokens. increment the move count by 
   let AllTokens:any = new Object()
   for(let tokenEvent of TokenEventsForAddress) {
@@ -105,6 +103,7 @@ const filteredData:any[] = data.assets.filter((asset:any) => {
 })
 
 const final = filteredData.map(asset => {
+  console.log(asset)
   const {image_url: image, name, token_id, collection: {name: collectionName}, asset_contract: {address: tokenAddress}} = asset
   const NFTTitle = name ? `${name}`: `#${token_id}`
   const isVideo = image && image.endsWith(".mp4")
