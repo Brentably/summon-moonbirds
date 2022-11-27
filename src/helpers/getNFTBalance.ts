@@ -50,10 +50,10 @@ async function getNFTBalance(address: string, chainID: number) {
     // const bigNumTokenId = ethers.BigNumber.from(bigNumStringTokenId)
     // const token_id = bigNumTokenId.toString() // had to parse this from their api
     const token_id = parseInt(encodedTokenId, 16)
-    const collectionName = NFT.contractMetadata.name
+    const collectionName = NFT.contractMetadata.name || NFT.contractMetadata.openSea.collectionName
     const tokenAddress = NFT.contract.address
-    const NFTTitle = name ? `${name}` : `#${collectionName}`
-    const isVideo = image && image.endsWith(".mp4")
+    const NFTTitle = name ? `${name}` : `#${token_id}`
+    const isVideo = image && image.endsWith(".mp4") || NFT.media[0].format == 'mp4'
     const status = "lend"
     return {image, name, token_id, collectionName, tokenAddress, NFTTitle, isVideo, status}
   })

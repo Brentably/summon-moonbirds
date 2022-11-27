@@ -106,7 +106,7 @@ const filteredData:any[] = data.assets.filter((asset:any) => {
 
 const final = filteredData.map(asset => {
   const {image_url: image, name, token_id, collection: {name: collectionName}, asset_contract: {address: tokenAddress}} = asset
-    const NFTTitle = name ? `${name} #${token_id}` : `#${token_id}`
+    const NFTTitle = name ? `${name}` : `#${token_id}`
     const isVideo = image && image.endsWith(".mp4")
     const status = "lended"
 
