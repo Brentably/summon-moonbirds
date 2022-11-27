@@ -3,7 +3,16 @@
   src: url(./fonts/SF-Pro-Rounded/SF-Pro-Rounded-Regular.otf);
 }
 
+
+:root {
+  /* --account-center-minimized-background: #edeef5; */
+  /* --account-center-maximized-upper-background: #edeef5; */
+}
+
+
 body {
+  background: #edeef5;
+  padding: 20px;
   display: flex;
   justify-content: center;
 }
@@ -26,7 +35,9 @@ body {
   }
 }
 
-
+.left {
+  text-align: left;
+}
 
 h3.left {
   text-align: left;
@@ -49,10 +60,6 @@ h3.left {
   height: none;
 }
 
-body {
-  background: #edeef5;
-  padding: 20px;
-}
 
 .summonHeader {
   margin-top: 7px;
@@ -363,6 +370,24 @@ color: #181C40;
   max-height: 40px;
   align-self: center;
   padding: 35px;
+}
+
+.wcQuestionContainer {
+  margin: 10px
+}
+
+.wcQuestion {
+  font-size: small;
+  padding: 5px;
+  border-radius: 10px;
+  color: #464966;
+  text-decoration: none;
+}
+
+.wcQuestion:hover {
+  cursor: pointer;
+  background: #0000000c;
+  text-decoration: underline;
 }
 
 

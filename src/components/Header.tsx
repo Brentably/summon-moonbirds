@@ -1,26 +1,31 @@
 import IConnection from "../types/types"
 import getConnection from "../helpers/getConnection"
 import { useEffect } from "react"
-import { useConnectWallet } from '@web3-onboard/react'
+import { useAccountCenter, useConnectWallet } from '@web3-onboard/react'
 import Button from "./Button"
+import { stringify } from "querystring"
 
 function Header(props: {store: any}) {
 const [state, dispatch] = props.store
 const {connection, view} = state
 const [{ wallet, connecting }, connect, disconnect] = useConnectWallet()
+const updateAccountCenter = useAccountCenter()
 
-const handleConnect = async () => {
-  let newConnection = await getConnection()
-  dispatch({type: 'set', payload: {connection: newConnection}})
-  console.log(newConnection)
-}
+// const handleConnect = async () => {
+//   let newConnection = await getConnection()
+//   dispatch({type: 'set', payload: {connection: newConnection}})
+//   console.log(newConnection)
+// }
 
 useEffect(() => {
   const stupid = async () => {
     // If the wallet has a provider than the wallet is connected
     if (wallet?.provider) {
       let newConnection = await getConnection(wallet.provider)
+      // localStorage.setItem('walletProvider', JSON.stringify(wallet.provider));
       dispatch({type: 'set', payload: {connection: newConnection}})
+      // updateAccountCenter({ enabled: true, position: "topRight"})
+
   }}
 
   stupid()

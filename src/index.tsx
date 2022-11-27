@@ -46,19 +46,22 @@ const appMetadata = {
     { name: 'MetaMask', url: 'https://metamask.io' },
     { name: 'Coinbase', url: 'https://wallet.coinbase.com/' }
   ]
+  // ,containerElements: {accountCenter: 'div'}
 }
 
-const NoAccountCenter:AccountCenter = {
-  enabled: false}
+// const NoAccountCenter:AccountCenter = 
+
+// , accountCenter: {
+  //   desktop: {
+  //     enabled: false},
+  //   mobile: {
+  //     enabled: false}
+  //   }
 
 const web3Onboard = init({
   wallets: [...wallets, walletConnect],
   chains,
-  appMetadata,
-  accountCenter: {
-    desktop: NoAccountCenter,
-    mobile: NoAccountCenter
-}
+  appMetadata
 })
 
 
