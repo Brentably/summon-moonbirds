@@ -5,13 +5,14 @@ import Button from "./Button"
 import lend from '../walletFunctions/lend'
 import Loader from "./Loader"
 import { ethers } from "ethers"
+import { IAsset } from "../types/types"
 
 const Lending = (props: any) => {
   const [state, dispatch] = props.store
-  const {lendData, connection} = state
+  const {lendData, connection, MainNFTBalance} = state
   const {provider} = connection
   const { started, tokenAddress, tokenId, image, name, collectionName, NFTTitle, isVideo} = lendData
-  const [lendingStatus, setLendingStatus] = useState<string>("lend")
+  // const [lendingStatus, setLendingStatus] = useState<string>("lend")
   // const [localToAddress, setLocalToAddress] = useState<string>('0x6A5a2a99A9B4c732fFfcccB9D9484c0Fe3a21F2e')
   const [localToAddress, setLocalToAddress] = useState<string>('')
   const [toAddressValid, setToAddressValid] = useState<boolean>(false)
@@ -22,6 +23,8 @@ const Lending = (props: any) => {
     // console.log(e)
     // setState({...state, lendData: {...lendData, toAddress: e.target.value}})
   }
+
+
 
   async function handleLend() {
     // toAddress: string, tokenAddress: string, tokenId: number, connection: IConnection
@@ -34,7 +37,8 @@ const Lending = (props: any) => {
       return
     }
 
-    lend(resolvedAddress, tokenAddress, tokenId, connection, setLendingStatus)
+    const updateStatus = (status:string) => dispatch({type: "updateNFTStatus", target: "MainNFTBalance", payload: [tokenAddress, tokenId, status]})
+    lend(resolvedAddress, tokenAddress, tokenId, connection, updateStatus)
   }
   
   function handleBack() {
@@ -53,7 +57,7 @@ const Lending = (props: any) => {
         isVideo: false
       }}
       })
-    setLendingStatus("lend")
+    // setLendingStatus("lend")
     setLocalToAddress('')
     setToAddressValid(false)
     console.log("goingback")
@@ -65,6 +69,9 @@ const Lending = (props: any) => {
     let valid = (localToAddress.length == 42 && localToAddress.startsWith('0x') || localToAddress.length == 0 || localToAddress.endsWith('.eth'))
     setToAddressValid(valid)
   }, [localToAddress])
+
+  const asset = MainNFTBalance.find((asset:IAsset) => asset.tokenAddress == tokenAddress && asset.token_id == tokenId)
+  const lendingStatus = asset.status
 
   const lendingHeaderText = (lendingStatus == "lended") ? "lended✅" : lendingStatus;
   const processing:boolean = (lendingStatus == "lending")

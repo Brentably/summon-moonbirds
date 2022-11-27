@@ -51,7 +51,8 @@ async function getNFTBalance(address: string, chainID: number) {
     const tokenAddress = NFT.contract.address
     const NFTTitle = name ? `${name} #${token_id}` : `#${token_id}`
     const isVideo = image && image.endsWith(".mp4")
-    return {image, name, token_id, collectionName, tokenAddress, NFTTitle, isVideo}
+    const status = "lend"
+    return {image, name, token_id, collectionName, tokenAddress, NFTTitle, isVideo, status}
   })
   
     return final

@@ -87,12 +87,13 @@ if(address == "needs") return <h3 className="sub left">No NFTs Found</h3>
 
   const listitems = NFTBalance.map((asset: IAsset)=> {
 
-    const {image, name, token_id, collectionName, tokenAddress, NFTTitle, isVideo} = asset
+    const {image, name, token_id, collectionName, tokenAddress, NFTTitle, isVideo, status} = asset
 
 
     if(isSummon) return <NFTCard key={tokenAddress+token_id} icon={image} isVideo={isVideo} NFTTitle={NFTTitle} collectionName={collectionName} />
 
-    return <NFTCard key={tokenAddress+token_id} icon={image} isVideo={isVideo} NFTTitle={NFTTitle} collectionName={collectionName} buttonText="lend" onButton={() => handleLend(asset)} bright />
+    return <NFTCard key={tokenAddress+token_id} icon={image} isVideo={isVideo} NFTTitle={NFTTitle} 
+    collectionName={collectionName} buttonText={status} loader={status=="lending" || status == "approving"} noButton={status == "lended"} onButton={() => handleLend(asset)} bright />
   
 
   })

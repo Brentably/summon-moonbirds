@@ -6,7 +6,7 @@ import ERC721 from '../abi/ERC721.json'
 
 
 // address or summonAddress will work for address, we won't let them fuck it up :salute:
-async function lend(toAddress: string, tokenAddress: string, tokenId: number, connection: IConnection, setLendingStatus: Function ) {
+async function lend(toAddress: string, tokenAddress: string, tokenId: number, connection: IConnection, updateStatus: Function ) {
 const {provider, signer, walletAddress, chainID} = connection
 const [ManagerAddress, ManagerABI] = getContracts(chainID)
 
@@ -35,10 +35,10 @@ console.log(`${tokenAddress}.isApprovedforAll(${walletAddress}, ${ManagerAddress
 
 if(!isApprovedForAll) {
   let tx = await TokenContract.setApprovalForAll(ManagerAddress, true)
-  setLendingStatus("approving")
+  updateStatus("approving")
   let tx_r = await tx.wait(1)
   console.log(`Summon Manager address was approved for all status: ${tx_r.status}`)
-  if(tx_r.status == 1) setLendingStatus("lend")
+  if(tx_r.status == 1) updateStatus("lend")
 }
 
 
@@ -46,11 +46,11 @@ if(!isApprovedForAll) {
 
 console.log(toAddress, tokenAddress, tokenId)
 let tx = await SummonManager.lendTokenToBorrower(toAddress, tokenAddress, tokenId)
-setLendingStatus("lending")
+updateStatus("lending")
 console.log(`processing lending transaction at hash: ${tx.hash} `)
 let tx_r = await tx.wait()
 console.log(`deposit success? ${tx_r.status} to ${toAddress}`)
-setLendingStatus("lended")
+updateStatus("lended")
 
 if(tx_r.status != 1) console.error("issue with token deposit")
 
