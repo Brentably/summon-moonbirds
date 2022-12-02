@@ -4,7 +4,7 @@ function getContracts(chainID: number): any[] {
 if(chainID == 0) return []
 
 const ManagerABI = SummonManager.abi
-const ManagerAddress = chainID == 1 ? "0xdc2E5925598Cde53D37b6b8428aEFc3dc1Ff677C" : "0x6f2AB9E7D74c27E53E9050C0f7A57905a9572365"
+const ManagerAddress = chainID == 1 ? "0xdc2E5925598Cde53D37b6b8428aEFc3dc1Ff677C" : "0x594ad6ed051e18676CBF006F1cDA93137bB3d72f"
 
 const returnArray = new Array<any>(ManagerAddress, ManagerABI)
 // return address and abi
