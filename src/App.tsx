@@ -44,14 +44,14 @@ function reducer(state: IState, action: {type: string, payload: any, target?: st
   switch (action.type) {
     case 'set':
       return {...state, ...action.payload};
-      case 'updateNFTStatus':
-        if(!action.target) return
-        const [tokenAddress, tokenId, status] = action.payload
-        const newNFTBalance = state[action.target as keyof IState].map((NFT: IAsset) => {
-         if(NFT.tokenAddress == tokenAddress && NFT.token_id == tokenId) return {...NFT, status: status}
-         else return NFT
-       })
-        return {...state, [action.target as keyof IState]: newNFTBalance};
+    case 'updateNFTStatus':
+      if(!action.target) return
+      const [tokenAddress, tokenId, status] = action.payload
+      const newNFTBalance = state[action.target as keyof IState].map((NFT: IAsset) => {
+        if(NFT.tokenAddress == tokenAddress && NFT.token_id == tokenId) return {...NFT, status: status}
+        else return NFT
+      })
+      return {...state, [action.target as keyof IState]: newNFTBalance};
     default:
       throw new Error();
   }
@@ -85,13 +85,13 @@ function App() {
 
 
 
-useEffect(()=> {
-  const thisPatternIsStupid = async() => {
-    let newConnection:IConnection = await getConnection()
-    dispatch({type: "set", payload: {connection: {...newConnection}}})
-  }
-  thisPatternIsStupid()
-}, [])
+// useEffect(()=> {
+//   const thisPatternIsStupid = async() => {
+//     let newConnection:IConnection = await getConnection()
+//     dispatch({type: "set", payload: {connection: {...newConnection}}})
+//   }
+//   thisPatternIsStupid()
+// }, [])
 
 
 

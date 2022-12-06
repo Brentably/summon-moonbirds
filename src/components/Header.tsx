@@ -36,12 +36,13 @@ useEffect(() => {
 useEffect(() => console.log(connection), [connection])
 
   return (<>
+    {}
     <div className="summonHeader">
     <span className="summonHeaderText">summon </span>
     {/* <button disabled={connecting} onClick={() => connect()} className={connection.signer ? "connect connected" : "connect notConnected"}>Connect Wallet</button> */}
     </div>
     {!connection.signer && <div className="buttonContainer connectWalletContainer pointer">
-      <Button onClick={() => connect()} text="connect wallet" bright/>
+      <Button onClick={() => connect()} text={connecting ? 'connecting' : wallet ? 'disconnect' : 'connect'} bright/>
     </div>}
     <div className="tabsContainer">
     <span className={view == "lend" ? "tabs selected" : "tabs"} onClick={()=> dispatch({type: 'set', payload: {view: "lend"}})}>lend</span> 

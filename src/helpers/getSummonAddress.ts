@@ -30,7 +30,6 @@ async function getSummonAddress(connection: IConnection): Promise<string> {
 
 
   const SummonManager = new ethers.Contract(ManagerAddress, ManagerABI, signer)
-  console.dir(SummonManager.deployed())
   const SummonVaults = SummonManager.filters.SummonCreated(walletAddress)
   const AllVaultsLogs = await SummonManager.queryFilter(SummonVaults, -100000, "latest");
   console.dir(AllVaultsLogs)
