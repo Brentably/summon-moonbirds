@@ -4,7 +4,7 @@ import { useEffect, useState } from "react"
 import walletConnectLogo from '../template/walletConnectHQ.png'
 import Button from "./Button"
 
-export default (props: {store:any}) => {
+const WalletConnectComponent = (props: {store:any}) => {
   const [state, dispatch] = props.store
   const {uriValid, uri, summonAddress, connection, connector} = state
   const {signer, chainID} = connection
@@ -15,9 +15,12 @@ export default (props: {store:any}) => {
     console.log('useeffect called')
     const onUriChange = async () => {
     let uriValid = (uri.length >= 12 && uri.startsWith('wc:') || uri.length == 0) // 12 is random i didnt actually look that up
-    dispatch({type: "set", payload: {uriValid: uriValid }})
+    // dispatch({type: "set", payload: {uriValid: uriValid }})
     
-    if(!uri || !uriValid) return // called on component did mount, so there will have to return for the times there is not a uri
+    if(!uri || !uriValid) {
+      console.log('onUriChange called, but no URI or URI invalid')
+      return
+    } // called on component did mount, so there will have to return for the times there is not a uri
     if(summonAddress == "needs") {
       console.log("on uri change was called but there's no summon address")
       return
@@ -167,3 +170,5 @@ onUriChange()
         </div>
   )
 }
+
+export default WalletConnectComponent

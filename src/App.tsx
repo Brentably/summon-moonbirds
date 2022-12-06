@@ -101,7 +101,7 @@ useEffect(()=> {
     // dispatch({type: "set", payload: {connection: {...newConnection}}})
 
     let summonAddress:string = await getSummonAddress(connection)
-    dispatch({type: "set", payload: {...state, summonAddress: summonAddress }})
+    dispatch({type: "set", payload: {summonAddress: summonAddress}})
   }
   thisPatternIsStupid()
 }, [connection])

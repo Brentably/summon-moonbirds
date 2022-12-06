@@ -32,8 +32,9 @@ async function getSummonAddress(connection: IConnection): Promise<string> {
   const SummonManager = new ethers.Contract(ManagerAddress, ManagerABI, signer)
   const SummonVaults = SummonManager.filters.SummonCreated(walletAddress)
   const AllVaultsLogs = await SummonManager.queryFilter(SummonVaults, -100000, "latest");
-  console.dir(AllVaultsLogs)
-  const VaultsForAddress = AllVaultsLogs.filter(log => log?.args?.owner == walletAddress)
+  const VaultsForAddress = AllVaultsLogs // I was filtering 2x
+  // console.dir(AllVaultsLogs)
+  // const VaultsForAddress = AllVaultsLogs.filter(log => log?.args?.owner == walletAddress)
   if(VaultsForAddress == undefined) return "error"
   if(VaultsForAddress.length > 1) console.error("multiple summmons deployed, returning the first one")
   if(VaultsForAddress.length < 1) return "needs"
