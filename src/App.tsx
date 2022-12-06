@@ -13,6 +13,7 @@ import getSummonAddress from './helpers/getSummonAddress';
 import Loader from './components/Loader';
 import Footer from './components/Footer';
 import WalletConnectComponent from './components/WalletConnectComponent';
+import { useConnectWallet } from '@web3-onboard/react';
 
 type IState = {connection: IConnection, summonAddress: string, MainNFTBalance: IAsset[] | undefined, SummonNFTBalance: IAsset[] | undefined, uri: string, uriValid: boolean, view: string, lendData: any, connector: WalletConnect | null}
 
@@ -43,6 +44,7 @@ const initialState = {
 function reducer(state: IState, action: {type: string, payload: any, target?: string}) {
   switch (action.type) {
     case 'set':
+      console.log('reducer updating state:', action.payload)
       return {...state, ...action.payload};
     case 'updateNFTStatus':
       if(!action.target) return
@@ -58,8 +60,6 @@ function reducer(state: IState, action: {type: string, payload: any, target?: st
 }
 
 
-//control f every setState to a dispatch
-
 
 
 
@@ -71,7 +71,7 @@ function App() {
   const [state, dispatch] = store
   const {connection, summonAddress, uri, uriValid, view} = state
   const {provider, signer, walletAddress, chainID} = connection
-
+  const [{ wallet, connecting }, connect, disconnect] = useConnectWallet()
   
   // const [uri, setUri] = useState<any>("") // wallet connect URI
   
@@ -82,6 +82,18 @@ function App() {
   }
   
   
+  useEffect(() => {
+    const stupid = async () => {
+      // If the wallet has a provider than the wallet is connected
+      if (wallet?.provider) {
+        let newConnection = await getConnection(wallet.provider)
+        dispatch({type: 'set', payload: {connection: newConnection}})
+  
+    }}
+  
+    stupid()
+  }
+  , [wallet])
 
 
 

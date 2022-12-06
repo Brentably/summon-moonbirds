@@ -36,7 +36,7 @@ function LendedNFTList(props: {store:any}) {
      
      async function updateNFTs() {
       if(!walletAddress || !chainID) return
-       const NFTBalance:any[] = await getLendedNFTBalance(connection)
+       const NFTBalance:IAsset[] = await getLendedNFTBalance(connection)
        dispatch({type: 'set', payload: {LendedNFTBalance: NFTBalance}})
       //  setLendedNFTBalance(NFTBalance)
        console.log(NFTBalance)

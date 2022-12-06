@@ -1,12 +1,12 @@
 
 import { ethers } from "ethers"
 import { AbiCoder } from "ethers/lib/utils"
-import IConnection from "../types/types"
+import IConnection, { IAsset } from "../types/types"
 import getApiKey from "./getApiKey"
 import getContracts from "./getContracts"
 
 
-async function getLendedNFTBalance(connection: IConnection): Promise<any[]> {
+async function getLendedNFTBalance(connection: IConnection): Promise<IAsset[] | []> {
 
   // First part is finding the tokens that are currently lended out. We do this by searching for on chain log events
   // and then do some js magic to get a set of lended tokens at the bottom.
@@ -49,7 +49,7 @@ async function getLendedNFTBalance(connection: IConnection): Promise<any[]> {
 
   }
 // console.log(AllTokens)
-let LendedTokens:any[] = new Array()
+let LendedTokens:any[] = []
 
 for(let address in AllTokens) {
   for(let tokenId in AllTokens[address]) {

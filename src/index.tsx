@@ -8,6 +8,7 @@ import injectedModule from '@web3-onboard/injected-wallets'
 import walletConnectModule from '@web3-onboard/walletconnect'
 import { AccountCenter } from '@web3-onboard/core';
 
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 window.Buffer = window.Buffer || require("buffer").Buffer; 
 
 
@@ -23,7 +24,7 @@ const mainnet = {
   id: 1,
   token: 'ETH',
   label: 'Ethereum',
-  rpcUrl: `https://eth-goerli.g.alchemy.com/v2/qNtE2MdnnNXNh8G5hjIZ-baxFqFnqvoQ`
+  rpcUrl: `https://eth-mainnet.g.alchemy.com/v2/w_9AET4Fxc6sx6BbrvBFqP2Yr9YYmbdP`
 }
 
 const polygonMainnet = {
@@ -35,8 +36,8 @@ const polygonMainnet = {
 
 const chains = [ethereumGoerli, mainnet]
 
-const wallets = [injectedModule()]
 const walletConnect = walletConnectModule()
+const wallets = [injectedModule(), walletConnect]
 
 const appMetadata = {
   name: 'Connect Wallet Example',
@@ -59,7 +60,7 @@ const appMetadata = {
   //   }
 
 const web3Onboard = init({
-  wallets: [...wallets, walletConnect],
+  wallets: [...wallets],
   chains,
   appMetadata
 })
