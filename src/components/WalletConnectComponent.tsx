@@ -163,7 +163,7 @@ onUriChange()
             <div className="left wcQuestionContainer">
               <a 
                 className="wcQuestion"
-                href="https://www.notion.so/Lend-and-borrow-NFTs-8be4078124024309b872a48d5c023321#55983ede7cc742ea8ed19d850ae3cda4" target="_blank"
+                href="https://www.notion.so/Lend-and-borrow-NFTs-8be4078124024309b872a48d5c023321#55983ede7cc742ea8ed19d850ae3cda4" target="_blank" rel="noreferrer"
               >
                   How to find the connection link? 	🔗
               </a> 

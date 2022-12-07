@@ -7,6 +7,7 @@ import { Web3OnboardProvider, init } from '@web3-onboard/react'
 import injectedModule from '@web3-onboard/injected-wallets'
 import walletConnectModule from '@web3-onboard/walletconnect'
 import { AccountCenter } from '@web3-onboard/core';
+import coinbaseWalletModule from '@web3-onboard/coinbase'
 
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -38,7 +39,8 @@ const polygonMainnet = {
 const chains = [ethereumGoerli, mainnet]
 
 const walletConnect = walletConnectModule()
-const wallets = [injectedModule(), walletConnect]
+const coinbaseWalletSdk = coinbaseWalletModule()
+const wallets = [injectedModule(), walletConnect, coinbaseWalletSdk]
 
 const appMetadata = {
   name: 'Connect Wallet Example',

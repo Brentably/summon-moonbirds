@@ -26,9 +26,6 @@ import { GlobalContext, useGlobalStore } from './store/context';
 
 
 
-
-
-
 function App() {
   const store:[IState, React.Dispatch<any>] = useGlobalStore()
   const [state, dispatch] = store
@@ -48,7 +45,7 @@ function App() {
         dispatch({type: 'set', payload: {connection: newConnection}})
       }}
     stupid()
-    }, [wallet])
+    }, [])
 
     
   const rejectWithMessage = (connector: WalletConnect, id: number | undefined, message: string) => {

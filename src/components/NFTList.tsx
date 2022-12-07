@@ -82,7 +82,7 @@ if(address == "needs") return <h3 className="sub left">No NFTs Found</h3>
   if(!address) return <h1>connect wallet</h1>
   if(!NFTBalance) return <Loader />
   if(NFTBalance.length < 1 && isSummon) return <h3 className="sub left">No NFTs Found... try lending one to yourself :)</h3>
-  if(NFTBalance.length < 1) return <h3 className="sub left">No NFTs Found, <a href="https://goerli-nfts.vercel.app/" target="_blank">mint Goerli NFTs here</a></h3>
+  if(NFTBalance.length < 1) return <h3 className="sub left">No NFTs Found, <a href="https://goerli-nfts.vercel.app/" target="_blank" rel="noreferrer">mint Goerli NFTs here</a></h3>
   
   
   
