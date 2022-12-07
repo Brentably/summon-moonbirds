@@ -7,7 +7,6 @@ import getContracts from "./getContracts"
 
 
 async function getLendedNFTBalance(connection: IConnection): Promise<IAsset[] | []> {
-
   // First part is finding the tokens that are currently lended out. We do this by searching for on chain log events
   // and then do some js magic to get a set of lended tokens at the bottom.
   const {walletAddress, chainID, signer} = connection

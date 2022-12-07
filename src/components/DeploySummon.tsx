@@ -22,7 +22,7 @@ function DeploySummon(props: {store: any}) {
   }
   const memoizedDeploy = useCallback(handleDeploy, [connection])
 
-  if(chainID == 0) return null;
+  if(chainID == null) return null;
 
   return (
     <div className='flex-container'>

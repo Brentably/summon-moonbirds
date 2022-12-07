@@ -4,7 +4,7 @@ import type {IAsset, IState} from './types'
 // context has to export TWO things now: 1, State (or context, and 2, a function to update it.)
 
 const initialState:IState = {
-  connection: {provider: undefined, signer: undefined, walletAddress: "", chainID: 0},
+  connection: {provider: undefined, signer: undefined, walletAddress: "", chainID: null},
   summonAddress: "",
   LendedNFTBalance: undefined,
   MainNFTBalance: undefined,

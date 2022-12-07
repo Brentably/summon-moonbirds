@@ -23,11 +23,11 @@ const WalletConnectComponent = () => {
       return
     } // called on component did mount, so there will have to return for the times there is not a uri
     if(summonAddress == "needs") {
-      console.log("on uri change was called but there's no summon address")
+      console.log("on uri change was called but user needs summon address")
       return
     }
-    if(!signer || !summonAddress) {
-      console.error("onUriChange was called, but it's missing the signer or summon address")
+    if(!signer || !summonAddress || !chainID) {
+      console.error("onUriChange was called, but it's missing the signer / summon address / chainID")
       return
     }
     

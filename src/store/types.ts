@@ -5,8 +5,8 @@ import {ethers} from 'ethers'
 export type IConnection = {
   provider: ethers.providers.Provider | undefined ,
   signer: ethers.Signer | undefined,
-  walletAddress: string,
-  chainID: number,
+  walletAddress: string | "",
+  chainID: number | null,
 }
 
 export type IAsset = { 
