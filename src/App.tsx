@@ -7,18 +7,12 @@ import LendedNFTList from './components/LendedNFTList'
 import { IAsset, IState } from './store/types'
 import getConnection from './helpers/getConnection';
 import Header from './components/Header';
-import DeploySummon from './components/DeploySummon';
 import Lending from './components/Lending'
 import getSummonAddress from './helpers/getSummonAddress';
-import Loader from './components/Loader';
 import Footer from './components/Footer';
 import WalletConnectComponent from './components/WalletConnectComponent';
 import { useConnectWallet } from '@web3-onboard/react';
-import { useWeb3Onboard } from '@web3-onboard/react/dist/context';
 import { GlobalContext, useGlobalStore } from './store/context';
-
-
-
 
 
 
@@ -32,7 +26,6 @@ function App() {
   const {connection, summonAddress, uri, uriValid, view} = state
   const {provider, signer, walletAddress, chainID} = connection
   const [{ wallet, connecting }, connect, disconnect] = useConnectWallet()
-  const onboard = useWeb3Onboard()
   // const [uri, setUri] = useState<any>("") // wallet connect URI
   
   useEffect(() => {

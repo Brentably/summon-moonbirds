@@ -6,7 +6,6 @@ import reportWebVitals from './reportWebVitals';
 import { Web3OnboardProvider, init } from '@web3-onboard/react'
 import injectedModule from '@web3-onboard/injected-wallets'
 import walletConnectModule from '@web3-onboard/walletconnect'
-import { AccountCenter } from '@web3-onboard/core';
 import coinbaseWalletModule from '@web3-onboard/coinbase'
 
 

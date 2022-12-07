@@ -1,10 +1,11 @@
 
-import { WalletState, EIP1193Provider } from "@web3-onboard/core";
+
 import { ethers } from "ethers";
 
 
-const getConnection = async (_provider?: EIP1193Provider) => {
-  const provider = _provider ? new ethers.providers.Web3Provider(_provider, 'any') : new ethers.providers.Web3Provider(window.ethereum, "any")
+
+const getConnection = async (_provider:  ethers.providers.ExternalProvider | ethers.providers.JsonRpcFetchFunc) => {
+  const provider = new ethers.providers.Web3Provider(_provider, 'any')
   // const provider = new ethers.providers.Web3Provider(window.ethereum, "any")
 
   // refreshes things on network changs
