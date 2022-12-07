@@ -1,6 +1,6 @@
 
 import { ethers } from "ethers"
-import IConnection from "../types/types"
+import {IConnection} from "../store/types"
 import getApiKey from "./getApiKey"
 import getContracts from "./getContracts"
 
@@ -47,7 +47,7 @@ async function getSummonNFTBalance(connection: IConnection): Promise<any[]> {
 
   }
 // console.log(AllTokens)
-let LendedTokens:any[] = new Array()
+let LendedTokens:any[] = []
 
 for(let address in AllTokens) {
   for(let tokenId in AllTokens[address]) {

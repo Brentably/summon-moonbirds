@@ -1,7 +1,7 @@
 
 import { ethers } from "ethers"
 import { AbiCoder } from "ethers/lib/utils"
-import IConnection, { IAsset } from "../types/types"
+import { IConnection, IAsset } from "../store/types"
 import getApiKey from "./getApiKey"
 import getContracts from "./getContracts"
 

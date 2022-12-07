@@ -8,6 +8,7 @@ import injectedModule from '@web3-onboard/injected-wallets'
 import walletConnectModule from '@web3-onboard/walletconnect'
 import { AccountCenter } from '@web3-onboard/core';
 
+
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 window.Buffer = window.Buffer || require("buffer").Buffer; 
 

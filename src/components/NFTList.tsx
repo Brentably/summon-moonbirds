@@ -1,19 +1,21 @@
-import React, {useCallback, useEffect, useState} from 'react'
+import React, {useCallback, useEffect, useState, useContext} from 'react'
 import getNFTBalance from "../helpers/getNFTBalance"
 import getSummonNFTBalance from "../helpers/getSummonNFTBalance"
 
-import IConnection, { IAsset } from '../types/types'
+import  { IAsset } from '../store/types'
 import lend from '../walletFunctions/lend'
 import SummonNFTCard from './SummonNFTCard'
 import Loader from './Loader'
 import NFTCard from './NFTCard'
+import { GlobalContext } from '../store/context'
 
 
 
 //NFT list works to render a list of NFT's whether its NFT's in a wallet, or NFT's in a summon wallet
-function NFTList(props: {store:any, isSummon: boolean}) {
+function NFTList(props: {isSummon: boolean}) {
   // that means the first thing we need to do is determine which address we're showing NFT's for
-  const {store: [state, dispatch], isSummon} = props
+  const { isSummon} = props
+  const [state, dispatch] = useContext(GlobalContext)
   const {connection, summonAddress, MainNFTBalance, SummonNFTBalance} = state
   const {walletAddress, chainID} = connection
   const address = isSummon ? summonAddress : walletAddress
@@ -52,7 +54,7 @@ function NFTList(props: {store:any, isSummon: boolean}) {
   }, [address, chainID])
 
 
-function handleLend(asset:any) {
+function handleLend(asset:IAsset) {
   const {image, name, token_id, collectionName, tokenAddress, NFTTitle, isVideo} = asset
 
   dispatch({type: "set",
@@ -80,7 +82,7 @@ if(address == "needs") return <h3 className="sub left">No NFTs Found</h3>
   if(!address) return <h1>connect wallet</h1>
   if(!NFTBalance) return <Loader />
   if(NFTBalance.length < 1 && isSummon) return <h3 className="sub left">No NFTs Found... try lending one to yourself :)</h3>
-  if(NFTBalance.length < 1) return <h3 className="sub left">No NFTs Found, <a href="https://goerli-nfts.vercel.app/" target="_blank">mint Goerli NFT's here</a></h3>
+  if(NFTBalance.length < 1) return <h3 className="sub left">No NFTs Found, <a href="https://goerli-nfts.vercel.app/" target="_blank">mint Goerli NFTs here</a></h3>
   
   
   

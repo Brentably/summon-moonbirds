@@ -1,5 +1,5 @@
 import {ethers} from 'ethers'
-import IConnection from '../types/types'
+import {IConnection} from '../store/types'
 import getApiKey from './getApiKey'
 import getContracts from './getContracts'
 

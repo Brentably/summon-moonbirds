@@ -1,15 +1,20 @@
-import {useEffect, useState} from "react"
+import {useContext, useEffect, useState} from "react"
 import defaultNFTicon from '../template/defaultNFTicon.png'
 import leftArrow from '../template/leftArrow.png'
 import Button from "./Button"
 import lend from '../walletFunctions/lend'
 import Loader from "./Loader"
 import { ethers } from "ethers"
-import { IAsset } from "../types/types"
+import { IAsset } from "../store/types"
+import { GlobalContext } from "../store/context"
 
-const Lending = (props: any) => {
-  const [state, dispatch] = props.store
+const Lending = () => {
+  const [state, dispatch] = useContext(GlobalContext)
   const {lendData, connection, MainNFTBalance} = state
+  if(!MainNFTBalance) {
+    console.error("lending tried to render called but no main NFT balance ")
+
+}
   const {provider} = connection
   const { started, tokenAddress, tokenId, image, name, collectionName, NFTTitle, isVideo} = lendData
   // const [lendingStatus, setLendingStatus] = useState<string>("lend")
@@ -70,7 +75,11 @@ const Lending = (props: any) => {
     setToAddressValid(valid)
   }, [localToAddress])
 
+
+  if(!MainNFTBalance) return null
+
   const asset = MainNFTBalance.find((asset:IAsset) => asset.tokenAddress == tokenAddress && asset.token_id == tokenId)
+  if(!asset) throw new Error("couldn't find lending page asset in nft balance")
   const lendingStatus = asset.status
 
   const lendingHeaderText = (lendingStatus == "lended") ? "lended✅" : lendingStatus;

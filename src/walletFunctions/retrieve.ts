@@ -1,8 +1,8 @@
 import {ethers} from 'ethers'
 import getContracts from '../helpers/getContracts'
-import IConnection from '../types/types'
+import {IConnection} from '../store/types'
 
-async function retrieve(tokenAddress: string, tokenId: string, connection: IConnection, updateNFTStatus: Function) {
+async function retrieve(tokenAddress: string, tokenId: string, connection: IConnection, updateNFTStatus: (tokenAddress: string, tokenId: string, status: string)=>void ) {
 
 updateNFTStatus(tokenAddress, tokenId, "retrieving")
 const {walletAddress, chainID, signer} = connection
@@ -17,7 +17,7 @@ let tx = await SummonManager.withdrawTokenFromSummon(tokenAddress, tokenId)
 console.log(tx)
 let tx_r = await tx.wait()
 console.log(tx_r)
-tx_r.status = 1 ? updateNFTStatus(tokenAddress, tokenId, "retrieved") : updateNFTStatus(tokenAddress, tokenId, "failed :(")
+tx_r.status == 1 ? updateNFTStatus(tokenAddress, tokenId, "retrieved") : updateNFTStatus(tokenAddress, tokenId, "failed :(")
 } catch {
   console.log('something something error something')
   updateNFTStatus(tokenAddress, tokenId, "lended")

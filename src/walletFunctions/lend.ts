@@ -1,12 +1,12 @@
 import {ethers} from 'ethers'
 import getContracts from '../helpers/getContracts'
-import IConnection from '../types/types'
+import {IConnection} from '../store/types'
 import ERC721 from '../abi/ERC721.json'
 
 
 
 // address or summonAddress will work for address, we won't let them fuck it up :salute:
-async function lend(toAddress: string, tokenAddress: string, tokenId: number, connection: IConnection, updateStatus: Function ) {
+async function lend(toAddress: string, tokenAddress: string, tokenId: number, connection: IConnection, updateStatus: (status: string) => void ) {
 const {provider, signer, walletAddress, chainID} = connection
 const [ManagerAddress, ManagerABI] = getContracts(chainID)
 

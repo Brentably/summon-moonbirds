@@ -1,7 +1,6 @@
 
 import { WalletState, EIP1193Provider } from "@web3-onboard/core";
 import { ethers } from "ethers";
-import IConnection from "../types/types";
 
 
 const getConnection = async (_provider?: EIP1193Provider) => {

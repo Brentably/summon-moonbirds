@@ -1,11 +1,12 @@
 import WalletConnect from "@walletconnect/client"
 import { ethers } from "ethers"
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
+import { GlobalContext } from "../store/context"
 import walletConnectLogo from '../template/walletConnectHQ.png'
 import Button from "./Button"
 
-const WalletConnectComponent = (props: {store:any}) => {
-  const [state, dispatch] = props.store
+const WalletConnectComponent = () => {
+  const [state, dispatch] = useContext(GlobalContext)
   const {uriValid, uri, summonAddress, connection, connector} = state
   const {signer, chainID} = connection
   const [wConnected, setWConnected] = useState(false)

@@ -1,8 +1,9 @@
-import React, {useCallback, useEffect, useReducer, useState} from 'react'
+import React, {useCallback, useEffect, useReducer, useState, useContext} from 'react'
 import getLendedNFTBalance from '../helpers/getLendedNFTBalance'
 import getNFTBalance from "../helpers/getNFTBalance"
+import { GlobalContext } from '../store/context'
 
-import IConnection, { IAsset } from '../types/types'
+import { IAsset } from '../store/types'
 import retrieve from '../walletFunctions/retrieve'
 
 import Loader from './Loader'
@@ -22,9 +23,9 @@ import NFTCard from './NFTCard'
 
 
 // lets look at every safeTransferFrom(SummonManager,...) (1 call), then query all the data for every token...
-function LendedNFTList(props: {store:any}) {
+function LendedNFTList() {
   //  // that means the first thing we need to do is determine which address we're showing NFT's for
-  const [state, dispatch] = props.store
+  const [state, dispatch] = useContext(GlobalContext)
   const {connection, summonAddress, LendedNFTBalance} = state
   const {walletAddress, chainID} = connection
 

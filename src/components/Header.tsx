@@ -1,15 +1,16 @@
-import IConnection from "../types/types"
 import getConnection from "../helpers/getConnection"
-import { useEffect } from "react"
+import { useContext, useEffect } from "react"
 import { useAccountCenter, useConnectWallet } from '@web3-onboard/react'
 import Button from "./Button"
 import { stringify } from "querystring"
+import { GlobalContext } from "../store/context"
 
-function Header(props: {store: any}) {
-const [state, dispatch] = props.store
+
+function Header() {
+const [state, dispatch] = useContext(GlobalContext)
 const {connection, view} = state
 const [{ wallet, connecting }, connect, disconnect] = useConnectWallet()
-const updateAccountCenter = useAccountCenter()
+// const updateAccountCenter = useAccountCenter()
 
 
 // useEffect(() => {
