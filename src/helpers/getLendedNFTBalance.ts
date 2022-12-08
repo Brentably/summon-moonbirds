@@ -9,7 +9,7 @@ import getContracts from "./getContracts"
 // theres a couple ways I could refactor this.
 // I could look at the moonbirds contract for all "safeTransferWhileNesting" transfers from your address,
 // and then check all the addresses to see if they were summon addresses, and get the tokens if they were summon addresses
-// OR, I could get a list of all summon addresses created, and then check k
+// OR, I could get a list of all summon addresses
 
 
 

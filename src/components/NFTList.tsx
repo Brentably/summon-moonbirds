@@ -41,7 +41,8 @@ function NFTList(props: {isSummon: boolean}) {
 
       await delay(1000)
       if(isSummon) await delay(1000)
-      const NFTBalance:any[] = isSummon ? await getSummonNFTBalance(connection) : await getNFTBalance(address, chainID)
+      // const NFTBalance:any[] = isSummon ? await getSummonNFTBalance(connection) : await getNFTBalance(address, chainID)
+      const NFTBalance:any[] = await getNFTBalance(address, chainID)
 
       // const NFTBalance:any[] = await getNFTBalance(address, chainID)
       isSummon ? dispatch({type: "set", payload: {SummonNFTBalance: NFTBalance}}) : dispatch({type: "set", payload: {MainNFTBalance: NFTBalance}})
