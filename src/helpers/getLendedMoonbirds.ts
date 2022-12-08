@@ -38,6 +38,7 @@ async function getLendedMoonbirds(connection: IConnection): Promise<IAsset[] | [
   }
 
   let lendedTokensEvents = lendedFromLogs.map(log => {
+
     const [BigNumtokenId] = ethers.utils.defaultAbiCoder.decode(['uint'], log.topics[2])
     const tokenId = BigNumtokenId.toString()
     if(!AllTokenEvents[tokenId]) AllTokenEvents[tokenId] = 0

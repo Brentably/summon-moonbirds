@@ -1,19 +1,25 @@
 import {ethers} from 'ethers'
 import getContracts from '../helpers/getContracts'
 import {IConnection} from '../store/types'
+import ERC721AndNesting from '../abi/ERC721AndNesting.json'
 
 async function retrieve(tokenAddress: string, tokenId: string, connection: IConnection, updateNFTStatus: (tokenAddress: string, tokenId: string, status: string)=>void ) {
 
 updateNFTStatus(tokenAddress, tokenId, "retrieving")
 const {walletAddress, chainID, signer} = connection
 const [ManagerABI, ManagerAddress] = getContracts(chainID)
+const [MoonbirdsAddress] = getContracts(chainID, 'moonbirds')
 
-const SummonManager = new ethers.Contract(ManagerABI, ManagerAddress, signer)
+const Moonbirds = new ethers.Contract(MoonbirdsAddress, ERC721AndNesting, signer)
 
 
+const summonVaultAddress = await Moonbirds.ownerOf(tokenId)
+const [, SummonABI] = getContracts(chainID, 'summon')
+
+const Summon = new ethers.Contract(summonVaultAddress, SummonABI, signer )
 
 try {
-let tx = await SummonManager.withdrawTokenFromSummon(tokenAddress, tokenId)
+let tx = await Summon.safeWithdrawMoonBird(tokenId)
 console.log(tx)
 let tx_r = await tx.wait()
 console.log(tx_r)
