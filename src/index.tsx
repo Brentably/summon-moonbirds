@@ -8,10 +8,11 @@ import injectedModule from '@web3-onboard/injected-wallets'
 import walletConnectModule from '@web3-onboard/walletconnect'
 import coinbaseWalletModule from '@web3-onboard/coinbase'
 
-
+// (window as any).global = window;
+// window.Buffer = window.Buffer || require("buffer").Buffer; 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-window.Buffer = window.Buffer || require("buffer").Buffer; 
-
+global.Buffer = require("buffer").Buffer;
+global.process = require("process");
 
 
 const ethereumGoerli = {

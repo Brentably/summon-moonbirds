@@ -18,7 +18,7 @@ const getConnection = async (_provider:  ethers.providers.ExternalProvider | eth
     }
   })
 
-  await provider.send("eth_requestAccounts", []);
+
   const signer = provider.getSigner()
 
   const walletAddress = await signer.getAddress()

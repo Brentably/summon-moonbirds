@@ -32,6 +32,7 @@ const Lending = () => {
 
 
   async function handleLend() {
+    
     // toAddress: string, tokenAddress: string, tokenId: number, connection: IConnection
     if (!toAddressValid) console.error("to address is not valid")
     
@@ -41,9 +42,14 @@ const Lending = () => {
       setToAddressValid(false)
       return
     }
-
+    
     const updateStatus = (status:string) => dispatch({type: "updateNFTStatus", target: "MainNFTBalance", payload: [tokenAddress, tokenId, status]})
+    try {
+    updateStatus('lending')
     lend(resolvedAddress, tokenAddress, tokenId, connection, updateStatus)
+    } catch {
+      console.log("lend failed")
+    }
   }
   
   function handleBack() {
