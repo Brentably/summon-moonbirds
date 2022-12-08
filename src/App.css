@@ -2,6 +2,10 @@
   font-family: 'SF Pro Rounded';
   src: url(./fonts/SF-Pro-Rounded/SF-Pro-Rounded-Regular.otf);
 }
+@font-face {
+  font-family: 'Gazpacho';
+  src: url(./fonts/GazpachoBlack.otf);
+}
 
 
 :root {
@@ -78,6 +82,13 @@ h3.left {
   letter-spacing: 0.02em;
 
   color: #181c40;
+}
+
+.moonbirdsHeaderText {
+  font-family: 'Gazpacho';
+  font-style: normal;
+  font-weight: 900;
+  font-size: 50px;
 }
 
 .tabs {

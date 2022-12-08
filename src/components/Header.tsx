@@ -33,6 +33,12 @@ const [{ wallet, connecting }, connect, disconnect] = useConnectWallet()
     {}
     <div className="summonHeader">
     <span className="summonHeaderText">summon </span>
+    <br/>
+    <br/>
+    <span className="moonbirdsHeaderText">Moonbirds</span>
+    <br/>
+    <br/>
+    
     {/* <button disabled={connecting} onClick={() => connect()} className={connection.signer ? "connect connected" : "connect notConnected"}>Connect Wallet</button> */}
     </div>
     {!wallet && <div className="buttonContainer connectWalletContainer pointer">
