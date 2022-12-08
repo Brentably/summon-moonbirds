@@ -1,5 +1,6 @@
 import getApiKey from "./getApiKey"
 import {ethers} from 'ethers'
+import getContracts from "./getContracts"
 
 // returns all the NFT's in your wallet
 async function getNFTBalance(address: string, chainID: number) {
@@ -18,7 +19,7 @@ async function getNFTBalance(address: string, chainID: number) {
   const query = new URLSearchParams({
     // owner: address,
     owner: address,
-    "excludeFilters[]": "SPAM"
+    // "excludeFilters[]": "SPAM"
   }).toString()
   console.log(`query is ${query}`)
 
@@ -36,10 +37,14 @@ async function getNFTBalance(address: string, chainID: number) {
   const data = await resp.json()
   console.log(data)
 
-  // const filteredData = data.filter( => item && true) insert filter later for making sure you dont have double scoops
+  const [MoonbirdsAddress] = getContracts(chainID, 'moonbirds')
 
 
-  const final = data.ownedNfts.map((NFT:any) => {
+
+  const filteredData = data.ownedNfts.filter((NFT:any) =>  NFT.contract.address.toLowerCase() == MoonbirdsAddress.toLowerCase()) // checkkkkkkkk mooonbirdss
+
+
+  const final = filteredData.map((NFT:any) => {
     console.dir(NFT)
     const image = NFT.media[0].gateway || NFT.metadata.image
     const name = NFT.title
