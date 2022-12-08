@@ -1,10 +1,10 @@
-import SummonManager from '../contracts/SummonV2Manager.json';
+import SummonManager from '../contracts/SummonManager.json';
 
-function getContracts(chainID: number | null): any[] {
+function getContracts(chainID: number | null | 'moonbirds'): any[] | string {
 if(chainID == null) return []
-
+if(chainID == 'moonbirds') return '0x058e91A0fEeDB62b364C24339299BeC2DA6deAB6' // MoonBirds NFT address
 const ManagerABI = SummonManager.abi
-const ManagerAddress = chainID == 1 ? "0xdc2E5925598Cde53D37b6b8428aEFc3dc1Ff677C" : "0x594ad6ed051e18676CBF006F1cDA93137bB3d72f"
+const ManagerAddress = chainID == 1 ? "0x00000000000000000000000000000000000000" : "0x2DD46BeF8C76c16C7d66F612d73a0f9Ae21D40c7"
 
 const returnArray = new Array<any>(ManagerAddress, ManagerABI)
 // return address and abi
