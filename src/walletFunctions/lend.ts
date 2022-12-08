@@ -1,51 +1,44 @@
 import {ethers} from 'ethers'
 import getContracts from '../helpers/getContracts'
 import {IConnection} from '../store/types'
-import ERC721 from '../abi/ERC721.json'
+import ERC721AndNesting from '../abi/ERC721AndNesting.json'
 
 
 
 // address or summonAddress will work for address, we won't let them fuck it up :salute:
-async function lend(toAddress: string, tokenAddress: string, tokenId: number, connection: IConnection, updateStatus: (status: string) => void ) {
+async function lend(toAddress: string, tokenId: number, connection: IConnection, updateStatus: (status: string) => void ) {
 const {provider, signer, walletAddress, chainID} = connection
 const [ManagerAddress, ManagerABI] = getContracts(chainID)
-
+const [, SummonABI] = getContracts(chainID, 'summon')
 // find out if toAddress is Summon or wallet 
-
+const [MoonbirdsAddress] = getContracts(chainID, 'moonbirds')
 
 
 let SummonManager = new ethers.Contract( ManagerAddress , ManagerABI , signer)
-console.dir(SummonManager)
+let SummonAddress:string = await SummonManager.OwnerToSummonAddress(toAddress)
 
-// if it's a wallet, find out if they have a Summon Address
-
-
-
-
-// console.log(`to Summon Address is ${OnChainSummonAddress}`)
-// now take the summon address, set approval for all if it hasn't been, 
-
-let TokenContract = new ethers.Contract(tokenAddress, ERC721 , signer)
-console.dir(TokenContract)
-
-//NEED TO CHECK AND GIVE SUMMON MANAGER APPROVAL, NOT SUMMON ADDRESS
-const isApprovedForAll = await TokenContract.isApprovedForAll(walletAddress, ManagerAddress) // owner, Manager 
-console.log(`${tokenAddress}.isApprovedforAll(${walletAddress}, ${ManagerAddress} returned ${isApprovedForAll})`)
-
-
-if(!isApprovedForAll) {
-  let tx = await TokenContract.setApprovalForAll(ManagerAddress, true)
-  updateStatus("approving")
+if(SummonAddress == "0x0000000000000000000000000000000000000000") {
+  updateStatus('deploying summon')
+  let tx = await SummonManager.CreateNewSummon(toAddress)
   let tx_r = await tx.wait(1)
-  console.log(`Summon Manager address was approved for all status: ${tx_r.status}`)
-  if(tx_r.status == 1) updateStatus("lend")
+  console.log(`Summon successfully deployed: ${tx_r.status}`)
+  SummonAddress = await SummonManager.OwnerToSummonAddress(toAddress)
+  if(SummonAddress == "0x0000000000000000000000000000000000000000") throw new Error("not picking up SummonAddress after deploy")
+  updateStatus('lend')
 }
 
+const Summon = new ethers.Contract(SummonAddress, SummonABI, signer)
 
-// and then call deposit NFT on the summon address
 
-console.log(toAddress, tokenAddress, tokenId)
-let tx = await SummonManager.lendTokenToBorrower(toAddress, tokenAddress, tokenId)
+const MoonBirdsContract = new ethers.Contract(MoonbirdsAddress, ERC721AndNesting , signer)
+console.dir(MoonBirdsContract)
+
+
+// get all you have to do is safeTransferWhileNesting to the Summon
+
+
+console.log(toAddress, tokenId)
+let tx = await MoonBirdsContract.safeTransferWhileNesting(walletAddress, SummonAddress, tokenId)
 updateStatus("lending")
 console.log(`processing lending transaction at hash: ${tx.hash} `)
 let tx_r = await tx.wait()
@@ -53,8 +46,6 @@ console.log(`deposit success? ${tx_r.status} to ${toAddress}`)
 updateStatus("lended")
 
 if(tx_r.status != 1) console.error("issue with token deposit")
-
-
 
 
 }

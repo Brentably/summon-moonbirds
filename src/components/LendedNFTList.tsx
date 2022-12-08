@@ -1,5 +1,6 @@
 import React, {useCallback, useEffect, useReducer, useState, useContext} from 'react'
-import getLendedNFTBalance from '../helpers/getLendedNFTBalance'
+// import getLendedNFTBalance from '../helpers/getLendedNFTBalance'
+import getLendedMoonbirds from '../helpers/getLendedMoonbirds'
 import getNFTBalance from "../helpers/getNFTBalance"
 import { GlobalContext } from '../store/context'
 
@@ -37,7 +38,7 @@ function LendedNFTList() {
      
      async function updateNFTs() {
       if(!walletAddress || !chainID) return
-       const NFTBalance:IAsset[] = await getLendedNFTBalance(connection)
+       const NFTBalance:IAsset[] = await getLendedMoonbirds(connection)
        dispatch({type: 'set', payload: {LendedNFTBalance: NFTBalance}})
       //  setLendedNFTBalance(NFTBalance)
        console.log(NFTBalance)

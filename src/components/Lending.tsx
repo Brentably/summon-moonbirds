@@ -34,7 +34,10 @@ const Lending = () => {
   async function handleLend() {
     
     // toAddress: string, tokenAddress: string, tokenId: number, connection: IConnection
-    if (!toAddressValid) console.error("to address is not valid")
+    if (!toAddressValid) {
+      console.error("to address is not valid")
+      return
+    }
     
     const MainnetProvider = new ethers.providers.JsonRpcProvider('https://eth-mainnet.g.alchemy.com/v2/ZExueRaApEKiFWwbbmcqyzPgX8xUWOjM');
     let resolvedAddress:string|null = localToAddress.endsWith('.eth') ? await MainnetProvider.resolveName(localToAddress) : localToAddress
@@ -46,7 +49,7 @@ const Lending = () => {
     const updateStatus = (status:string) => dispatch({type: "updateNFTStatus", target: "MainNFTBalance", payload: [tokenAddress, tokenId, status]})
     try {
     updateStatus('lending')
-    lend(resolvedAddress, tokenAddress, tokenId, connection, updateStatus)
+    lend(resolvedAddress, tokenId, connection, updateStatus)
     } catch {
       console.log("lend failed")
     }
@@ -112,7 +115,7 @@ const Lending = () => {
             {nameDecided && localToAddress.endsWith('.eth') && <h3 className="sub">{localToAddress}</h3>}
             {nameDecided && !localToAddress.endsWith('.eth') && <h3 className="sub">{localToAddress.substring(0,5)}...{localToAddress.substring(38)}</h3>}
         </div>
-        {lendingStatus != "lended" && <Button text="lend NFT" onClick={handleLend} bright loading={(lendingStatus == "lending" || lendingStatus == "approving")}/> }
+        {lendingStatus != "lended" && <Button text="lend NFT" onClick={handleLend} bright loading={(lendingStatus == "lending" || lendingStatus == "approving" || lendingStatus == "deploying summon")}/> }
         {lendingStatus == "lended" && <Button text="return home" onClick={handleBack} bright/> }
     </div>
     </>)
